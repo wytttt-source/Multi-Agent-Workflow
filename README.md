@@ -44,19 +44,23 @@ zhinengti/
  ├── prompts.py              # 集中管理的提示词
  ├── utils.py                # LLM 调用容错（异常分类 + 重试）与检索内存缓存
  ├── search_store.py         # 检索原始响应磁盘缓存与证据归档
- ├── run_store.py            # 控制台日志双写 + 结构化运行记录（logs/、data/runs/）
+ ├── run_store.py            # 控制台日志双写 + 结构化运行记录（logs/、data/runs_v2/<组>/）
  ├── check_search.py         # Search/Fetch API 契约探针（改代码前先验字段）
  ├── docs/                   # 设计文档（随仓库提交）
  │    ├── 反思判定状态机-改动清单.md  # 6 态判定表 / 路由表 / 缺陷分级 P0-P2 / 验收用例
- │    └── 覆盖率的边界用例.md        # 主题切分回归用例（含一次真实误判）
- ├── tests/                  # 离线回归测试（unittest，不联网、不写 data/runs/）
- │    └── test_reflection_gate.py     # 反思门控 C1~C7：三条判定路径 + 主题切分
+ │    ├── 覆盖率的边界用例.md        # 主题切分回归用例（含一次真实误判）
+ │    └── 实验记录-v2.md             # E1~E6 自动汇总表（build_v2_table.py 生成）
+ ├── tests/                  # 离线回归测试（unittest，不联网、不写 data/runs_v2/）
+ │    └── test_reflection_gate.py     # 26 条：门控 C1~C8 + 主题切分 + 4 个实验开关
  ├── data/                   # 运行产物（首次运行自动创建，已 gitignore）
  │    ├── search_cache/      # Search API 原始响应（<sha1>.json）
  │    ├── evidence/          # 装配好的证据块（<主题>-<时间戳>.md）
- │    └── runs/              # 结构化运行记录（<主题>-<时间戳>.json）
+ │    ├── runs/              # v1 口径的 20 份历史记录（只读，不再写入）
+ │    └── runs_v2/<组>/      # v2 口径：E1~E6 各一个子目录（<主题>-<时间戳>.json）
  ├── logs/                   # 全链路控制台日志（<主题>-<时间戳>.log，已 gitignore）
  └── experiments/            # 实验归档（随仓库提交）
+       ├── run_matrix.py     # E1~E6 批量执行器（环境变量切组，零改代码）
+       ├── build_v2_table.py # data/runs_v2 → docs/实验记录-v2.md 汇总表
       ├── Bing抓取-改造前/    # exp1~exp3.png：检索层改造前的终端截图
       └── DeepSeek检索-改造后/ # exp4~exp7.log：改造后的完整文本日志
 ```
@@ -100,12 +104,19 @@ zhinengti/
 | `EVIDENCE_MAX_CHARS` | `12000` | `config.py` | 单次检索的证据块上限 |
 | `ENABLE_SEARCH_CACHE` | `True` | `config.py` | 内存 + 磁盘两级缓存；关闭则每次真实联网 |
 | `ENABLE_EVIDENCE_ARCHIVE` | `True` | `config.py` | 把装配好的证据落成 `data/evidence/*.md` |
-| `ENABLE_RUN_ARCHIVE` | `True` | `config.py` | 落 `logs/*.log` 与 `data/runs/*.json`；关闭则只打印 |
+| `ENABLE_RUN_ARCHIVE` | `True` | `config.py` | 落 `logs/*.log` 与 `data/runs_v2/<组>/*.json`；关闭则只打印 |
 | `PASS_MIN_CITED` | `1` | 环境变量 | 「通过」至少要引用几条**可核验**来源（`0` 即回到旧语义） |
 | `PASS_MIN_CHARS` | `120` | 环境变量 | 回答字数下限，未达即判 `内容不合格` |
 | `RETRY_QUERY_MODE` | `missing_term` | 环境变量 | 补检索取式策略：`missing_term`（主题 + 未覆盖对象）/ `drop_lang` / `same`（对照） |
+| `EVIDENCE_TOP_K` | `3` | 环境变量 | 引用率分母上限（检索给 6 条、引用 3 条不算违规） |
+| `ENABLE_REFLECTION` | `True` | 环境变量 | `0` = E1 基线：反思节点直接判 `通过`，不调用裁判 |
+| `ENABLE_COVERAGE_RULE` | `True` | 环境变量 | `0` = E4 消融：不执行子任务/比较对象覆盖率规则 |
+| `ENABLE_REPEAT_RULE` | `True` | 环境变量 | `0` = E5 消融：同类型错误重复出现仍原地重规划 |
+| `DISABLE_CONTENT_GATE` | `False` | 环境变量 | `1` = E2：关掉确定性否决链，完全以语义裁判为准 |
+| `INJECT_LLM_FAIL` | `0` | 环境变量 | E6：前 N 次 LLM 调用强制失败，验证双熔断是否收敛 |
+| `EXP_GROUP` | `E3` | 环境变量 | 实验组标签，决定 `data/runs_v2/<组>/` 子目录并写入 JSON |
 
-> 可用环境变量覆盖的共 6 项：`SEARCH_PROVIDER`、`GENERATOR_MODEL`、`SEARCH_STORE_DIR`、`PASS_MIN_CITED`、`PASS_MIN_CHARS`、`RETRY_QUERY_MODE`；其余需改 `config.py` 常量并**重启进程**（模块级常量在 import 时求值）。
+> 可用环境变量覆盖的共 13 项（上表"环境变量"行）；其余需改 `config.py` 常量并**重启进程**（模块级常量在 import 时求值）。E1~E6 的推荐跑法是 `python experiments/run_matrix.py`（自动设置上表开关，零改代码）。
 
 ##  快速开始
 
@@ -126,33 +137,40 @@ python check_search.py "量子计算和经典计算的区别" --count 6 --save
 python main.py "量子计算和经典计算的区别"
 ```
 
-运行结束后，控制台会打印引用来源（标题 + URL）与检索证据清单；原始响应见 `data/search_cache/`，装配后的证据见 `data/evidence/`，**完整控制台日志见 `logs/<主题>-<时间戳>.log`，结构化运行记录见 `data/runs/<主题>-<时间戳>.json`**（后两者可通过 `ENABLE_RUN_ARCHIVE = False` 关闭）。
+运行结束后，控制台会打印引用来源（标题 + URL）与检索证据清单；原始响应见 `data/search_cache/`，装配后的证据见 `data/evidence/`，**完整控制台日志见 `logs/<主题>-<时间戳>.log`，结构化运行记录见 `data/runs_v2/<实验组>/<主题>-<时间戳>.json`**（后两者可通过 `ENABLE_RUN_ARCHIVE = False` 关闭）。
+
+> `data/runs/` 里的 20 份是 **v1 判定口径**（无 `cited_count`、无 `repeat_hit`），只作历史对照；v2 一律写 `data/runs_v2/<组>/`，两组数据**不得混表**。
 
 ### 运行记录与日志（论文数字的唯一来源）
 
 | 文件 | 生成时机 | 内容 |
 | --- | --- | --- |
-| `logs/<主题>-<时间戳>.log` | 每次运行 | 全链路控制台输出（Tee 双写 `stdout`/`stderr`，终端观感不变），表头含命令行、Python 版本、provider、模型名 |
-| `data/runs/<主题>-<时间戳>.json` | 每次运行 | 结构化记录，本文所有条数/字数/覆盖率/耗时均取自此处 |
+| `logs/<主题>-<时间戳>.log` | 每次运行 | 全链路控制台输出（Tee 双写 `stdout`/`stderr`，终端观感不变），表头含命令行、Python 版本、provider、模型名、实验组与判定开关 |
+| `data/runs_v2/<组>/<主题>-<时间戳>.json` | 每次运行 | 结构化记录，本文所有条数/字数/覆盖率/耗时/判定来源均取自此处 |
 | `data/search_cache/<sha1>.json` | 首次联网检索 | Search API 原始响应（缓存键 = 查询串与检索参数的 sha1） |
 | `data/evidence/<主题>-<时间戳>.md` | 装配出证据后 | 送进生成器的证据块，可直接作为论文附录 |
 
 > 缓存键的实现见 `search_store.store_key()`：`sha1(f"{provider}|{query}|{count}|{int(need_content)}")`，与 `check_search.py` 的落盘规则完全一致。
 
-`data/runs/*.json` 关键字段：
+`data/runs_v2/<组>/*.json` 关键字段：
 
 | 字段 | 含义 |
 | --- | --- |
+| `group` / `config.*` | 实验组（E1~E6）与该组全部判定开关的实际取值，可据此复现 |
 | `search.raw` / `gated` / `filtered` | 原始召回 → 结构化门后 → GLM 裁判后条数 |
 | `search.evidence_chars` / `sources` | 证据块总字数 / 引用来源数 |
-| `search.cache` | `memory`（同进程命中）/ `disk`（磁盘缓存）/ `network`（真实联网） |
+| `search.cache_sources` | `memory`（同进程命中）/ `disk`（磁盘缓存）/ `network`（真实联网）/ `bing`（降级抓取）；P1-4 起空缓存不再冒充 `disk` |
 | `search.degraded` | 主检索为 deepseek 但实际结果来自必应降级时为 `true` |
-| `search.elapsed_s` | 检索阶段耗时（含 GLM 过滤与证据装配） |
+| `search.elapsed_s` / `retry_query` / `retry_mode` | 检索耗时 / 补检索改写的查询式 / 改写策略（`missing_term` 等） |
 | `search.per_query[i]` | 逐查询明细（全局拆解时有多项），含 `avg_summary` / `avg_content` |
-| `reflection.verdict` | `通过` / `内容不合格` / `偏题` / `检索失败` / `分解不合理` |
-| `reflection.gated_by` | 该结论的依据：`llm`（裁判）/ `coverage_rule`（覆盖率规则）/ `rule_fallback`（规则兜底） |
-| `reflection.coverage` | 复合主题的比较对象覆盖率，单主题为 `null` |
-| `replan_count` / `used_fallback` | 重规划次数 / 是否走了“无证据、基于内部知识”兜底 |
+| `reflection.verdict` | `通过` / `降级通过` / `内容不合格` / `分解不合理` / `证据不足` / `系统繁忙` |
+| `reflection.decision_source` | 判定来源：`llm` / `coverage_rule` / `gate` / `rule_fallback` / `free_reflection` / `baseline`（E1） |
+| `reflection.pass_kind` | `strict`（通过）/ `degraded`（降级通过）/ `rejected`（被否决），直接对应合格率口径 |
+| `reflection.has_source_line` / `cited_count` / `citation_ratio` | 是否写了【来源】/ 可核验引用条数 / 引用率（分母封顶 `EVIDENCE_TOP_K`） |
+| `reflection.repeat_hit` | 是否由"同类型错误重复出现"触发转自由反思（P1-1 / E5） |
+| `reflection.llm_calls` | 本次运行的 LLM 调用总次数（成本-收益图的数据来源） |
+| `reflection.coverage` | 复合主题的比较对象覆盖率、`per_term_counts`、`balance`，单主题为 `null` |
+| `replan_count` / `used_fallback` | 重规划次数 / 是否走了"无证据、基于内部知识"兜底 |
 | `artifacts.log` / `artifacts.evidence` | 对应日志与证据文件路径 |
 
 ##  实验运行效果展示
@@ -366,6 +384,37 @@ $env:SEARCH_PROVIDER='bing'; python main.py "生物细胞的结构"
 
 > **复现方式**：`python main.py "<主题>"`。每次运行都会在 `logs/` 落一份全链路文本日志、在 `data/runs/` 落一份 JSON 记录（两者均已加入 `.gitignore`）；`experiments/DeepSeek检索-改造后/` 中的 4 份日志与 `data/runs/` 中的 4 份记录一一对应，本文出现的所有条数、字数、覆盖率、耗时都能在其中查到。实验环境为 Python 3.11.5 / Windows，exp4~exp6 命中 `data/search_cache/` 磁盘缓存以排除网络波动，exp7 为实时必应请求。
 
+### 四、反思判定状态机 v2：E1~E6（24 次运行，`data/runs_v2/`）
+
+> **严格分表**：上表三节是检索层改造（v1 判定口径）；本节引入统一门控（`_apply_pass_gate`）、`repeat_hit`、term 归一化与 `decision_source` / `llm_calls` 字段，`data/runs/` 里的 20 份**不得与本表合并统计**。逐条明细、每组实际配置见 [`docs/实验记录-v2.md`](docs/实验记录-v2.md)（由 `python experiments/build_v2_table.py` 自动生成，可直接复算）。
+
+| 组 | 配置 | 样本 | 合格率（通过） | 降级率 | 否决率 | 平均重规划 | 空转样本 | 平均耗时(s) | 平均 LLM 调用 |
+|---|---|---|---|---|---|---|---|---|---|
+| E1 | 基线：`ENABLE_REFLECTION=0` | 4 | 4（100%） | 0（0%） | 0（0%） | 0.0 | 0 | 35.0 | 2.0 |
+| E2 | 纯 LLM 反思：`DISABLE_CONTENT_GATE=1` + 关覆盖率/重复规则 | 4 | 4（100%） | 0（0%） | 0（0%） | 0.0 | 0 | 119.0 | 3.0 |
+| E3 | 本文方法：全默认 | 4 | 4（100%） | 0（0%） | 0（0%） | 0.0 | 0 | 67.7 | 3.0 |
+| E4 | 消融·覆盖率：`ENABLE_COVERAGE_RULE=0` | 4 | 3（75%） | 1（25%） | 0（0%） | 0.2 | 1 | 90.6 | 3.2 |
+| E5 | 消融·重复检测：`ENABLE_REPEAT_RULE=0` | 4 | 3（75%） | 1（25%） | 0（0%） | 0.2 | 1 | 68.7 | 3.2 |
+| E6 | 故障注入：`INJECT_LLM_FAIL=3` | 4 | 4（100%） | 0（0%） | 0（0%） | 0.0 | 0 | 34.8 | 5.0 |
+
+**四条可直接写进论文的观察**
+
+1. **覆盖率误判已消除**：`比较Python和Java在并发编程与内存管理上的差异` 在 E3 中 `coverage.terms=["Python","Java"]`、`ratio=1.0`、`balance=1.0`、`replan=0`；v1 同名主题的切分是 `["Python","Java在并发编程","内存管理上"]`，`ratio=0.333` → 判 `分解不合理` → 空转到 `replan_count=3`。这是 P1-2（term 归一化）最直接的收益。
+2. **"检索不到"不再等于"系统失败"**：`比较Zig和Nim…` 在 E4/E5 走完整降级链 `检索失败 → 证据不足 → 补检索（改写检索式）→ 仍无证据 → 降级通过`，`pass_kind=degraded`、`replan=1`；记录里的 `search.retry_query` 与首轮 query 不同（`… 补充资料 最新进展 lang:zh`），证明补检索没有撞同一份磁盘缓存。
+3. **故障注入不引发死循环**：E6 前 3 次 LLM 调用强制失败，24 次运行全部收敛（4/4 通过），`llm_calls=5`、`replan=0` —— 检索侧的 fail-safe（判裁判异常时保留结果）+ 反思侧 `llm_fail_count` 熔断共同兜住了故障。
+4. **反思是有成本的**：同一批主题，E1（关反思）平均 35.0 s，E3（全默认）67.7 s，差值即裁判 LLM 的代价；E2（关确定性门控、关两条规则）反而最慢（119.0 s），因为语义裁判单独承担全部判定、且缺少规则前置否决。
+
+> **诚实的局限**：本批 4 个主题的回答恰好都带【来源】，所以 E2 与 E3 的合格率没有拉开差距 —— 要量化"纯 LLM 反思的误判率"，需要补"无引用 / 过短 / 编造 URL"的专项样本（这类样本已在 `tests/test_reflection_gate.py` 用 C1~C3 固化为离线用例）。另外 E1 的 `cited_count` 为 `-`（关闭反思后不做门控，故不产生该字段），这是设计使然，不是缺数据。
+
+**复现**
+
+```powershell
+python experiments/run_matrix.py          # E1~E6 × 4 主题，写入 data/runs_v2/<组>/
+python experiments/build_v2_table.py      # 重新生成 docs/实验记录-v2.md
+```
+
+---
+
 ##  复现注意事项与已知限制
 
 1. **缓存会掩盖网络差异**：`data/search_cache/` 的键是 `provider` / `query` / `count` / `need_content` 四元组的 sha1（用查询串而非主题），改主题、改 `SEARCH_COUNT` 或换 provider 都会重新联网；想复现“首调”耗时请先删该目录。
@@ -374,3 +423,5 @@ $env:SEARCH_PROVIDER='bing'; python main.py "生物细胞的结构"
 4. **耗时与成本**：单次运行固定消耗 1 次 GLM 语义过滤 + 1 次 GLM 质量判定 + 1 次生成调用，30~90 s 属正常区间（exp4~exp7 实测 40.7 / 59.2 / 40.9 / 88.3 s）。
 5. **环境**：Windows + Python 3.11.5 实测；依赖版本锁在 `requirements.txt`（langgraph 0.3.34 / langchain-openai 0.1.25 / openai 1.109.1 / python-dotenv 1.2.4 / requests 2.34.2）。
 6. **控制台编码**：日志以 UTF-8 写入 `logs/`，终端若为 GBK 可能显示乱码，但日志文件本身不受影响。
+7. **v2 与 v1 不可混表**：v2 记录一律落在 `data/runs_v2/<实验组>/`（按 `EXP_GROUP` 分目录，JSON 的 `config` 段自带全部判定开关）；`data/runs/` 的 20 份属于 v1 判定语义，统计时必须分开出表。
+8. **实验开关在 import 时求值**：`config.py` 的模块级常量在进程启动时读取环境变量，因此**改开关必须重开进程**（`experiments/run_matrix.py` 为每次运行单独起进程，天然满足）；同一进程内切换开关需要 `mock.patch.object`，仅测试用。

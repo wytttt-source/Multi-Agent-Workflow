@@ -1,0 +1,65 @@
+# 运行日志（自动生成，可直接作为论文附录引用）
+- 主题：量子计算和经典计算的区别
+- 开始时间：2026-11-05T08:30:03.887509+00:00
+- 命令行：main.py 量子计算和经典计算的区别
+- 环境：Python 3.11.5 / Windows
+- 检索：provider=deepseek count=6 need_content=True
+- 模型：generator=deepseek-flash critic=glm-5.3-flash
+----------------------------------------------------------------
+
+=== 开始运行工作流，当前主题：量子计算和经典计算的区别 ===
+
+【规划节点】拆解任务...
+【执行节点】开始执行任务...
+  -> [执行] 检测到复合主题，第一轮整体检索（清洗后：'量子计算和经典计算的区别'），不自动拆解
+  -> [执行] 检索：量子计算和经典计算的区别
+  -> [检索] 主查询 '量子计算和经典计算的区别 lang:zh'（provider=deepseek）
+  -> [缓存] 命中磁盘缓存（6 条）
+  -> [检索] 原始结果：6 条
+  -> [过滤-去重] 同站同页：什么是量子计算？ - Azure Quantum
+  -> [过滤] 结构化信号过滤后：5 条
+  -> [过滤-LLM] 保留 5/5 条
+  -> [证据] 装配 5 条，共 8708 字
+  -> [归档] data\evidence\量子计算和经典计算的区别-20261105-163017.md
+  -> [检索] 完成，耗时 13.10s
+  -> [执行] 证据统计：检索 5 条 / 5 个链接 / 装配 8740 字（平均摘要 1393 字，平均正文 3164 字，provider=deepseek）
+【反思节点】正在真实检查结果质量...
+  -> [反思] 证据 5 条；需覆盖对象 ['量子计算', '经典计算']；已覆盖 ['量子计算', '经典计算']；未覆盖 ['无']；覆盖率 100%
+  -> LLM 判定结果: 通过, 理由: 回答直接围绕主题展开，从信息表示（经典比特vs量子比特叠加态）、计算原理（量子并行、指数级加速）和适用范围（仅对特定问题有优势）三个层面准确对比了量子计算与经典计算的区别，内容具体且无偏题。来源列表同时覆盖'量子计算'与'经典计算'两个比较对象（如《量子计算和普通算数有什么区别？》《所以经典计算机不可能比量子计算机强大》等），检索证据统计显示覆盖率100%，证据完整，无需重新拆解任务。
+
+========================================
+=== 最终执行结果 ===
+经典计算用经典比特，每比特只能为0或1；量子计算用量子比特，可同时处于0和1的叠加态，并利用量子并行处理多种可能组合，在某些问题上实现指数级加速。经典计算机模拟量子系统时，状态数随粒子数指数增长，存储需求迅速膨胀；量子计算机可用较少量子比特描述同一系统。可见，二者在信息表示和计算原理上根本不同，量子计算并非所有任务都更快，而是对特定问题更具优势。
+
+【来源】量子计算：打开未知领域的魔幻之门，https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568；什么是量子计算？ - Azure Quantum，https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1；量子计算和普通算数有什么区别？，https://www.kepuchina.cn/article/articleinfo?ar_id=544732&business_type=100&classify=0
+
+=== 引用来源 ===
+- 所以经典计算机不可能比量子计算机强大
+  https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27
+- 什么是量子计算？ - Azure Quantum - 跳至主要内容 跳到 Ask Learn 聊天体验
+  https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1
+- 量子计算：打开未知领域的魔幻之门
+  https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568
+- 什麼是量子運算？ - Azure Quantum
+  https://learn.microsoft.com/zh-tw/azure/quantum/overview-understanding-quantum-computing#1
+- 量子计算和普通算数有什么区别？
+  https://www.kepuchina.cn/article/articleinfo?ar_id=544732&business_type=100&classify=0
+
+=== 检索证据：5 条（原始响应见 data/search_cache/）===
+1. [deepseek/rerank=2.10] 所以经典计算机不可能比量子计算机强大
+   https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27
+2. [deepseek/rerank=2.09] 什么是量子计算？ - Azure Quantum - 跳至主要内容 跳到 Ask Learn 聊天体
+   https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1
+3. [deepseek/rerank=2.09] 量子计算：打开未知领域的魔幻之门
+   https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568
+4. [deepseek/rerank=2.07] 什麼是量子運算？ - Azure Quantum
+   https://learn.microsoft.com/zh-tw/azure/quantum/overview-understanding-quantum-computing#1
+5. [deepseek/rerank=2.07] 量子计算和普通算数有什么区别？
+   https://www.kepuchina.cn/article/articleinfo?ar_id=544732&business_type=100&classify=0
+
+总共进行了 0 次重规划
+  -> [记录] data\runs\量子计算和经典计算的区别-20261105-163044.json
+  -> [日志] logs\量子计算和经典计算的区别-20261105-163003.log（完整终端输出，可直接作为论文附录）
+
+----------------------------------------------------------------
+# 结束时间：2026-11-05T08:30:44.599899+00:00

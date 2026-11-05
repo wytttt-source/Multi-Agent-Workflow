@@ -1,0 +1,60 @@
+# 运行日志（自动生成，可直接作为论文附录引用）
+- 主题：生物细胞的结构
+- 开始时间：2026-11-05T08:31:31.194929+00:00
+- 命令行：main.py 生物细胞的结构
+- 环境：Python 3.11.5 / Windows
+- 检索：provider=deepseek count=6 need_content=True
+- 模型：generator=deepseek-flash critic=glm-5.3-flash
+----------------------------------------------------------------
+
+=== 开始运行工作流，当前主题：生物细胞的结构 ===
+
+【规划节点】拆解任务...
+【执行节点】开始执行任务...
+  -> [执行] 检索：生物细胞的结构
+  -> [检索] 主查询 '生物细胞的结构 lang:zh'（provider=deepseek）
+  -> [缓存] 命中磁盘缓存（6 条）
+  -> [检索] 原始结果：6 条
+  -> [过滤-去重] 同站同页：全屏显示 专题 章节
+  -> [过滤] 结构化信号过滤后：5 条
+  -> [过滤-LLM] 剔除低相关：生物分子组织-伯远生物
+  -> [过滤-LLM] 保留 4/5 条
+  -> [证据] 装配 4 条，共 6967 字
+  -> [归档] data\evidence\生物细胞的结构-20261105-163149.md
+  -> [检索] 完成，耗时 18.75s
+  -> [执行] 证据统计：检索 4 条 / 4 个链接 / 装配 6992 字（平均摘要 1374 字，平均正文 2480 字，provider=deepseek）
+【反思节点】正在真实检查结果质量...
+  -> [反思] 证据 4 条（单主题，无需比较对象覆盖率检查）
+  -> LLM 判定结果: 通过, 理由: 回答紧扣'生物细胞的结构'主题，系统覆盖了真核细胞三大基本结构（细胞膜、细胞质、细胞核）、细胞壁、细胞膜的选择透过性、主要细胞器及其功能，以及原核细胞的类核特征，内容具体、完整、无偏题。引用来源与实际检索来源基本一致，证据充足（4条），单主题无需拆解。
+
+========================================
+=== 最终执行结果 ===
+细胞是生命的基础。真核细胞主要由细胞膜、细胞质和细胞核构成，植物细胞和细菌还含细胞壁。细胞膜以磷脂双分子层为骨架，含蛋白质、糖类等，能控制物质进出并参与信息交流，具选择透过性。细胞质含线粒体、叶绿体、核糖体、溶酶体、高尔基体、液泡等细胞器，参与能量转换、蛋白质合成和物质分解等。原核细胞无膜包被的细胞核，遗传物质集中于类核。
+【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版，URL：https://m.koolearn.com/gaokao/20200225/1265003.html#1；真核細胞的構造（課本P.30-31），URL：https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1；1.2.1 细胞的结构，URL：https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=
+
+=== 引用来源 ===
+- 高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版
+  https://m.koolearn.com/gaokao/20200225/1265003.html#1
+- 真核細胞的構造（課本P.30-31）
+  https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1
+- 高三生物知识点：细胞的结构和功能
+  http://hf.xdf.cn/201510/148232962.html
+- 全屏显示 专题 章节
+  https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=
+
+=== 检索证据：4 条（原始响应见 data/search_cache/）===
+1. [deepseek/rerank=1.58] 高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版
+   https://m.koolearn.com/gaokao/20200225/1265003.html#1
+2. [deepseek/rerank=1.58] 真核細胞的構造（課本P.30-31）
+   https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1
+3. [deepseek/rerank=1.56] 高三生物知识点：细胞的结构和功能
+   http://hf.xdf.cn/201510/148232962.html
+4. [deepseek/rerank=1.55] 全屏显示 专题 章节
+   https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=
+
+总共进行了 0 次重规划
+  -> [记录] data\runs\生物细胞的结构-20261105-163212.json
+  -> [日志] logs\生物细胞的结构-20261105-163131.log（完整终端输出，可直接作为论文附录）
+
+----------------------------------------------------------------
+# 结束时间：2026-11-05T08:32:12.087481+00:00

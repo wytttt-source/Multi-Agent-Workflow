@@ -1,0 +1,67 @@
+# 运行日志（自动生成，可直接作为论文附录引用）
+- 主题：Python和Java的特点
+- 开始时间：2026-11-05T08:31:31.126937+00:00
+- 命令行：main.py Python和Java的特点
+- 环境：Python 3.11.5 / Windows
+- 检索：provider=deepseek count=6 need_content=True
+- 模型：generator=deepseek-flash critic=glm-5.3-flash
+----------------------------------------------------------------
+
+=== 开始运行工作流，当前主题：Python和Java的特点 ===
+
+【规划节点】拆解任务...
+【执行节点】开始执行任务...
+  -> [执行] 检测到复合主题，第一轮整体检索（清洗后：'Python和Java的特点'），不自动拆解
+  -> [执行] 检索：Python和Java的特点
+  -> [检索] 主查询 'Python和Java的特点 lang:zh'（provider=deepseek）
+  -> [缓存] 命中磁盘缓存（6 条）
+  -> [检索] 原始结果：6 条
+  -> [过滤] 结构化信号过滤后：6 条
+  -> [过滤-LLM] 保留 6/6 条
+  -> [证据] 装配 6 条，共 10340 字
+  -> [归档] data\evidence\Python和Java的特点-20261105-163204.md
+  -> [检索] 完成，耗时 32.88s
+  -> [执行] 证据统计：检索 6 条 / 6 个链接 / 装配 10376 字（平均摘要 1490 字，平均正文 1780 字，provider=deepseek）
+【反思节点】正在真实检查结果质量...
+  -> [反思] 证据 6 条；需覆盖对象 ['Python', 'Java']；已覆盖 ['Python', 'Java']；未覆盖 ['无']；覆盖率 100%
+  -> LLM 判定结果: 通过, 理由: 回答紧扣主题，分别概述了Python和Java的核心特点（语法、类型系统、执行方式、适用场景及优缺点），内容具体完整；引用来源与实际检索来源一致，检索到6条证据且同时覆盖Python和Java两个比较对象，覆盖率达100%，无需拆解任务。
+
+========================================
+=== 最终执行结果 ===
+Python与Java特点各异。Python语法简洁清晰，接近可执行伪代码，支持动态类型、解释执行和多范式，开发效率高，适合脚本、数据处理、人工智能与快速原型开发，但执行性能相对较弱。Java是静态类型、面向对象语言，程序编译为字节码后由JVM运行，跨平台能力较强，健壮安全、生态丰富，适合企业级和大型项目，但代码相对冗长，学习曲线较陡。两者宜按场景选用。
+【来源】《中科院计算所培训中心》http://mp.weixin.qq.com/s?__biz=MjM5Mzc2NjczMQ==&mid=2651867426&idx=2&sn=eac27fa776ceed69d70343ac263860dc；《6月语言榜：Java与Python的技术博弈与选型指南》https://cloud.baidu.com/article/5530829#1；《python和Java的区别以及特性》https://developer.aliyun.com/article/1608748#1
+
+=== 引用来源 ===
+- 中科院计算所培训中心
+  http://mp.weixin.qq.com/s?__biz=MjM5Mzc2NjczMQ==&mid=2651867426&idx=2&sn=eac27fa776ceed69d70343ac263860dc
+- 6月语言榜：Java与Python的技术博弈与选型指南
+  https://cloud.baidu.com/article/5530829#1
+- python和Java的区别以及特性
+  https://developer.aliyun.com/article/1608748#1
+- Java与Python：你应该选择哪个？
+  华为开发者问答 | https://developer.huawei.com/consumer/cn/forum/topic/0201119758674250182?fid=23
+- Java和python哪个好，学哪个有用。
+  https://developer.aliyun.com/article/1239451
+- 分享｜c、java、python三种语言的区别以及优缺点 - 讨论 - 力扣（LeetCode）
+  https://leetcode.cn/discuss/post/oFCjec/
+
+=== 检索证据：6 条（原始响应见 data/search_cache/）===
+1. [deepseek/rerank=1.80] 中科院计算所培训中心
+   http://mp.weixin.qq.com/s?__biz=MjM5Mzc2NjczMQ==&mid=2651867426&idx=2&sn=eac27fa776ceed69d70343ac263860dc
+2. [deepseek/rerank=1.79] 6月语言榜：Java与Python的技术博弈与选型指南
+   https://cloud.baidu.com/article/5530829#1
+3. [deepseek/rerank=1.77] python和Java的区别以及特性
+   https://developer.aliyun.com/article/1608748#1
+4. [deepseek/rerank=1.75] Java与Python：你应该选择哪个？ | 华为开发者问答
+   https://developer.huawei.com/consumer/cn/forum/topic/0201119758674250182?fid=23
+5. [deepseek/rerank=1.73] Java和python哪个好，学哪个有用。
+   https://developer.aliyun.com/article/1239451
+6. [deepseek/rerank=1.73] 分享｜c、java、python三种语言的区别以及优缺点 - 讨论 - 力扣（LeetCode）
+   https://leetcode.cn/discuss/post/oFCjec/
+
+总共进行了 0 次重规划
+  -> [记录] data\runs\Python和Java的特点-20261105-163230.json
+  -> [日志] logs\Python和Java的特点-20261105-163131.log（完整终端输出，可直接作为论文附录）
+
+----------------------------------------------------------------
+# 结束时间：2026-11-05T08:32:30.367122+00:00

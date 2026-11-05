@@ -1,0 +1,42 @@
+name: tests
+
+# 离线单元测试：不调用任何真实 LLM / 检索 API，可在无 Key、无网络的环境复现。
+# 论文附录里的"26 条离线用例全部通过"即由本工作流给出。
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run offline unit tests
+        env:
+          # 单测全程 mock，不发出真实请求；占位值只为满足客户端初始化
+          DEEPSEEK_API_KEY: dummy
+          GLM_API_KEY: dummy
+          OPENAI_API_KEY: dummy
+          ENABLE_REFLECTION: "1"
+          ENABLE_COVERAGE_RULE: "1"
+          ENABLE_REPEAT_RULE: "1"
+        run: python -m unittest discover -s tests -v

@@ -1,0 +1,89 @@
+{
+  "topic": "量子计算和经典计算的区别",
+  "group": "E1",
+  "ts": "2026-11-05T13:55:32.588775+00:00",
+  "elapsed_seconds": 21.65,
+  "config": {
+    "group": "E1",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term"
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "量子计算和经典计算的区别",
+        "query": "量子计算和经典计算的区别 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8716,
+        "sources": 5,
+        "avg_summary": 1392.8,
+        "avg_content": 3163.6,
+        "providers": [
+          "deepseek"
+        ],
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 14.53,
+        "evidence_path": "data\\evidence\\量子计算和经典计算的区别-20261105-215525.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8740,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "elapsed_s": 14.53,
+    "evidence_path": "data\\evidence\\量子计算和经典计算的区别-20261105-215525.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 501,
+    "pass_kind": "strict"
+  },
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "所以经典计算机不可能比量子计算机强大 | https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27",
+    "什么是量子计算？ - Azure Quantum - 跳至主要内容 跳到 Ask Learn 聊天体验 | https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1",
+    "量子计算：打开未知领域的魔幻之门 | https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568",
+    "什麼是量子運算？ - Azure Quantum | https://learn.microsoft.com/zh-tw/azure/quantum/overview-understanding-quantum-computing#1",
+    "量子计算和普通算数有什么区别？ | https://www.kepuchina.cn/article/articleinfo?ar_id=544732&business_type=100&classify=0"
+  ],
+  "result": "量子计算与经典计算的根本区别在信息单元和计算原理。经典比特只能为0或1，经典计算按确定状态逐步处理；量子比特可处于0与1的叠加态，并借助量子并行、纠缠和干涉同时处理多种可能。量子态随规模呈指数增长：描述40个位置的量子系统需\\(2^{40}\\)个状态，经典存储需求巨大，而40个量子比特即可描述。因此量子计算在模拟量子系统、因数分解等问题上可能指数级加速；但真正超越经典的量子线路至少需包含叠加量子门，否则实质仍属经典可逆计算。\n\n【来源】量子计算：打开未知领域的魔幻之门，https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568；什么是量子计算？ - Azure Quantum，https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1；所以经典计算机不可能比量子计算机强大，https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27",
+  "artifacts": {
+    "log": "logs\\量子计算和经典计算的区别-20261105-215510.log",
+    "evidence": "data\\evidence\\量子计算和经典计算的区别-20261105-215525.md"
+  }
+}

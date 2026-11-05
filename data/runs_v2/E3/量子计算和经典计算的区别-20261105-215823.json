@@ -1,0 +1,113 @@
+{
+  "topic": "量子计算和经典计算的区别",
+  "group": "E3",
+  "ts": "2026-11-05T13:58:23.916126+00:00",
+  "elapsed_seconds": 68.89,
+  "config": {
+    "group": "E3",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term"
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "量子计算和经典计算的区别",
+        "query": "量子计算和经典计算的区别 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8716,
+        "sources": 5,
+        "avg_summary": 1392.8,
+        "avg_content": 3163.6,
+        "providers": [
+          "deepseek"
+        ],
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 18.0,
+        "evidence_path": "data\\evidence\\量子计算和经典计算的区别-20261105-215733.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8740,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "elapsed_s": 18.0,
+    "evidence_path": "data\\evidence\\量子计算和经典计算的区别-20261105-215733.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "量子计算",
+        "经典计算"
+      ],
+      "hit": [
+        "量子计算",
+        "经典计算"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "count": 5,
+      "per_term_counts": {
+        "量子计算": 4,
+        "经典计算": 4
+      },
+      "balance": 0.8
+    },
+    "verdict": "通过",
+    "reason": "回答直接围绕量子计算与经典计算的区别展开，两个比较对象均有实质展开（经典比特0/1逐个处理 vs 量子比特叠加/纠缠/干涉并行、指数态难以经典模拟 vs 量子指数加速），非偏题非上位概念；证据5条，覆盖率100%，'量子计算'与'经典计算'均已覆盖；balance=0.80且偏侧检测两侧各4条提及均衡，弱侧有实质内容；【来源】中的两个URL（科普中国、Azure Quantum）均可在实际检索来源清单中核验；回答字数约124字，满足≥120要求。三条通过条件①②③同时满足，硬性否决规则均未触发。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 3,
+    "evidence_count": 5,
+    "result_chars": 324,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 0.667,
+    "len_ok": true,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail"
+    ]
+  },
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "所以经典计算机不可能比量子计算机强大 | https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27",
+    "什么是量子计算？ - Azure Quantum - 跳至主要内容 跳到 Ask Learn 聊天体验 | https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1",
+    "量子计算：打开未知领域的魔幻之门 | https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568",
+    "什麼是量子運算？ - Azure Quantum | https://learn.microsoft.com/zh-tw/azure/quantum/overview-understanding-quantum-computing#1",
+    "量子计算和普通算数有什么区别？ | https://www.kepuchina.cn/article/articleinfo?ar_id=544732&business_type=100&classify=0"
+  ],
+  "result": "经典计算使用经典比特，每比特只能为0或1，通常逐个处理状态；量子计算使用量子比特，可同时处于0和1的叠加态，并借助纠缠、干涉等特性并行处理多种可能状态。量子态随规模增长呈指数增加，经典计算机难以完整存储和模拟；量子计算在某些问题上可实现指数级加速。\n\n【来源】《量子计算：打开未知领域的魔幻之门》https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568；《什么是量子计算？ - Azure Quantum》https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1",
+  "artifacts": {
+    "log": "logs\\量子计算和经典计算的区别-20261105-215715.log",
+    "evidence": "data\\evidence\\量子计算和经典计算的区别-20261105-215733.md"
+  }
+}

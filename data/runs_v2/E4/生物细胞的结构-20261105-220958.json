@@ -1,0 +1,96 @@
+{
+  "topic": "生物细胞的结构",
+  "group": "E4",
+  "ts": "2026-11-05T14:09:58.295453+00:00",
+  "elapsed_seconds": 50.44,
+  "config": {
+    "group": "E4",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": false,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term"
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "生物细胞的结构",
+        "query": "生物细胞的结构 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8681,
+        "sources": 5,
+        "avg_summary": 1404.2,
+        "avg_content": 2637.8,
+        "providers": [
+          "deepseek"
+        ],
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 7.55,
+        "evidence_path": "data\\evidence\\生物细胞的结构-20261105-220915.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8700,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "elapsed_s": 7.55,
+    "evidence_path": "data\\evidence\\生物细胞的结构-20261105-220915.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "回答紧扣主题'生物细胞的结构'，依次说明细胞膜、细胞质、细胞核、细胞器（线粒体、叶绿体）及原核与真核细胞的区分，内容具体且科学准确，无偏题；字数约150字，满足≥120要求；含【来源】且所列3个URL均能在实际检索来源清单中找到，来源可核验；证据条数5条≥1。三条通过条件同时满足，且无 balance 偏侧或覆盖率问题（覆盖率规则已关闭）。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 3,
+    "evidence_count": 5,
+    "result_chars": 531,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "len_ok": true,
+    "cited_loose": [
+      "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail"
+    ]
+  },
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+    "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+    "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+    "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+    "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+  ],
+  "result": "生物细胞的基本结构包括细胞膜、细胞质和细胞核；植物细胞和细菌还含细胞壁。细胞膜由磷脂、蛋白质等组成，能控制物质进出，具有选择透过性。细胞质含多种细胞器：线粒体通过呼吸作用产生ATP，叶绿体是绿色植物和藻类细胞光合作用的场所。根据有无核膜，细胞分原核细胞和真核细胞；原核细胞无膜包被的细胞核，细胞器只有核糖体。\n\n【来源】《真核細胞的構造（課本P.30-31）》：https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1；《高三生物知识点：细胞的结构和功能》：http://hf.xdf.cn/201510/148232962.html；《全屏显示 专题 章节》：https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+  "artifacts": {
+    "log": "logs\\生物细胞的结构-20261105-220907.log",
+    "evidence": "data\\evidence\\生物细胞的结构-20261105-220915.md"
+  }
+}

@@ -4,7 +4,7 @@
 - logs/<主题>-<时间戳>.log       : 全链路控制台输出（Tee 双写，终端观感不变）
 - data/runs/<主题>-<时间戳>.json : 结构化运行记录（论文表格里的数字唯一来源）
 
-两者默认不入库（见 .gitignore）；需要作为论文附录的精选日志请拷到 experiments/ 下。
+两者默认不入库（见 .gitignore）；需要作为附录的精选日志请拷到 experiments/ 下。
 """
 import json
 import os

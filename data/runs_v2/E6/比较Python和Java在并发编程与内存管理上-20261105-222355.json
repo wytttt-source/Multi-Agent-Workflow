@@ -1,0 +1,114 @@
+{
+  "topic": "比较Python和Java在并发编程与内存管理上的差异",
+  "group": "E6",
+  "ts": "2026-11-05T14:23:55.603454+00:00",
+  "elapsed_seconds": 32.68,
+  "config": {
+    "group": "E6",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 3,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term"
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Python和Java在并发编程与内存管理上的差异",
+        "query": "Python和Java在并发编程与内存管理上的差异 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10779,
+        "sources": 6,
+        "avg_summary": 1684.5,
+        "avg_content": 4759.0,
+        "providers": [
+          "deepseek"
+        ],
+        "cache": "memory",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.01,
+        "evidence_path": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-222322.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10816,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "memory"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "elapsed_s": 0.01,
+    "evidence_path": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-222322.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Python",
+        "Java"
+      ],
+      "hit": [
+        "Python",
+        "Java"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "count": 6,
+      "per_term_counts": {
+        "Python": 6,
+        "Java": 6
+      },
+      "balance": 1.0
+    },
+    "verdict": "通过",
+    "reason": "硬性规则全部满足：证据6条（≥1）、【来源】中的3个URL均可在实际检索来源清单中核验、回答字数约200字（≥120）。复合主题检查：来源同时覆盖Python与Java（如《Java与Python的技术博弈》《Python12与Java性能对比》），覆盖率100%，balance=1.00无偏侧。内容切题：并发方面对比了Java的java.util.concurrent/线程池/CompletableFuture与Python的GIL限制及multiprocessing/asyncio弥补方案，内存方面对比了JVM分代GC与Python引用计数+分代GC，两个子维度均有实质展开且技术表述准确。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 6,
+    "result_chars": 502,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "len_ok": true,
+    "cited_loose": [
+      "https://developer.baidu.com/article/detail.html"
+    ]
+  },
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "6月语言榜：Java与Python的技术博弈与选型指南 | https://cloud.baidu.com/article/5530829#1",
+    "运行时管理GO与Java的概要对比 - 67224 | https://developer.aliyun.com/article/1519588#1",
+    "java 与 python 的并发争论 | https://cloud.tencent.com.cn/developer/article/1073245?from=15425&frompage=seopage",
+    "Python12与Java性能对比：从底层到应用的深度解析 - Python12与Java性能对比：从底层到应用的深度解析 | https://developer.baidu.com/article/detail.html?id=3807683#1",
+    "为什么在C#中多线程快速排序比单线程慢 - 腾讯云开发者社区 - 在代码运行速度方面，Java、C、C++、C# 和 Python 要如何进行比较呢 | https://cloud.tencent.cn/developer/information/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%9C%A8C%23%E4%B8%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E6%AF%94%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%85%A2-article#1",
+    "《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL - 亚马逊云科技技术品牌专区 《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL | https://devpress.csdn.net/awstech/6a465815662f9a54cb882fd0.html#1"
+  ],
+  "result": "并发方面，Java以`java.util.concurrent`为核心，提供线程池、CompletableFuture等，多线程可利用多核；Python的CPython受GIL限制，多线程只能交替执行，难以用满多核，常用`multiprocessing`或`asyncio`弥补。内存方面，Java由JVM分代垃圾回收管理，策略复杂；Python采用引用计数为主、分代GC处理循环引用，动态类型对象开销通常更高。二者均自动管理内存，但并发模型和回收机制不同。\n【来源】《6月语言榜：Java与Python的技术博弈与选型指南》https://cloud.baidu.com/article/5530829#1；《运行时管理GO与Java的概要对比 - 67224》https://developer.aliyun.com/article/1519588#1；《Python12与Java性能对比：从底层到应用的深度解析 - Python12与Java性能对比：从底层到应用的深度解析》https://developer.baidu.com/article/detail.html?id=3807683#1",
+  "artifacts": {
+    "log": "logs\\比较Python和Java在并发编程与内存管理上-20261105-222322.log",
+    "evidence": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-222322.md"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "topic": "比较Python和Java在并发编程与内存管理上的差异",
+  "group": "E1",
+  "ts": "2026-11-05T13:57:02.890625+00:00",
+  "elapsed_seconds": 65.92,
+  "config": {
+    "group": "E1",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term"
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Python和Java在并发编程与内存管理上的差异",
+        "query": "Python和Java在并发编程与内存管理上的差异 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8846,
+        "sources": 5,
+        "avg_summary": 1652.8,
+        "avg_content": 4106.8,
+        "providers": [
+          "deepseek"
+        ],
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 53.56,
+        "evidence_path": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-215650.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 8883,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "elapsed_s": 53.56,
+    "evidence_path": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-215650.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 644,
+    "pass_kind": "strict"
+  },
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "6月语言榜：Java与Python的技术博弈与选型指南 | https://cloud.baidu.com/article/5530829#1",
+    "运行时管理GO与Java的概要对比 - 67224 | https://developer.aliyun.com/article/1519588#1",
+    "java 与 python 的并发争论 | https://cloud.tencent.com.cn/developer/article/1073245?from=15425&frompage=seopage",
+    "Python12与Java性能对比：从底层到应用的深度解析 - Python12与Java性能对比：从底层到应用的深度解析 | https://developer.baidu.com/article/detail.html?id=3807683#1",
+    "《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL - 亚马逊云科技技术品牌专区 《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL | https://devpress.csdn.net/awstech/6a465815662f9a54cb882fd0.html#1"
+  ],
+  "result": "并发上，Java依托JVM线程和`java.util.concurrent`包，可用线程池、CompletableFuture等较充分利用多核；Python受CPython的GIL限制，多线程主要交替执行，难以吃满多核，常以asyncio协程或多进程弥补。内存上，Java由JVM追踪式分代GC管理，G1/ZGC等可调但可能出现Stop-The-World停顿；Python以引用计数为主并辅以分代GC处理循环引用，对象开销较大、内存占用通常更高。\n【来源】《6月语言榜：Java与Python的技术博弈与选型指南》https://cloud.baidu.com/article/5530829#1；《运行时管理GO与Java的概要对比 - 67224》https://developer.aliyun.com/article/1519588#1；《java 与 python 的并发争论》https://cloud.tencent.com.cn/developer/article/1073245?from=15425&frompage=seopage；《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL https://devpress.csdn.net/awstech/6a465815662f9a54cb882fd0.html#1",
+  "artifacts": {
+    "log": "logs\\比较Python和Java在并发编程与内存管理上-20261105-215556.log",
+    "evidence": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-215650.md"
+  }
+}

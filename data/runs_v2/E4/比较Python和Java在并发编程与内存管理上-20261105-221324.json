@@ -1,0 +1,96 @@
+{
+  "topic": "比较Python和Java在并发编程与内存管理上的差异",
+  "group": "E4",
+  "ts": "2026-11-05T14:13:24.705531+00:00",
+  "elapsed_seconds": 202.05,
+  "config": {
+    "group": "E4",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": false,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term"
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Python和Java在并发编程与内存管理上的差异",
+        "query": "Python和Java在并发编程与内存管理上的差异 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8846,
+        "sources": 5,
+        "avg_summary": 1652.8,
+        "avg_content": 4106.8,
+        "providers": [
+          "deepseek"
+        ],
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 164.63,
+        "evidence_path": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-221247.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 8883,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "elapsed_s": 164.63,
+    "evidence_path": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-221247.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "证据5条（≥1），回答含【来源】且4个URL均可在实际检索来源清单中核验，无编造；字数超过120字；内容同时覆盖Python与Java两个比较对象，并分别从并发编程（GIL、multiprocessing、asyncio vs JVM线程、java.util.concurrent、CompletableFuture）和内存管理（引用计数+分代GC vs 分代追踪式GC如G1、Stop-The-World）两个维度展开，具体且切题，未出现偏侧或只覆盖单一对象的情况。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 3,
+    "evidence_count": 5,
+    "result_chars": 649,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "len_ok": true,
+    "cited_loose": [
+      "https://cloud.tencent.com.cn/developer/article/1073245"
+    ]
+  },
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "6月语言榜：Java与Python的技术博弈与选型指南 | https://cloud.baidu.com/article/5530829#1",
+    "运行时管理GO与Java的概要对比 - 67224 | https://developer.aliyun.com/article/1519588#1",
+    "java 与 python 的并发争论 | https://cloud.tencent.com.cn/developer/article/1073245?from=15425&frompage=seopage",
+    "Python12与Java性能对比：从底层到应用的深度解析 - Python12与Java性能对比：从底层到应用的深度解析 | https://developer.baidu.com/article/detail.html?id=3807683#1",
+    "《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL - 亚马逊云科技技术品牌专区 《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL | https://devpress.csdn.net/awstech/6a465815662f9a54cb882fd0.html#1"
+  ],
+  "result": "Python（CPython）受GIL限制，多线程需交替执行，难以充分利用多核，常借助multiprocessing多进程或asyncio协程实现并发；Java通过JVM线程及java.util.concurrent包提供线程池、CompletableFuture等，可发挥多核优势。内存管理上，Python以引用计数为主，辅以分代GC处理循环引用；Java依赖JVM分代追踪式垃圾回收（如G1），自动回收但高并发下可能出现Stop-The-World停顿。【来源】《java 与 python 的并发争论》https://cloud.tencent.com.cn/developer/article/1073245?from=15425&frompage=seopage；《运行时管理GO与Java的概要对比 - 67224》https://developer.aliyun.com/article/1519588#1；《6月语言榜：Java与Python的技术博弈与选型指南》https://cloud.baidu.com/article/5530829#1；《《多语言高并发巅峰对决：Python vs Java vs C++ 10万级QPS架构决策完全指南》第3章 内存模型与GC修罗场：Java的停顿时钟 vs C++的RAII vs Python的GIL》https://devpress.csdn.net/awstech/6a465815662f9a54cb882fd0.html#1",
+  "artifacts": {
+    "log": "logs\\比较Python和Java在并发编程与内存管理上-20261105-221002.log",
+    "evidence": "data\\evidence\\Python和Java在并发编程与内存管理上的差-20261105-221247.md"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "topic": "比较Zig和Nim在内存安全与编译期检查上的差异",
+  "group": "E6",
+  "ts": "2026-11-05T14:22:33.124079+00:00",
+  "elapsed_seconds": 37.03,
+  "config": {
+    "group": "E6",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 3,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term"
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Zig和Nim在内存安全与编译期检查上的差异",
+        "query": "Zig和Nim在内存安全与编译期检查上的差异 lang:zh",
+        "raw": 6,
+        "gated": 2,
+        "filtered": 2,
+        "evidence_chars": 3457,
+        "sources": 2,
+        "avg_summary": 1585.0,
+        "avg_content": 12690.5,
+        "providers": [
+          "deepseek"
+        ],
+        "cache": "memory",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.01,
+        "evidence_path": "data\\evidence\\Zig和Nim在内存安全与编译期检查上的差异-20261105-222156.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 2,
+    "filtered": 2,
+    "evidence_chars": 3491,
+    "sources": 2,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "memory"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "elapsed_s": 0.01,
+    "evidence_path": "data\\evidence\\Zig和Nim在内存安全与编译期检查上的差异-20261105-222156.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Zig",
+        "Nim"
+      ],
+      "hit": [
+        "Zig",
+        "Nim"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "count": 2,
+      "per_term_counts": {
+        "Zig": 2,
+        "Nim": 2
+      },
+      "balance": 1.0
+    },
+    "verdict": "通过",
+    "reason": "证据2条且同时覆盖Zig与Nim（覆盖率100%，balance=1.00，无偏侧），【来源】中的两个URL均可在实际检索来源清单中核验；回答字数超过120字，且直接围绕主题从内存安全（Zig手动+可选ARC、零堆分配 vs Nim默认GC+可选ARC）和编译期能力（Zig编译期确定性与类型安全 vs Nim宏系统AST元编程）两个维度展开对比，两侧均有实质内容，无偏题或空泛描述，符合通过的全部条件。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 2,
+    "result_chars": 368,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "len_ok": true,
+    "cited_loose": []
+  },
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Rust、Zig与Nim实战评估（Go替代语言终极红蓝对抗报告） | https://datasea.cn/go0216491259.html#1#1",
+    "Rust、Zig、Nim、V、Carbon——Go系语言竞速榜TOP5深度横评（编译速度/内存安全/并发模型实测） | https://datasea.cn/go0214487463.html#1#1"
+  ],
+  "result": "Zig与Nim的内存安全路径不同：资料称Zig采用“手动+可选ARC（运行时）”，强调编译期常量计算、显式错误处理和类型安全编译期确定，可在解析场景实现零堆分配；Nim默认使用垃圾回收，也支持手动/ARC，内存管理更依赖GC运行时，其编译期能力突出体现在宏系统，通过AST操作生成代码，偏向元编程。总体看，Zig强调编译期可确定性与手动可控，Nim强调GC便利与宏元编程。\n\n【来源】《Rust、Zig与Nim实战评估（Go替代语言终极红蓝对抗报告）》 https://datasea.cn/go0216491259.html#1#1；《Rust、Zig、Nim、V、Carbon——Go系语言竞速榜TOP5深度横评（编译速度/内存安全/并发模型实测）》 https://datasea.cn/go0214487463.html#1#1",
+  "artifacts": {
+    "log": "logs\\比较Zig和Nim在内存安全与编译期检查上的差异-20261105-222156.log",
+    "evidence": "data\\evidence\\Zig和Nim在内存安全与编译期检查上的差异-20261105-222156.md"
+  }
+}

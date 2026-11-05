@@ -1,5 +1,6 @@
 #报错与容错、缓存
 import time
+import re
 
 # ================= 3. LLM 调用容错 =================
 class LLMInfraError(Exception):
@@ -9,6 +10,15 @@ class LLMParseError(Exception):
     pass
 
 _SEARCH_CACHE: dict = {}
+
+# LLM 基础设施故障识别：openai SDK 的超时文案是 "Request timed out."，
+# 只匹配 "timeout" 会漏判，这里同时看关键字与异常类名。
+_INFRA_KEYWORDS = (
+    "503", "502", "500", "429", "Service is too busy", "service_unavailable",
+    "timeout", "Timeout", "timed out", "Connection", "connection",
+    "rate limit", "RateLimit", "overloaded", "temporarily",
+)
+_INFRA_ERROR_NAMES = ("Timeout", "Connection", "RateLimit", "Overloaded")
 
 def safe_llm_invoke(prompt: str, use_critic: bool = False, retries: int = 2, backoff: float = 3.0) -> str:
     from config import llm_critic, llm_generator
@@ -21,10 +31,8 @@ def safe_llm_invoke(prompt: str, use_critic: bool = False, retries: int = 2, bac
             return response.content
         except Exception as e:
             msg = str(e)
-            is_infra = any(k in msg for k in [
-                "503", "429", "Service is too busy", "service_unavailable",
-                "timeout", "Timeout", "Connection", "rate limit", "RateLimit"
-            ])
+            is_infra = (any(k in msg for k in _INFRA_KEYWORDS)
+                        or any(k in type(e).__name__ for k in _INFRA_ERROR_NAMES))
             if is_infra:
                 last_err = e
                 if attempt < retries:
@@ -36,3 +44,75 @@ def safe_llm_invoke(prompt: str, use_critic: bool = False, retries: int = 2, bac
             else:
                 raise
     raise LLMInfraError(f"LLM 调用失败: {last_err}")
+
+def _norm_url(url: str) -> str:
+    """URL 归一化：去锚点、去中文/英文尾随标点、统一大小写与结尾斜杠。
+
+    只用于"回答里引用的 URL 是否真的在检索来源里"的比对，
+    不改变展示用的原始 URL。
+    """
+    u = (url or "").strip()
+    u = u.split("#", 1)[0]
+    u = u.rstrip("。，；、,;:!?！？\"'”’）)】]}>").strip()
+    return u.rstrip("/").lower()
+
+
+_CITED_URL_RE = re.compile(r"https?://[^\s，。；、,;!?！？\"'”’）)】\]}>]+")
+
+
+def _verified_kind(url: str, source_urls: set) -> str:
+    """判断引用 URL 是否可核验：exact=完全一致，prefix=来源 URL 的截断写法。
+
+    实跑案例（2026-11-05，`生物细胞的结构`）：模型把
+    `https://mooc1.chaoxing.com/.../visitnodedetail?courseId=200901994&knowledgeId=...`
+    截断成 `.../visitnodedetail` 后引用 —— 精确匹配会误判为"编造来源"，
+    从而把一条真实可核验的回答判成 `内容不合格` 并触发一次无谓重规划。
+    因此允许"来源 URL 去 query 后的前缀"，但必须在路径边界处截断，防止
+    `https://a.com/x` 蒙成 `https://a.com/xyz`。
+    """
+    if url in source_urls:
+        return "exact"
+    # 只写域名根（如 https://a.com）不算"引用某条来源"，避免用首页糊弄过去
+    if "/" not in url.split("://", 1)[-1]:
+        return ""
+    for s in source_urls:
+        if s.startswith(url) and len(s) > len(url) and s[len(url)] in "?/":
+            return "prefix"
+    return ""
+
+
+def content_gate(result: str, sources: list, evidence: list,
+                 min_chars: int = None) -> dict:
+    """确定性门控：把"回答是否满足可判通过的最低条件"变成可复现的事实清单。
+
+    只报事实，不做判定（判定见 agents._apply_pass_gate），便于单测与论文复算。
+    """
+    from config import PASS_MIN_CHARS
+    text = (result or "").strip()
+    limit = PASS_MIN_CHARS if min_chars is None else min_chars
+
+    cited = _CITED_URL_RE.findall(text)
+    source_urls = set()
+    for s in sources or []:
+        if " | " in s:
+            source_urls.add(_norm_url(s.split(" | ", 1)[1]))
+    fabricated = [u for u in cited if not _verified_kind(_norm_url(u), source_urls)]
+    verified = {u for u in (_norm_url(x) for x in cited)
+                if _verified_kind(u, source_urls) == "exact"}
+    loose = {u for u in (_norm_url(x) for x in cited)
+             if _verified_kind(u, source_urls) == "prefix"}
+    # 引用率分母取"可用来源数，上限 3"：检索给了 6 条但只引用 3 条不算违规
+    denom = max(1, min(len(source_urls), 3))
+
+    return {
+        "len_ok": len(text) >= limit,
+        "len_limit": limit,
+        "has_source_line": "【来源】" in text,
+        "no_fabricated_url": len(fabricated) == 0,
+        "evidence_nonempty": bool(evidence),
+        "fabricated_urls": fabricated[:3],
+        "cited_count": len(verified) + len(loose),
+        "cited_loose": sorted(loose)[:3],
+        "citation_ratio": round((len(verified) + len(loose)) / denom, 3),
+    }
+

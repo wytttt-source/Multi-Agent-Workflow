@@ -285,33 +285,37 @@ def evidence_coverage(topic: str, results: List[dict]) -> dict:
     """确定性信号：复合主题里的比较对象是否都出现在证据中（喂给反思节点做量化判断）。
 
     返回字段：
-    - terms / hit / missing / ratio：字面覆盖（term 是否在全文任何位置出现）
+    - terms / hit / missing / ratio：归一化字面覆盖（term 是否在全文任何位置出现）
     - per_term_counts：每个 term 在"标题 + 摘要前 300 字"里命中的证据条数
     - balance：最弱一侧命中条数 / 总条数，用于识别"偏侧"（字面覆盖 100% 但分布失衡）
     """
     core = _clean_for_coverage(topic)
     parts = [p.strip() for p in re.split(r"\s*(?:和|与|、|以及|对比|比较|vs|VS)\s*", core) if p.strip()]
-    terms = []
+    terms: List[str] = []
     for p in parts:
-        p = re.sub(r"(的)?(结构|组成|构成|原理|机制|区别|差异|对比|特点|特征|历史|发展|应用|用途|性能)$", "", p).strip()
-        if p:
-            terms.append(p)
+        t = _clean_term(p)
+        if t and t not in terms:
+            terms.append(t)
+    norm = {t: _norm_text(t) for t in terms}
 
-    # 字面覆盖：term 在全文任何位置出现即算命中
-    blob = " ".join(
+    # 字面覆盖：term 在全文任何位置出现即算命中（大小写/空白不敏感）
+    blob = _norm_text(" ".join(
         " ".join([r.get("title") or "", r.get("summary") or "",
                   r.get("snippet") or "", (r.get("content") or "")[:200]])
         for r in results
-    )
-    hit = [t for t in terms if t in blob]
-    missing = [t for t in terms if t not in blob]
+    ))
+    hit = [t for t in terms if norm[t] and norm[t] in blob]
+    missing = [t for t in terms if t not in hit]
     ratio = len(hit) / len(terms) if terms else 1.0
 
-    # 偏侧检测：只看标题（代表"这篇主体讲什么"），不看摘要/正文
+    # 偏侧检测（P1-3）：标题 + 摘要前 300 字联合统计。
+    # 只看标题会把"标题里没写对象名"的真实证据误判成偏侧。
     per_term_counts: dict = {}
     for t in terms:
-        n = sum(1 for r in results if t in (r.get("title") or ""))
-        per_term_counts[t] = n
+        per_term_counts[t] = sum(
+            1 for r in results
+            if norm[t] and norm[t] in _norm_text(
+                (r.get("title") or "") + " " + (r.get("summary") or "")[:300]))
     total = len(results) or 1
     weakest = min(per_term_counts.values()) if per_term_counts else total
     balance = round(weakest / total, 2)
@@ -322,6 +326,7 @@ def evidence_coverage(topic: str, results: List[dict]) -> dict:
         "per_term_counts": per_term_counts,
         "balance": balance,
     }
+
 
 def build_evidence(results: List[dict], max_chars: int = EVIDENCE_MAX_CHARS) -> Tuple[str, List[str]]:
     """第③层：装配证据块（长摘要 + 正文节选 + 可核验 URL），并返回来源清单。"""
@@ -379,15 +384,19 @@ def search_with_evidence(topic: str, query: str = "") -> Tuple[str, List[str], L
     print(f"  -> [检索] 主查询 '{query}'（provider={SEARCH_PROVIDER}）")
 
     results: List[dict] = []
+    # P1-4：只有"真的没联网"或"真的联了网"才写对应值；空缓存不得冒充 disk
     cache_source = "network"
     if SEARCH_PROVIDER == "deepseek":
         if ENABLE_SEARCH_CACHE:
             cached = search_store.load_raw(query, "deepseek", SEARCH_COUNT, SEARCH_NEED_CONTENT)
-            if cached is not None:
+            if cached:
                 print(f"  -> [缓存] 命中磁盘缓存（{len(cached)} 条）")
                 results = cached
                 cache_source = "disk"
+            elif cached is not None:
+                print("  -> [缓存] 磁盘里只有空记录，忽略并重新联网检索")
         if not results:
+            cache_source = "network"
             try:
                 results = search_deepseek(query, ori_question=topic)
                 if results and ENABLE_SEARCH_CACHE:
@@ -399,6 +408,7 @@ def search_with_evidence(topic: str, query: str = "") -> Tuple[str, List[str], L
 
     if not results:
         results = search_bing_cn(query)
+        cache_source = "bing"
 
     if USE_QUERY_EXPANSION:
         expanded = expand_query(topic)
@@ -443,7 +453,8 @@ def search_with_evidence(topic: str, query: str = "") -> Tuple[str, List[str], L
         "avg_summary": round(sum(len(r.get("summary") or "") for r in results) / len(results), 1) if results else 0.0,
         "avg_content": round(sum(len(r.get("content") or "") for r in results) / len(results), 1) if results else 0.0,
         "providers": providers,
-        "cache": cache_source,
+        "cache": cache_source,          # memory / disk / network / bing
+        "cache_source": cache_source,   # P1-4：显式口径，论文统计只看这个字段
         "degraded": bool(SEARCH_PROVIDER == "deepseek" and "bing" in providers),
         "elapsed_s": round(elapsed, 2),
         "evidence_path": archive_path,
@@ -470,9 +481,38 @@ def _clean_composite_topic(topic: str) -> str:
     return re.sub(r"^(比较|对比|分析|简述)\s*", "", topic).strip()
 
 
+# ================= 覆盖率 term 清洗（P1-2） =================
+# 这些尾巴属于"论述框架"，不是"比较对象"，必须剥掉，否则 term 永远不可能字面命中。
+_TERM_TAIL_RE = re.compile(
+    r"(?:的)?(?:并发)?(?:性能|表现|优劣势|优缺点|区别|差异|对比|特点|特征|"
+    r"结构|组成|构成|原理|机制|历史|发展|应用|用途)$"
+)
+# "在…上的表现/性能/差异" 这类状语段（可能夹在 term 内部）
+_TERM_ADVERBIAL_RE = re.compile(
+    r"(?:在|于).+?(?:上|中|里)?的?(?:表现|性能|差异|区别|对比|比较|异同|优劣势|优缺点)$"
+)
+# 疑问尾巴："Go哪个更适合写后端" → "Go"
+_TERM_QUESTION_RE = re.compile(r"(?:哪个|哪些|如何|怎么|怎样|为什么|是什么|有哪些|谁|多少).*$")
+
+
+def _clean_term(part: str) -> str:
+    """把切出来的一侧清洗成"对象名"：去疑问尾巴 → 去状语段 → 去框架后缀。"""
+    t = _TERM_QUESTION_RE.sub("", part or "")
+    t = _TERM_ADVERBIAL_RE.sub("", t)
+    t = _TERM_TAIL_RE.sub("", t)
+    return t.strip().strip("的").strip()
+
+
+def _norm_text(text: str) -> str:
+    """命中判定用的归一化：去空白 + 小写（Python / python / Py thon 视为同一 term）。"""
+    return re.sub(r"\s+", "", text or "").lower()
+
+
 def _clean_for_coverage(topic: str) -> str:
-    """仅供 evidence_coverage 使用：剥掉'在...上的差异'结构，只留比较对象。
+    """仅供 evidence_coverage 使用：剥掉'在...上的差异'结构与疑问尾巴，只留比较对象。
     不要用于 executor_node 的检索词，否则会让 query 变短、召回下降。"""
-    t = re.sub(r"^(比较|对比|分析|简述)\s*", "", topic).strip()
-    t = re.sub(r"在.+?(?:上|中|里)?的?(?:差异|区别|对比|比较|异同)$", "", t).strip()
+    t = re.sub(r"^(比较|对比|分析|简述|说说|讲讲)\s*", "", (topic or "").strip())
+    t = re.sub(r"(?:在|于).+?(?:上|中|里)?的?(?:差异|区别|对比|比较|异同|表现|性能|优劣势|优缺点)$",
+               "", t).strip()
+    t = _TERM_QUESTION_RE.sub("", t).strip()
     return t

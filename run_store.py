@@ -15,7 +15,10 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from typing import Any, Dict
 
-from config import (GENERATOR_MODEL, RUN_LOG_DIR, RUN_RECORD_DIR,
+from config import (CRITIC_MODEL, DISABLE_CONTENT_GATE, ENABLE_COVERAGE_RULE,
+                    ENABLE_REFLECTION, ENABLE_REPEAT_RULE, EVIDENCE_TOP_K,
+                    EXP_GROUP, GENERATOR_MODEL, INJECT_LLM_FAIL, PASS_MIN_CHARS,
+                    PASS_MIN_CITED, RETRY_QUERY_MODE, RUN_LOG_DIR, RUN_RECORD_DIR,
                     SEARCH_COUNT, SEARCH_NEED_CONTENT, SEARCH_PROVIDER)
 
 
@@ -62,12 +65,16 @@ def _header(topic: str) -> str:
     return "\n".join([
         "# 运行日志（自动生成，可直接作为论文附录引用）",
         f"- 主题：{topic}",
+        f"- 实验组：{EXP_GROUP}",
         f"- 开始时间：{datetime.now(timezone.utc).isoformat()}",
         f"- 命令行：{' '.join(sys.argv)}",
         f"- 环境：Python {platform.python_version()} / {platform.system()}",
         f"- 检索：provider={SEARCH_PROVIDER} count={SEARCH_COUNT} "
         f"need_content={SEARCH_NEED_CONTENT}",
-        f"- 模型：generator={GENERATOR_MODEL} critic=glm-5.3-flash",
+        f"- 模型：generator={GENERATOR_MODEL} critic={CRITIC_MODEL}",
+        f"- 判定开关：reflection={ENABLE_REFLECTION} coverage_rule={ENABLE_COVERAGE_RULE} "
+        f"repeat_rule={ENABLE_REPEAT_RULE} disable_gate={DISABLE_CONTENT_GATE} "
+        f"inject_fail={INJECT_LLM_FAIL}",
         "-" * 64,
         "",
     ])
@@ -99,19 +106,34 @@ def run_log(topic: str):
 
 def save_run_record(topic: str, state: Dict[str, Any], log_path: str,
                     elapsed_s: float) -> str:
-    """把一次运行的配置、检索/反思统计与最终结果写成 JSON，供论文与 README 引用。"""
-    base = _abs(RUN_RECORD_DIR)
+    """把一次运行的配置、检索/反思统计与最终结果写成 JSON，供论文与 README 引用。
+
+    目录按实验组隔离：data/runs_v2/<E1..E6>/，避免不同判定口径的记录混在同一张表里。
+    """
+    base = os.path.join(_abs(RUN_RECORD_DIR), _slug(EXP_GROUP))
     os.makedirs(base, exist_ok=True)
     stats = state.get("run_stats") or {}
     record = {
         "topic": topic,
+        "group": EXP_GROUP,
         "ts": datetime.now(timezone.utc).isoformat(),
         "elapsed_seconds": round(elapsed_s, 2),
         "config": {
+            "group": EXP_GROUP,
             "search_provider": SEARCH_PROVIDER,
             "search_count": SEARCH_COUNT,
             "generator_model": GENERATOR_MODEL,
-            "critic_model": "glm-5.3-flash",
+            "critic_model": CRITIC_MODEL,
+            # 判定语义开关（E1~E6 的 A/B 变量）：读 JSON 即可复现这一组
+            "enable_reflection": ENABLE_REFLECTION,
+            "enable_coverage_rule": ENABLE_COVERAGE_RULE,
+            "enable_repeat_rule": ENABLE_REPEAT_RULE,
+            "disable_content_gate": DISABLE_CONTENT_GATE,
+            "inject_llm_fail": INJECT_LLM_FAIL,
+            "pass_min_cited": PASS_MIN_CITED,
+            "pass_min_chars": PASS_MIN_CHARS,
+            "evidence_top_k": EVIDENCE_TOP_K,
+            "retry_query_mode": RETRY_QUERY_MODE,
         },
         "search": stats.get("search", {}),
         "reflection": stats.get("reflection", {}),

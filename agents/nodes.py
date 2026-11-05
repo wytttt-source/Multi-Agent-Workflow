@@ -2,8 +2,11 @@
 import re
 import json
 
-from config import (State, PASS_MIN_CITED, PASS_MIN_CHARS, RETRY_QUERY_MODE)
-from utils import safe_llm_invoke, LLMInfraError, LLMParseError, content_gate
+from config import (State, PASS_MIN_CITED, PASS_MIN_CHARS, RETRY_QUERY_MODE,
+                    DISABLE_CONTENT_GATE, ENABLE_COVERAGE_RULE,
+                    ENABLE_REFLECTION, ENABLE_REPEAT_RULE)
+from utils import (safe_llm_invoke, LLMInfraError, LLMParseError, content_gate,
+                   llm_call_count)
 from tools import (search_with_evidence, evidence_coverage,
                    _is_composite_topic, _clean_composite_topic, build_query)
 import prompts
@@ -34,6 +37,7 @@ def planner_node(state: State):
                 return {
                     "result": "", "subtasks": subtasks,
                     "replan_count": state.get("replan_count", 0),
+                    "replan_scope": "",   # P2-3：显式复位，避免全局标记粘到下一轮
                     "sources": state.get("sources", []),
                     "used_fallback": False, "llm_fail_count": state.get("llm_fail_count", 0),
                 }
@@ -51,6 +55,7 @@ def planner_node(state: State):
             return {
                 "result": "", "subtasks": subtasks,
                 "replan_count": state.get("replan_count", 0),
+                "replan_scope": "",
                 "sources": state.get("sources", []),
                 "used_fallback": False, "llm_fail_count": state.get("llm_fail_count", 0),
             }
@@ -60,6 +65,7 @@ def planner_node(state: State):
     return {
         "result": "", "subtasks": state.get("subtasks", []),
         "replan_count": state.get("replan_count", 0),
+        "replan_scope": "",
         "sources": state.get("sources", []),
         "used_fallback": False, "llm_fail_count": state.get("llm_fail_count", 0),
     }
@@ -102,6 +108,7 @@ def executor_node(state: State):
         "sources": len(sources),
         "providers": sorted({p for s in per_query for p in s.get("providers", [])}),
         "cache": [s.get("cache") for s in per_query],
+        "cache_sources": [s.get("cache_source", s.get("cache")) for s in per_query],
         "degraded": any(s.get("degraded") for s in per_query),
         "elapsed_s": round(sum(s.get("elapsed_s", 0) for s in per_query), 2),
         "evidence_path": "; ".join(
@@ -142,6 +149,7 @@ def executor_node(state: State):
         content = safe_llm_invoke(prompt, use_critic=False)
         # error_type 置空：清掉上一轮遗留的"系统繁忙"，否则反思节点会误判为执行侧仍故障
         return {"result": content, "sources": sources, "error_type": "",
+                "replan_scope": "",   # P2-3：每轮执行后复位，路由不再读到上一轮的"全局"
                 "evidence": all_results or state.get("evidence", []),
                 "run_stats": {**run_stats, "generation": {
                     "prompt_chars": len(prompt), "result_chars": len(content)}},
@@ -166,7 +174,8 @@ def _pass_kind(verdict: str) -> str:
 
 
 def _reflection_stats(state: State, coverage, verdict: str, reason: str,
-                      gated_by: str, gate: dict = None) -> dict:
+                      gated_by: str, gate: dict = None, repeat_hit: bool = False,
+                      decision_source: str = None) -> dict:
     """把反思节点的量化信号并入 run_stats（state 是覆盖语义，必须带上已有字段）。"""
     run_stats = dict(state.get("run_stats") or {})
     stats = {
@@ -174,6 +183,11 @@ def _reflection_stats(state: State, coverage, verdict: str, reason: str,
         "verdict": verdict,
         "reason": reason,
         "gated_by": gated_by,
+        # P2-1：判定来源（llm / coverage_rule / gate / rule_fallback / free_reflection / baseline）；
+        # gated_by 保留旧语义，两者默认一致，便于 v1 脚本继续读
+        "decision_source": decision_source or gated_by,
+        "repeat_hit": bool(repeat_hit),
+        "llm_calls": llm_call_count(),
         "evidence_count": len(state.get("evidence", [])),
         "result_chars": len((state.get("result") or "").strip()),
         "pass_kind": _pass_kind(verdict),
@@ -202,6 +216,11 @@ def _apply_pass_gate(state: State, error_type: str, reason: str, gate: dict):
     if error_type != "通过":
         return error_type, reason, ""
 
+    # E2 消融：关掉确定性否决链，完全以语义裁判为准
+    if DISABLE_CONTENT_GATE:
+        print("  -> [门控] DISABLE_CONTENT_GATE=True（E2 纯 LLM 反思），跳过确定性否决")
+        return error_type, reason, ""
+
     result_len = len((state.get("result") or "").strip())
     if not gate["evidence_nonempty"]:
         return ("降级通过", "回答可读但无外部证据支撑，降级记录（不计入合格样本）",
@@ -227,6 +246,13 @@ def _apply_pass_gate(state: State, error_type: str, reason: str, gate: dict):
 
 def reflection_node(state: State):
     print("【反思节点】正在真实检查结果质量...")
+
+    # E1 基线：关闭反思 → 直接判「通过」并结束（不看内容、不重规划）
+    if not ENABLE_REFLECTION:
+        print("  -> [反思] ENABLE_REFLECTION=False（E1 基线），跳过质量判定，直接判「通过」")
+        return {"error_type": "通过",
+                **_reflection_stats(state, None, "通过", "基线：关闭反思（E1）",
+                                    "baseline", decision_source="baseline")}
 
     if state.get("error_type") == "系统繁忙":
         print("  -> 执行阶段 LLM 故障，跳过内容质量判定，直接触发重试")
@@ -258,7 +284,7 @@ def reflection_node(state: State):
     evidence_items = state.get("evidence", [])
     subtasks = state.get("subtasks", [])
 
-    if has_subtasks and evidence_items:
+    if ENABLE_COVERAGE_RULE and has_subtasks and evidence_items:
         # 已拆解：每个子任务都是"需覆盖对象"，用子任务字面量匹配证据 blob
         blob = " ".join(
             " ".join([r.get("title") or "", r.get("summary") or "",
@@ -281,10 +307,13 @@ def reflection_node(state: State):
         if ratio < 1.0:
             reason = f"子任务覆盖率仅 {ratio:.0%}，未覆盖：{'、'.join(missing)}"
             print("  -> [反思] 已拆解但子任务覆盖率 < 100%，判分解不合理")
-            return {**_decide_next(state, "分解不合理", reason),
-                    **_reflection_stats(state, coverage, "分解不合理", reason, "coverage_rule")}
+            decision = _decide_next(state, "分解不合理", reason)
+            repeat_hit = decision.pop("_repeat_hit", False)
+            return {**decision,
+                    **_reflection_stats(state, coverage, "分解不合理", reason,
+                                        "coverage_rule", repeat_hit=repeat_hit)}
 
-    elif is_composite and evidence_items:
+    elif ENABLE_COVERAGE_RULE and is_composite and evidence_items:
         # 首轮整体检索：走原来的复合主题切分逻辑
         coverage = evidence_coverage(topic, evidence_items)
         coverage_info = coverage
@@ -303,10 +332,16 @@ def reflection_node(state: State):
         if coverage["terms"] and coverage["ratio"] < 1.0:
             print("  -> [反思] 复合主题证据覆盖率 < 100%，跳过 LLM 直接判分解不合理")
             reason = f"证据覆盖率仅 {coverage['ratio']:.0%}，未覆盖：{'、'.join(coverage['missing'])}"
-            return {**_decide_next(state, "分解不合理", reason),
-                    **_reflection_stats(state, coverage, "分解不合理", reason, "coverage_rule")}
+            decision = _decide_next(state, "分解不合理", reason)
+            repeat_hit = decision.pop("_repeat_hit", False)
+            return {**decision,
+                    **_reflection_stats(state, coverage, "分解不合理", reason,
+                                        "coverage_rule", repeat_hit=repeat_hit)}
     else:
-        if is_composite:
+        if not ENABLE_COVERAGE_RULE:
+            evidence_stats = (f"证据 {len(evidence_items)} 条"
+                              f"（覆盖率规则已关闭：ENABLE_COVERAGE_RULE=False）")
+        elif is_composite:
             evidence_stats = "证据 0 条（本轮未获得证据，覆盖率检查跳过）"
         else:
             evidence_stats = f"证据 {len(evidence_items)} 条（单主题，无需比较对象覆盖率检查）"
@@ -347,9 +382,11 @@ def reflection_node(state: State):
         print(f"  -> [门控] {gate_hit}，将「{llm_error_type}」改判为「{error_type}」")
 
     gated_by = "llm" if error_type == llm_error_type else "gate"
-    return {**_decide_next(state, error_type, reason),
+    decision = _decide_next(state, error_type, reason)
+    repeat_hit = decision.pop("_repeat_hit", False)
+    return {**decision,
             **_reflection_stats(state, coverage_info, error_type, reason, gated_by,
-                                gate)}
+                                gate, repeat_hit=repeat_hit)}
 
 def rule_based_reflection(state: State, reason: str, coverage=None):
     result = state.get("result", "")
@@ -360,8 +397,11 @@ def rule_based_reflection(state: State, reason: str, coverage=None):
         error_type = "内容不合格"
         reason_full = f"字数过少({length}字)"
         print(f"  -> [规则兜底] 判定: {error_type}, 理由: {reason_full}")
-        return {**_decide_next(state, error_type, reason_full),
-                **_reflection_stats(state, coverage, error_type, reason_full, "rule_fallback")}
+        decision = _decide_next(state, error_type, reason_full)
+        repeat_hit = decision.pop("_repeat_hit", False)
+        return {**decision,
+                **_reflection_stats(state, coverage, error_type, reason_full,
+                                    "rule_fallback", repeat_hit=repeat_hit)}
 
     # 兜底路径复用同一套确定性门控：没有可核验引用，同样不能记「通过」
     gate = content_gate(result, state.get("sources", []), state.get("evidence", []))
@@ -370,8 +410,11 @@ def rule_based_reflection(state: State, reason: str, coverage=None):
         print(f"  -> [门控] 规则兜底后 {gate_hit}，判定「{error_type}」")
 
     gated_by = "gate" if gate_hit else "rule_fallback"
-    return {**_decide_next(state, error_type, reason_full),
-            **_reflection_stats(state, coverage, error_type, reason_full, gated_by, gate)}
+    decision = _decide_next(state, error_type, reason_full)
+    repeat_hit = decision.pop("_repeat_hit", False)
+    return {**decision,
+            **_reflection_stats(state, coverage, error_type, reason_full, gated_by,
+                                gate, repeat_hit=repeat_hit)}
 
 # 错误类型 → 是否走定向（局部/全局）重规划。不在表里的（检索失败/系统繁忙/证据不足）一律走自由反思。
 _REPLAN_TYPES = {
@@ -383,43 +426,57 @@ _NO_EVIDENCE_HINTS = ("证据 0 条", "检索失败", "未获取到", "无结果
 
 
 def _decide_next(state: State, error_type: str, reason: str):
-    if error_type in ("通过", "降级通过"):   # ← 加 "降级通过"
-        return {"error_type": error_type}
+    """判定 → 重规划决策。返回里带一个临时键 `_repeat_hit`，由调用方 pop 后写进 run_stats。
+
+    P1-1：重复检测从"只对分解不合理生效"扩到**任意类型**——同一类否决连发 2 次，
+    说明重规划没带来新信息（同一条 query / 同一批证据），继续原地重试只会空转到上限，
+    因此第 2 次起直接转「证据不足」走自由反思（换检索式）。
+    """
+    if error_type in ("通过", "降级通过"):
+        return {"error_type": error_type, "_repeat_hit": False}
 
     current_count = state.get("replan_count", 0)
     history = state.get("reflection_history", [])
 
-    # 2b: 前缀匹配，和历史写入格式 f"[{error_type}] {reason}" 对齐
-    repeat_hit = any(
-        isinstance(h, str) and h.startswith(f"[{error_type}]") for h in history)
+    # 前缀匹配，与历史写入格式 f"[{error_type}] {reason}" 对齐
+    repeat_times = sum(1 for h in history
+                       if isinstance(h, str) and h.startswith(f"[{error_type}]"))
+    repeat_hit = repeat_times > 0
 
-    # 2a: 检索层无证据时硬否决定向重规划
+    if repeat_hit and ENABLE_REPEAT_RULE:
+        print(f"  -> [{error_type}] 已重复出现 {repeat_times} 次，停止同类重规划，"
+              f"转【自由反思】换检索式")
+        return {"error_type": "证据不足", "replan_count": current_count + 1,
+                "reflection_history":
+                    history + [f"[证据不足] {error_type}重复{repeat_times + 1}次"],
+                "_repeat_hit": True}
+
+    # 检索层无证据时硬否决定向重规划
     no_evidence = (len(state.get("evidence", [])) == 0) or any(
         hint in (reason or "") for hint in _NO_EVIDENCE_HINTS)
-    
+
     if error_type == "分解不合理":
-        if repeat_hit:
-            print(f"  -> 分解不合理已重复出现（历史 "
-                  f"{sum(1 for h in history if h.startswith('[分解不合理]'))} 次），"
-                  f"停止全局重规划，走自由反思兜底")
-            return {"error_type": "证据不足", "replan_count": current_count + 1,
-                    "reflection_history": history + ["[证据不足] 分解不合理重复"]}
         print("  -> 判定为分解不合理，触发【全局】重规划")
         return {"error_type": error_type, "replan_scope": "全局",
                 "replan_count": current_count + 1,
-                "reflection_history": history + [f"[{error_type}] {reason}"]}
-    
+                "reflection_history": history + [f"[{error_type}] {reason}"],
+                "_repeat_hit": False}
+
     scope = _REPLAN_TYPES.get(error_type)
 
     if scope and not no_evidence:
-        print(f"  -> 规则信号交叉验证：error_type={error_type}, 历史重复={repeat_hit} => 触发【{scope}】重规划")
+        print(f"  -> 规则信号交叉验证：error_type={error_type}, 历史重复={repeat_hit} "
+              f"=> 触发【{scope}】重规划")
         return {"error_type": error_type, "replan_scope": scope,
                 "replan_count": current_count + 1,
-                "reflection_history": history + [f"[{error_type}] {reason}"]}
+                "reflection_history": history + [f"[{error_type}] {reason}"],
+                "_repeat_hit": False}
 
-    print(f"  -> 无定向重规划依据（error_type={error_type}, no_evidence={no_evidence}, 历史重复={repeat_hit}），回退到【自由反思】")
+    print(f"  -> 无定向重规划依据（error_type={error_type}, no_evidence={no_evidence}），"
+          f"回退到【自由反思】")
     return {"error_type": "证据不足", "replan_count": current_count + 1,
-            "reflection_history": history + [f"[证据不足] {reason}"]}
+            "reflection_history": history + [f"[证据不足] {reason}"],
+            "_repeat_hit": False}
 
 def _build_retry_query(state: State) -> tuple:
     """补检索的查询改写：默认把首轮未覆盖的对象追加进查询。
@@ -475,6 +532,9 @@ def free_reflection_node(state: State):
         prev_refl.update({
             "verdict": verdict,
             "gated_by": gated_by,
+            "decision_source": gated_by,
+            "repeat_hit": bool(prev_refl.get("repeat_hit", False)),
+            "llm_calls": llm_call_count(),
             "final_reason": final_reason,
             "evidence_count": evidence_count,
             "result_chars": result_chars,

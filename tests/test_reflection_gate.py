@@ -174,6 +174,116 @@ class CoverageTermTest(unittest.TestCase):
         coverage = evidence_coverage("生物细胞的结构", EVIDENCE)
         self.assertEqual(coverage["terms"], ["生物细胞"])
 
+    def test_p1_2_suffix_and_question_tails(self):
+        # docs/覆盖率的边界用例.md 第 4 节的三条"仍会切错"的句式
+        cases = {
+            "Python和Java的并发性能": ["Python", "Java"],
+            "Rust与Go哪个更适合写后端": ["Rust", "Go"],
+            "对比Kafka与RabbitMQ在吞吐上的表现": ["Kafka", "RabbitMQ"],
+        }
+        for topic, expected in cases.items():
+            with self.subTest(topic=topic):
+                self.assertEqual(evidence_coverage(topic, EVIDENCE)["terms"], expected)
+
+    def test_hit_is_case_and_space_insensitive(self):
+        results = [{"title": "Python 与 Java 的并发模型", "summary": ""}]
+        coverage = evidence_coverage("比较python和JAVA的差异", results)
+        self.assertEqual(coverage["terms"], ["python", "JAVA"])
+        self.assertEqual(coverage["ratio"], 1.0)
+
+    def test_p1_3_balance_uses_summary_not_only_title(self):
+        results = [
+            {"title": "并发模型对比", "summary": "Java 线程池与协程的取舍"},
+            {"title": "并发模型对比", "summary": "Java 与 Python 的并发差异"},
+        ]
+        coverage = evidence_coverage("Python和Java的并发性能", results)
+        self.assertEqual(coverage["per_term_counts"], {"Python": 1, "Java": 2})
+        self.assertEqual(coverage["balance"], 0.5)
+
+
+class RepeatRuleTest(unittest.TestCase):
+    """C8（P1-1）：任意类型的否决连发 2 次 → 证据不足，不再原地重规划。"""
+
+    def test_c8_second_content_failure_goes_free_reflection(self):
+        state = _state()
+        state["reflection_history"] = ["[内容不合格] 回答过短（80 字）"]
+        state["replan_count"] = 1
+        decision = nodes._decide_next(state, "内容不合格", "回答过短（80 字）")
+        self.assertEqual(decision["error_type"], "证据不足")
+        self.assertTrue(decision["_repeat_hit"])
+        self.assertEqual(decision["replan_count"], 2)
+        self.assertIn("内容不合格重复2次", decision["reflection_history"][-1])
+
+    def test_first_occurrence_still_replans_locally(self):
+        decision = nodes._decide_next(_state(), "内容不合格", "偏题")
+        self.assertEqual(decision["error_type"], "内容不合格")
+        self.assertEqual(decision["replan_scope"], "局部")
+        self.assertFalse(decision["_repeat_hit"])
+
+    def test_e5_repeat_rule_can_be_disabled(self):
+        state = _state(extra={"reflection_history": ["[内容不合格] 偏题"],
+                              "replan_count": 1})
+        with mock.patch.object(nodes, "ENABLE_REPEAT_RULE", False):
+            decision = nodes._decide_next(state, "内容不合格", "偏题")
+        self.assertEqual(decision["error_type"], "内容不合格")
+        self.assertEqual(decision["replan_scope"], "局部")
+        self.assertFalse(decision["_repeat_hit"])
+
+    def test_repeat_hit_recorded_in_run_stats(self):
+        out = nodes.rule_based_reflection(
+            _state(result="太短", extra={"reflection_history": ["[内容不合格] 字数过少(2字)"]}),
+            "格式解析错误")
+        self.assertEqual(out["error_type"], "证据不足")
+        self.assertTrue(out["run_stats"]["reflection"]["repeat_hit"])
+        self.assertEqual(out["run_stats"]["reflection"]["decision_source"], "rule_fallback")
+
+
+class ExperimentSwitchTest(unittest.TestCase):
+    """第 5 节的 4 个开关：改判定分布，因此必须显式可关、可复现。"""
+
+    def test_e1_disabled_reflection_passes_directly(self):
+        with mock.patch.object(nodes, "ENABLE_REFLECTION", False):
+            out = nodes.reflection_node(_state(result="太短"))   # 连字数都不看
+        self.assertEqual(out["error_type"], "通过")
+        refl = out["run_stats"]["reflection"]
+        self.assertEqual(refl["decision_source"], "baseline")
+        self.assertEqual(refl["pass_kind"], "strict")
+
+    def test_e2_disabled_gate_skips_deterministic_veto(self):
+        with mock.patch.object(nodes, "DISABLE_CONTENT_GATE", True):
+            out = nodes.rule_based_reflection(_state(result=LONG), "反思LLM不可用")
+        self.assertEqual(out["error_type"], "通过")
+
+    def test_e4_coverage_rule_switch(self):
+        state = _state(result=WITH_SOURCE)
+        state["topic"] = "比较Python和Java的并发性能"   # 证据里只有"细胞结构"→ 覆盖 0
+        llm_json = '{"error_type": "通过", "reason": "覆盖不足但语义可读"}'
+        with mock.patch.object(nodes, "safe_llm_invoke", return_value=llm_json):
+            on = nodes.reflection_node(dict(state))
+        self.assertEqual(on["error_type"], "分解不合理")
+        self.assertEqual(on["run_stats"]["reflection"]["decision_source"], "coverage_rule")
+
+        with mock.patch.object(nodes, "ENABLE_COVERAGE_RULE", False), \
+                mock.patch.object(nodes, "safe_llm_invoke", return_value=llm_json):
+            off = nodes.reflection_node(dict(state))
+        self.assertEqual(off["error_type"], "通过")
+
+    def test_e6_inject_llm_fail_then_recovers(self):
+        import config
+        import utils
+        utils.reset_llm_calls()
+        with mock.patch.object(config, "INJECT_LLM_FAIL", 2):
+            for _ in range(2):
+                with self.assertRaises(utils.LLMInfraError):
+                    utils.safe_llm_invoke("prompt")
+            with mock.patch.object(config, "llm_generator",
+                                   mock.Mock(invoke=mock.Mock(
+                                       return_value=mock.Mock(content="ok")))):
+                self.assertEqual(utils.safe_llm_invoke("prompt"), "ok")
+        self.assertEqual(utils.llm_call_count(), 3)
+        utils.reset_llm_calls()
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

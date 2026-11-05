@@ -11,6 +11,18 @@ class LLMParseError(Exception):
 
 _SEARCH_CACHE: dict = {}
 
+# 单次运行的 LLM 调用次数（P2-2：成本-收益图表的数据来源）。
+# main.py 在每次 app.invoke 前调用 reset_llm_calls()，反思节点把 count 写进 run_stats。
+_LLM_CALLS = {"n": 0}
+
+
+def reset_llm_calls() -> None:
+    _LLM_CALLS["n"] = 0
+
+
+def llm_call_count() -> int:
+    return _LLM_CALLS["n"]
+
 # LLM 基础设施故障识别：openai SDK 的超时文案是 "Request timed out."，
 # 只匹配 "timeout" 会漏判，这里同时看关键字与异常类名。
 _INFRA_KEYWORDS = (
@@ -21,8 +33,14 @@ _INFRA_KEYWORDS = (
 _INFRA_ERROR_NAMES = ("Timeout", "Connection", "RateLimit", "Overloaded")
 
 def safe_llm_invoke(prompt: str, use_critic: bool = False, retries: int = 2, backoff: float = 3.0) -> str:
-    from config import llm_critic, llm_generator
+    from config import llm_critic, llm_generator, INJECT_LLM_FAIL
     target_llm = llm_critic if use_critic else llm_generator
+    _LLM_CALLS["n"] += 1
+
+    # E6 故障注入：前 N 次调用直接抛基础设施错误，用于验证双熔断能否收敛
+    if INJECT_LLM_FAIL and _LLM_CALLS["n"] <= INJECT_LLM_FAIL:
+        raise LLMInfraError(f"[故障注入] 第 {_LLM_CALLS['n']} 次 LLM 调用被强制失败")
+
     last_err = None
     
     for attempt in range(retries + 1):
@@ -87,7 +105,7 @@ def content_gate(result: str, sources: list, evidence: list,
 
     只报事实，不做判定（判定见 agents._apply_pass_gate），便于单测与论文复算。
     """
-    from config import PASS_MIN_CHARS
+    from config import PASS_MIN_CHARS, EVIDENCE_TOP_K
     text = (result or "").strip()
     limit = PASS_MIN_CHARS if min_chars is None else min_chars
 
@@ -101,8 +119,9 @@ def content_gate(result: str, sources: list, evidence: list,
                 if _verified_kind(u, source_urls) == "exact"}
     loose = {u for u in (_norm_url(x) for x in cited)
              if _verified_kind(u, source_urls) == "prefix"}
-    # 引用率分母取"可用来源数，上限 3"：检索给了 6 条但只引用 3 条不算违规
-    denom = max(1, min(len(source_urls), 3))
+    # 引用率分母取"可用来源数，上限 EVIDENCE_TOP_K（默认 3）"：
+    # 检索给了 6 条但只引用 3 条不算违规；阈值外置后做实验可直接调
+    denom = max(1, min(len(source_urls), EVIDENCE_TOP_K))
 
     return {
         "len_ok": len(text) >= limit,
@@ -113,6 +132,7 @@ def content_gate(result: str, sources: list, evidence: list,
         "fabricated_urls": fabricated[:3],
         "cited_count": len(verified) + len(loose),
         "cited_loose": sorted(loose)[:3],
-        "citation_ratio": round((len(verified) + len(loose)) / denom, 3),
+        # 分母封顶 EVIDENCE_TOP_K，分子超过门槛时压到 1.0（原始条数看 cited_count）
+        "citation_ratio": round(min((len(verified) + len(loose)) / denom, 1.0), 3),
     }
 

@@ -4,8 +4,9 @@ import sys
 import time
 
 from langgraph.graph import StateGraph, END
-from config import State, ENABLE_RUN_ARCHIVE
+from config import State, ENABLE_RUN_ARCHIVE, EXP_GROUP
 from agents.nodes import planner_node, executor_node, reflection_node, free_reflection_node
+from utils import reset_llm_calls
 
 # ================= 6. 路由函数 =================
 def route_after_reflection(state: State):
@@ -115,6 +116,8 @@ if __name__ == "__main__":
         # 全链路日志与结构化运行记录：以文本存档替代终端截图
         from run_store import run_log, save_run_record
         t0 = time.perf_counter()
+        print(f"  -> [实验组] {EXP_GROUP}（记录写入 data/runs_v2/{EXP_GROUP}/）")
+        reset_llm_calls()   # P2-2：llm_calls 按"单次运行"计数
         with run_log(user_topic.strip()) as log_path:
             print(f"\n=== 开始运行工作流，当前主题：{user_topic} ===")
             result = app.invoke(initial_state)
@@ -124,5 +127,6 @@ if __name__ == "__main__":
             print(f"  -> [日志] {os.path.relpath(log_path)}")
     else:
         print(f"\n=== 开始运行工作流，当前主题：{user_topic} ===")
+        reset_llm_calls()
         result = app.invoke(initial_state)
         _print_report(result)

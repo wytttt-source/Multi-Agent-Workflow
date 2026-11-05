@@ -6,6 +6,14 @@ from typing import TypedDict, List, Dict, Any, NotRequired
 
 load_dotenv()
 
+
+def _flag(name: str, default: bool = True) -> bool:
+    """布尔开关解析：'0/false/no/off/空' 视为关闭，便于命令行做 A/B（E1~E6）。"""
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() not in ("0", "false", "no", "off", "")
+
 # ================= 0. 全局配置 =================
 USE_LLM_RELEVANCE_FILTER = True   # 关闭则只走结构化信号过滤，用于对比实验
 ENABLE_SEARCH_CACHE = True        # 检索结果内存 + 磁盘缓存
@@ -28,7 +36,9 @@ ENABLE_EVIDENCE_ARCHIVE = True    # 把装配好的证据归档成 Markdown，�
 SEARCH_STORE_DIR = os.getenv("SEARCH_STORE_DIR", "data/search_cache")
 EVIDENCE_STORE_DIR = "data/evidence"
 RUN_LOG_DIR = "logs"              # 控制台全链路日志（文本，替代终端截图）
-RUN_RECORD_DIR = "data/runs"      # 结构化运行记录（JSON，论文表格的数字来源）
+# v2 口径的运行记录目录：v1 的 20 份记录留在 data/runs/（只读历史），新结果一律写这里，
+# 两者判定语义不同，**不可混在同一张表**（见 docs/反思判定状态机-改动清单.md 第 8 节）。
+RUN_RECORD_DIR = os.getenv("RUN_RECORD_DIR", "data/runs_v2")
 ENABLE_RUN_ARCHIVE = True         # 关闭则只打印不落盘，用于快速调试
 
 # ================= 1.2 反思判定阈值与策略（论文开关） =================
@@ -42,6 +52,26 @@ PASS_MIN_CHARS = int(os.getenv("PASS_MIN_CHARS", "120"))
 #   drop_lang    = 去掉 lang:zh 语言限定，扩大召回
 #   same         = 沿用原 query（对照实验用，会命中同一份磁盘缓存）
 RETRY_QUERY_MODE = os.getenv("RETRY_QUERY_MODE", "missing_term").strip().lower()
+
+# ================= 1.3 实验开关（论文 E1~E6 的 A/B 变量） =================
+# 全部写入 data/runs_v2/<组>/ 的 JSON config 段，保证"某份记录属于哪组实验"可自证。
+# E1 基线：False 时反思节点直接判「通过」并结束（不看内容、不重规划）
+ENABLE_REFLECTION = _flag("ENABLE_REFLECTION", True)
+# E4 消融：关掉即不执行 2.2 的第 4、5 条（子任务/比较对象覆盖率规则）
+ENABLE_COVERAGE_RULE = _flag("ENABLE_COVERAGE_RULE", True)
+# E5 消融：关掉即回到"同类型错误反复重规划"的旧行为
+ENABLE_REPEAT_RULE = _flag("ENABLE_REPEAT_RULE", True)
+# E2：关掉 2.2 第 7~11 条的确定性否决链（纯语义裁判）
+DISABLE_CONTENT_GATE = _flag("DISABLE_CONTENT_GATE", False)
+# E6：前 N 次 LLM 调用强制抛超时，验证双熔断是否收敛
+INJECT_LLM_FAIL = int(os.getenv("INJECT_LLM_FAIL", "0") or 0)
+# P1-5：引用率分母上限（原写死在 utils.content_gate 的 3）
+EVIDENCE_TOP_K = int(os.getenv("EVIDENCE_TOP_K", "3") or 3)
+# 实验组标签：同时决定 data/runs_v2/<组>/ 子目录与 JSON 里的 group 字段
+EXP_GROUP = (os.getenv("EXP_GROUP") or "E3").strip() or "E3"
+
+# ================= 1.4 模型名（代码 / 日志 / 论文三处必须一致） =================
+CRITIC_MODEL = os.getenv("CRITIC_MODEL", "glm-5.3-flash")
 
 
 api_key = os.getenv("DEEPSEEK_API_KEY")
@@ -58,7 +88,7 @@ llm_generator = ChatOpenAI(
 )
 
 llm_critic = ChatOpenAI(
-    model="glm-5.3-flash",
+    model=CRITIC_MODEL,
     openai_api_key=glm_api_key,
     openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
     temperature=0.1,

@@ -18,7 +18,6 @@
 
 生成器 DeepSeek-Flash 与裁判 GLM-5.3-Flash 是**两个异构模型**，避免「自己判自己」的宽容偏差；检索走 DeepSeek 官方 Search API + 三层过滤（结构化信号门 → GLM 语义裁判 → 证据装配）。
 
-`异构双模型` · `6 态判定 / 3 级路由` · `24 次消融运行` · `18 条带真值对照样本` · `28 条离线用例` · `0 次训练`
 
 ## 二、核心突破
 
@@ -154,4 +153,3 @@ python experiments/gate_vs_llm.py      # 判决器对照 → docs/规则vsLLM-�
 ---
 
 > 全部数字都能在 logs/*.log 与 data/runs_v2/*.json 里逐行核对；口径细节、23 条开关与 exp1-exp7 原始日志见 [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md)。
-```

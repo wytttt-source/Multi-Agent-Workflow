@@ -151,4 +151,4 @@ python experiments/gate_vs_llm.py      # 判决器对照 → docs/规则vsLLM-�
 
 ---
 
-> 全部数字都能在 experiments/DeepSeek检索-改造后/*.log 与 data/runs_v2/<组>/*.json 里逐行核对；口径细节、23 条主开关与 exp1-exp7 原始日志见 [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md)。
+> 全部数字都能在 experiments/DeepSeek检索-检索层改造成功验证/*.log 与 data/runs_v2/<组>/*.json 里逐行核对；口径细节、23 条主开关与 exp1-exp7 原始日志见 [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md)。

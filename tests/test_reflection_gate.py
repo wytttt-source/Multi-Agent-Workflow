@@ -98,6 +98,24 @@ class ContentGateTest(unittest.TestCase):
         self.assertTrue(gate["no_fabricated_url"])
         self.assertEqual(gate["cited_count"], 1)
 
+    def test_s05_source_line_padding_does_not_count_as_body(self):
+        """语料 S05：正文 60 字 + 【来源】里堆长标题 → 全文 154 字。
+
+        旧口径按全文计字数，规则列会放过这条（文档里记的 R 列缺口）；
+        改按正文计之后，规则应直接判「内容不合格」，与 LLM 列一致。
+        """
+        padded = "细胞是生命活动的基本单位，" * 5 + "结构包括细胞膜和细胞核。" + \
+                 "\n【来源】" + "细胞结构科普长标题" * 5 + " https://a.com/1"
+        gate = content_gate(padded, SOURCES, EVIDENCE)
+        self.assertGreaterEqual(gate["len_full"], 120)      # 全文够长（注水）
+        self.assertLess(gate["body_chars"], 120)            # 正文不够
+        self.assertFalse(gate["len_ok"])
+        verdict, reason, hit = nodes._apply_pass_gate(
+            _state(padded), "通过", "LLM 判通过", gate)
+        self.assertEqual(verdict, "内容不合格")
+        self.assertEqual(hit, "回答过短")
+        self.assertIn("正文", reason)
+
 
 class ReflectionPathTest(unittest.TestCase):
     """三条判定路径都必须过同一套门控。"""
@@ -214,6 +232,21 @@ class RepeatRuleTest(unittest.TestCase):
         self.assertEqual(decision["replan_count"], 2)
         self.assertIn("内容不合格重复2次", decision["reflection_history"][-1])
 
+    def test_c9_retrieval_failure_label_normalized_for_repeat(self):
+        """P1-1 补充：裁判自报「检索失败」时，历史落盘是「证据不足」，
+        匹配必须用同一口径，否则同类失败连发永远识别不出重复。"""
+        state = _state()
+        first = nodes._decide_next(state, "检索失败", "检索无结果")
+        self.assertEqual(first["error_type"], "证据不足")
+        self.assertFalse(first["_repeat_hit"])
+        # 原判措辞保留在历史里，便于追溯裁判原话
+        self.assertEqual(first["reflection_history"][-1], "[证据不足] 原判检索失败：检索无结果")
+
+        state.update({k: v for k, v in first.items() if not k.startswith("_")})
+        second = nodes._decide_next(state, "检索失败", "检索无结果")
+        self.assertTrue(second["_repeat_hit"])
+        self.assertIn("证据不足重复2次", second["reflection_history"][-1])
+
     def test_first_occurrence_still_replans_locally(self):
         decision = nodes._decide_next(_state(), "内容不合格", "偏题")
         self.assertEqual(decision["error_type"], "内容不合格")
@@ -282,6 +315,45 @@ class ExperimentSwitchTest(unittest.TestCase):
                 self.assertEqual(utils.safe_llm_invoke("prompt"), "ok")
         self.assertEqual(utils.llm_call_count(), 3)
         utils.reset_llm_calls()
+
+
+class SearchCacheStatsTest(unittest.TestCase):
+    """P1-4 配套：内存命中要同时改写 cache 与 cache_source。
+
+    executor 聚合 run_stats.search.cache_sources 时优先读 cache_source；只改 cache
+    会让"同进程内补检索命中"被统计成 disk/network，E4 的缓存口径就不可信。
+    """
+
+    RESULTS = [
+        {"title": "细胞结构", "url": "https://a.com/1",
+         "summary": "细胞膜与细胞核", "content": "细胞是生命活动的基本单位。",
+         "provider": "deepseek"},
+        {"title": "细胞器", "url": "https://a.com/2",
+         "summary": "线粒体与叶绿体", "content": "线粒体负责供能。",
+         "provider": "deepseek"},
+    ]
+
+    def test_memory_hit_reports_memory_cache_source(self):
+        import tools
+        with mock.patch.object(tools, "_SEARCH_CACHE", {}), \
+                mock.patch.object(tools, "USE_LLM_RELEVANCE_FILTER", False), \
+                mock.patch.object(tools, "USE_QUERY_EXPANSION", False), \
+                mock.patch.object(tools, "ENABLE_EVIDENCE_ARCHIVE", False), \
+                mock.patch.object(tools, "score_gate", side_effect=lambda r: r), \
+                mock.patch.object(tools.search_store, "load_raw", return_value=None), \
+                mock.patch.object(tools.search_store, "save_raw",
+                                  return_value="data/search_cache/_test.json"), \
+                mock.patch.object(tools, "search_deepseek", return_value=self.RESULTS):
+            first = tools.search_with_evidence("生物细胞的结构", "生物细胞的结构 lang:zh")
+            second = tools.search_with_evidence("生物细胞的结构", "生物细胞的结构 lang:zh")
+
+        self.assertEqual(first[3]["cache_source"], "network")
+        self.assertEqual(second[3]["cache"], "memory")
+        self.assertEqual(second[3]["cache_source"], "memory")
+        # 命中缓存必须仍然带得回证据，否则补检索会拿到空上下文
+        self.assertTrue(second[0])
+        self.assertEqual(second[2], self.RESULTS)
+
 
 
 

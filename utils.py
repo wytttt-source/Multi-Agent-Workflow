@@ -77,6 +77,21 @@ def _norm_url(url: str) -> str:
 
 _CITED_URL_RE = re.compile(r"https?://[^\s，。；、,;!?！？\"'”’）)】\]}>]+")
 
+# 来源行标记：回答正文与"来源清单"的分界
+_SOURCE_MARK = "【来源】"
+
+
+def _body_chars(text: str) -> int:
+    """回答「正文」字数：剔除【来源】及其后的全部内容，并去掉整行只有 URL 的行。
+
+    为什么要按正文而不按全文计：旧口径用 len(全文)，模型只要在【来源】里堆长标题
+    就能把 60 字的正文撑到 154 字（样本 S05），字数门形同虚设。
+    """
+    head = (text or "").split(_SOURCE_MARK, 1)[0]
+    lines = [ln.strip() for ln in head.splitlines()]
+    body = "\n".join(ln for ln in lines if ln and not _CITED_URL_RE.fullmatch(ln))
+    return len(body)
+
 
 def _verified_kind(url: str, source_urls: set) -> str:
     """判断引用 URL 是否可核验：exact=完全一致，prefix=来源 URL 的截断写法。
@@ -108,6 +123,7 @@ def content_gate(result: str, sources: list, evidence: list,
     from config import PASS_MIN_CHARS, EVIDENCE_TOP_K
     text = (result or "").strip()
     limit = PASS_MIN_CHARS if min_chars is None else min_chars
+    body_chars = _body_chars(text)
 
     cited = _CITED_URL_RE.findall(text)
     source_urls = set()
@@ -124,8 +140,11 @@ def content_gate(result: str, sources: list, evidence: list,
     denom = max(1, min(len(source_urls), EVIDENCE_TOP_K))
 
     return {
-        "len_ok": len(text) >= limit,
+        # 字数门按「正文」计：来源清单再长也不算内容（否则 S05 靠来源行注水过关）
+        "len_ok": body_chars >= limit,
         "len_limit": limit,
+        "body_chars": body_chars,
+        "len_full": len(text),
         "has_source_line": "【来源】" in text,
         "no_fabricated_url": len(fabricated) == 0,
         "evidence_nonempty": bool(evidence),

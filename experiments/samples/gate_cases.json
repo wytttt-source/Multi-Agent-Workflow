@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-11-06T07:55:54.280475+00:00",
+    "generated_at": "2026-11-06T11:27:57.687206+00:00",
     "generator": "python experiments/gate_vs_llm.py --build",
     "n_cases": 18,
     "base_records": {
@@ -236,7 +236,7 @@
       "trap": "正文过短但来源行很长",
       "derivation": "正文截断到 60 字，【来源】保留真实 URL（来源行本身 ~90 字）",
       "gold": "内容不合格",
-      "gold_note": "正文只有 60 字；但 v2 的字数门按「全文长度」计，来源行把它撑到 154 字 → 规则会放过。用于暴露「字数门可被来源行注水」的弱点（与 S13 同属定义敏感项）",
+      "gold_note": "正文只有 60 字，【来源】把它撑到 154 字。字数门已改为按「正文」计（剔除【来源】及纯 URL 行），规则列现在判内容不合格；旧口径按全文计时会被注水放过 —— 那正是R 列最初缺口的成因，保留本样本用于回归",
       "subjective": false,
       "definition_sensitive": true,
       "gold_alt": "通过",

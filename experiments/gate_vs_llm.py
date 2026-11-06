@@ -37,6 +37,7 @@ if ROOT not in sys.path:
 
 import agents.nodes as nodes  # noqa: E402  （必须在 sys.path 之后导入）
 import config as cfg  # noqa: E402
+from utils import _body_chars  # noqa: E402  （字数口径：正文，不含【来源】清单）
 
 CASES_PATH = os.path.join(ROOT, "experiments", "samples", "gate_cases.json")
 RUN_DIR = os.path.join(ROOT, "data", "runs_v2")
@@ -186,8 +187,9 @@ def build_cases():
         "S05", "正文过短但来源行很长",
         "正文截断到 60 字，【来源】保留真实 URL（来源行本身 ~90 字）",
         "内容不合格",
-        "正文只有 60 字；但 v2 的字数门按「全文长度」计，来源行把它撑到 154 字 → 规则会放过。"
-        "用于暴露「字数门可被来源行注水」的弱点（与 S13 同属定义敏感项）",
+        "正文只有 60 字，【来源】把它撑到 154 字。字数门已改为按「正文」计（剔除【来源】"
+        "及纯 URL 行），规则列现在判内容不合格；旧口径按全文计时会被注水放过 —— 那正是"
+        "R 列最初缺口的成因，保留本样本用于回归",
         st(_with_citation(_truncate(body_a, 60), f"【来源】{title_a} {url_a}")),
         definition_sensitive=True, gold_alt="通过"))
     cases.append(_case(
@@ -334,7 +336,8 @@ def _print_cases(cases):
         print(f"    主题：{st_['topic']}")
         print(f"    构造：{c['derivation']}")
         print(f"    判据：{c['gold_note']}")
-        print(f"    事实：字数 {len(st_['result'].strip())} / 证据 {len(ev)} 条 / 来源 "
+        print(f"    事实：正文 {_body_chars(st_['result'])} 字 / 全文 "
+              f"{len(st_['result'].strip())} 字 / 证据 {len(ev)} 条 / 来源 "
               f"{len(st_.get('sources') or [])} 条 / used_fallback={st_.get('used_fallback')} "
               f"/ subtasks={st_.get('subtasks') or '无'}")
         tail = re.sub(r"\s+", " ", st_["result"].strip())[-70:]
@@ -415,7 +418,8 @@ def _summarize(out):
         "decision_source": refl.get("decision_source") or refl.get("gated_by") or "-",
         "reason": (refl.get("reason") or "").strip(),
         "gate": {k: refl.get(k) for k in ("has_source_line", "cited_count",
-                                          "citation_ratio", "len_ok", "cited_loose")},
+                                          "citation_ratio", "len_ok", "body_chars",
+                                          "len_full", "cited_loose")},
         "error_type": (out or {}).get("error_type"),
         "evidence_count": refl.get("evidence_count"),
         "result_chars": refl.get("result_chars"),
@@ -573,7 +577,7 @@ def _trap_md(rows):
 
 
 def _detail_md(rows):
-    lines = ["| # | 陷阱 | 真值 | R | L | C | C 字数 | R/C 引用数 | C 判定来源 | L 的理由（截断） |",
+    lines = ["| # | 陷阱 | 真值 | R | L | C | C 字数（正文/全文） | R/C 引用数 | C 判定来源 | L 的理由（截断） |",
              "|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         def cell(key):
@@ -584,8 +588,9 @@ def _detail_md(rows):
         r_gate = r["R"].get("gate") or {}
         cited = f"{r_gate.get('cited_count')}/{c_gate.get('cited_count')}"
         reason = re.sub(r"\s+", " ", r["L"].get("reason") or "")[:56]
+        chars = f"{c_gate.get('body_chars') or '-'}/{r['C'].get('result_chars') or '-'}"
         lines.append(f"| {r['id']} | {r['trap']} | {r['gold']} | {cell('R')} | "
-                     f"{cell('L')} | {cell('C')} | {r['C'].get('result_chars') or '-'} | "
+                     f"{cell('L')} | {cell('C')} | {chars} | "
                      f"{cited} | {r['C'].get('decision_source', '-')} | {reason} |")
     return "\n".join(lines)
 
@@ -647,13 +652,21 @@ def _cases_md(cases):
 
 
 def _sensitivity_md(rows):
+    """主口径 vs 实现口径。
+
+    差异来源不再写死样本号：把「gold_alt 与 gold 不同」的样本动态列出来，
+    这样修完 S05 的字数门之后表格不会跟着过时。
+    """
+    diff_ids = [r["id"] for r in rows
+                if (r.get("gold_alt") or r["gold"]) != r["gold"]]
+    reason = ("换成 gold_alt 的样本：" + "、".join(diff_ids)) if diff_ids else "无差异样本"
     lines = ["| 判决器 | 主口径准确率（合格=通过） | 实现口径准确率 | 差异来源 |",
              "|---|---|---|---|"]
     for key, name in COLS:
         main = _binary(_pairs(rows, key))["acc"]
         alt = _binary([(r.get("gold_alt") or r["gold"], r[key]["verdict"])
                        for r in rows])["acc"]
-        lines.append(f"| {name} | {main:.0%} | {alt:.0%} | S05（字数注水）/ S09（域名根算编造） |")
+        lines.append(f"| {name} | {main:.0%} | {alt:.0%} | {reason} |")
     return chr(10).join(lines)
 
 
@@ -668,7 +681,9 @@ def _limitations_md(rows, repeat):
         "S13 真值应改为「通过」，此时 R/L/C 三列各多一条「把合格判成不合格」的误伤 —— "
         "指标完全由定义决定，这也是本实验把 S13 当讨论项、不当判决器优劣证据的原因。",
         "3. **主观项**：**S14（偏题）** 的真值依赖人工判断「答非所问」，"
-        "它是规则结构上无法处理的类别（偏题没有字面信号）；S05 的缺口则属于「字数统计口径」问题，改统计方式即可修，性质不同。",
+        "它是规则结构上无法处理的类别（偏题没有字面信号），也是 R 列现在唯一的缺口。"
+        "**S05（来源行注水）** 属于「字数统计口径」问题，已改为按正文计字数（剔除【来源】），"
+        "规则列不再放过——性质与 S14 不同，属可修的实现缺陷，保留样本作回归。",
         "4. **配对设计的边界**：C 列回放的是 L 列那次调用的原始返回，"
         "而 L 列（E2 配置）的 prompt 不含覆盖率统计行；所以结论是"
         "「在**同一份**语义判断之上再叠门控能修掉什么」，不是「E3 完整 prompt 会带来什么」。",
@@ -685,12 +700,13 @@ def _limitations_md(rows, repeat):
     ])
 
 
-def _write_doc(rows, cases, result_path, repeat=1):
+def _write_doc(rows, cases, result_path, repeat=1, mode="在线跑（每条 1 次 critic 调用）"):
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     parts = [
         "# 规则 vs LLM 判决器对照实验（混淆矩阵）",
         "",
         f"> **自动生成**：`python experiments/gate_vs_llm.py`（{now}）",
+        f"> **运行方式**：{mode}",
         f"> **样本**：{len(rows)} 条，由 `data/runs_v2/E3` 的真实输出受控损坏得到（附录 A）",
         f"> **真值口径**：v2（证据非空 / 字数 ≥{cfg.PASS_MIN_CHARS} / URL 可在来源清单核验 / 贴合主题）",
         "> **配对设计**：L 与 C 看到的是**同一条** critic 返回（同一次调用），"
@@ -746,9 +762,9 @@ def _write_doc(rows, cases, result_path, repeat=1):
         "",
         _sensitivity_md(rows),
         "",
-        "> 主口径的真值按「论文定义」给（正文 ≥120 字、引用要指向具体页面）；实现口径直接取当前代码行为"
-        "（字数按全文计、域名根判编造）。两者只差 S05/S09 两条，差异恰好说明："
-        "**规则的字数门比定义更宽松，域名根判定比定义更严厉**。",
+        "> 主口径的真值按「论文定义」给（正文 ≥120 字、引用要指向具体页面）；实现口径直接取当前代码行为。"
+        "字数门已改为**按正文计**（不再被【来源】注水），因此两者现在只在 S09（域名根）上仍有分歧："
+        "**域名根判定比定义更严厉**，属有意保留的保守口径（宁可降级，不可放行）。",
         "",
         "## 附录 A. 样本集（受控损坏，可复核）",
         "",
@@ -842,7 +858,9 @@ def main(argv=None):
                      quiet=not args.verbose)
     result_path = _save_results(rows, max(1, args.repeat))
     if not args.no_doc:
-        _write_doc(rows, cases, result_path, repeat=max(1, args.repeat))
+        mode = ("离线复算（`--mock`：复用已有 critic 返回，只重算确定性门控与 R 列；"
+                "不产生新的 LLM 调用）") if args.mock else "在线跑（每条 1 次 critic 调用）"
+        _write_doc(rows, cases, result_path, repeat=max(1, args.repeat), mode=mode)
     return 0
 
 

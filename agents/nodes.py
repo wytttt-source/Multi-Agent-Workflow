@@ -199,6 +199,8 @@ def _reflection_stats(state: State, coverage, verdict: str, reason: str,
             "cited_count": gate["cited_count"],
             "citation_ratio": gate["citation_ratio"],
             "len_ok": gate["len_ok"],
+            "body_chars": gate.get("body_chars", 0),
+            "len_full": gate.get("len_full", 0),
             "cited_loose": gate.get("cited_loose", []),
         })
     run_stats["reflection"] = stats
@@ -232,7 +234,9 @@ def _apply_pass_gate(state: State, error_type: str, reason: str, gate: dict):
         return ("内容不合格", f"来源含不可核验 URL：{gate['fabricated_urls']}",
                 "疑似编造 URL")
     if not gate["len_ok"]:
-        return ("内容不合格", f"回答过短（{result_len} 字），未达 {PASS_MIN_CHARS} 字下限",
+        return ("内容不合格",
+                (f"回答正文过短（正文 {gate.get('body_chars', result_len)} 字 / "
+                 f"全文 {result_len} 字），未达 {PASS_MIN_CHARS} 字下限"),
                 "回答过短")
     if not gate["has_source_line"] or gate["cited_count"] < PASS_MIN_CITED:
         return ("降级通过",
@@ -350,7 +354,8 @@ def reflection_node(state: State):
     prompt = prompts.REFLECTION_PROMPT.format(
         topic=topic, result=state['result'],
         sources="\n".join(state.get('sources', [])) or "（无）",
-        evidence_stats=evidence_stats, composite_check_hint=composite_check_hint
+        evidence_stats=evidence_stats, composite_check_hint=composite_check_hint,
+        min_chars=PASS_MIN_CHARS,     # 阈值单一来源：config.PASS_MIN_CHARS
     )
 
     try:
@@ -424,6 +429,18 @@ _REPLAN_TYPES = {
 # 真正表示"检索层没拿到东西"的信号，用于把"检索失败"从定向重规划里摘出来
 _NO_EVIDENCE_HINTS = ("证据 0 条", "检索失败", "未获取到", "无结果", "检索无结果")
 
+# LLM 可自报、但落盘口径需要归一的标签。
+# 背景：prompts.REFLECTION_PROMPT 允许裁判返回「检索失败」，而历史写入时用的是归一后的
+# 「证据不足」；早先匹配却按 `[检索失败]` 找前缀，导致同类失败第 2 次出现时永远匹配不到
+# （repeat_hit 恒为 False）。现在「存储」与「匹配」共用 _norm_type 的结果。
+_TYPE_ALIASES = {"检索失败": "证据不足"}
+
+
+def _norm_type(error_type: str) -> str:
+    """把裁判自报的失败类型归一到落盘口径（只做标签映射，不改任何判定/路由）。"""
+    et = (error_type or "").strip()
+    return _TYPE_ALIASES.get(et, et)
+
 
 def _decide_next(state: State, error_type: str, reason: str):
     """判定 → 重规划决策。返回里带一个临时键 `_repeat_hit`，由调用方 pop 后写进 run_stats。
@@ -432,6 +449,8 @@ def _decide_next(state: State, error_type: str, reason: str):
     说明重规划没带来新信息（同一条 query / 同一批证据），继续原地重试只会空转到上限，
     因此第 2 次起直接转「证据不足」走自由反思（换检索式）。
     """
+    raw_type = (error_type or "").strip()
+    error_type = _norm_type(raw_type)      # 存储 / 匹配同形，见 _TYPE_ALIASES
     if error_type in ("通过", "降级通过"):
         return {"error_type": error_type, "_repeat_hit": False}
 
@@ -442,6 +461,9 @@ def _decide_next(state: State, error_type: str, reason: str):
     repeat_times = sum(1 for h in history
                        if isinstance(h, str) and h.startswith(f"[{error_type}]"))
     repeat_hit = repeat_times > 0
+
+    # 归一发生了（如 检索失败→证据不足）时保留原判，便于论文里追溯裁判措辞
+    note = f"原判{raw_type}：" if raw_type != error_type else ""
 
     if repeat_hit and ENABLE_REPEAT_RULE:
         print(f"  -> [{error_type}] 已重复出现 {repeat_times} 次，停止同类重规划，"
@@ -459,7 +481,7 @@ def _decide_next(state: State, error_type: str, reason: str):
         print("  -> 判定为分解不合理，触发【全局】重规划")
         return {"error_type": error_type, "replan_scope": "全局",
                 "replan_count": current_count + 1,
-                "reflection_history": history + [f"[{error_type}] {reason}"],
+                "reflection_history": history + [f"[{error_type}] {note}{reason}"],
                 "_repeat_hit": False}
 
     scope = _REPLAN_TYPES.get(error_type)
@@ -469,13 +491,13 @@ def _decide_next(state: State, error_type: str, reason: str):
               f"=> 触发【{scope}】重规划")
         return {"error_type": error_type, "replan_scope": scope,
                 "replan_count": current_count + 1,
-                "reflection_history": history + [f"[{error_type}] {reason}"],
+                "reflection_history": history + [f"[{error_type}] {note}{reason}"],
                 "_repeat_hit": False}
 
     print(f"  -> 无定向重规划依据（error_type={error_type}, no_evidence={no_evidence}），"
           f"回退到【自由反思】")
     return {"error_type": "证据不足", "replan_count": current_count + 1,
-            "reflection_history": history + [f"[证据不足] {reason}"],
+            "reflection_history": history + [f"[证据不足] {note}{reason}"],
             "_repeat_hit": False}
 
 def _build_retry_query(state: State) -> tuple:
@@ -546,6 +568,8 @@ def free_reflection_node(state: State):
                 "cited_count": gate["cited_count"],
                 "citation_ratio": gate["citation_ratio"],
                 "len_ok": gate["len_ok"],
+                "body_chars": gate.get("body_chars", 0),
+                "len_full": gate.get("len_full", 0),
                 "cited_loose": gate.get("cited_loose", []),
             })
         run_stats["reflection"] = prev_refl

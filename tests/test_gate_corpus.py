@@ -24,8 +24,9 @@ import agents.nodes as nodes  # noqa: E402
 import gate_vs_llm as gvl  # noqa: E402
 
 GOLD_LABELS = ("通过", "降级通过", "内容不合格", "分解不合理")
-# 规则列与真值不一致的样本：S05（来源行撑字数）、S14（偏题无字面信号）
-RULE_GAP = {"S05", "S14"}
+# 规则列与真值不一致的样本：只剩 S14（偏题无字面信号）。
+# S05（来源行撑字数）已由「字数门按正文计」修掉，所以不再是缺口。
+RULE_GAP = {"S14"}
 
 
 class GateCorpusTest(unittest.TestCase):

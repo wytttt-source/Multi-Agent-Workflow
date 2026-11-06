@@ -378,7 +378,10 @@ def search_with_evidence(topic: str, query: str = "") -> Tuple[str, List[str], L
             del _SEARCH_CACHE[cache_key]
         else:
             print(f"  -> [缓存] 命中内存缓存（{topic}）")
-            return context, sources, results, {**stats, "cache": "memory"}
+            # cache_source 必须一起改写：executor 聚合 run_stats.search.cache_sources 时
+            # 优先读 cache_source，只改 cache 会让"同进程命中"被记成 disk/network。
+            return context, sources, results, {**stats, "cache": "memory",
+                                               "cache_source": "memory"}
        
 
     print(f"  -> [检索] 主查询 '{query}'（provider={SEARCH_PROVIDER}）")

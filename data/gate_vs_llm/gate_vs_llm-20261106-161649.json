@@ -1,0 +1,1218 @@
+{
+  "meta": {
+    "ts": "2026-11-06T08:16:49.934747+00:00",
+    "repeat": 1,
+    "n_cases": 18,
+    "critic_model": "glm-5.3-flash",
+    "pass_min_chars": 120,
+    "pass_min_cited": 1,
+    "evidence_top_k": 3,
+    "columns": {
+      "R": "规则单独（safe_llm_invoke 强制失败）",
+      "L": "DISABLE_CONTENT_GATE=1 + 关覆盖率/重复（E2）",
+      "C": "默认开关（E3），回放 L 列的 LLM 返回"
+    }
+  },
+  "cases": [
+    {
+      "id": "S01",
+      "trap": "无【来源】行",
+      "gold": "降级通过",
+      "gold_note": "有 5 条证据但 0 条可核验引用；v2 口径只能降级，不计入合格样本",
+      "gold_alt": "降级通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "降级通过",
+        "decision_source": "gate",
+        "reason": "回答缺少可核验来源（【来源】=无，可核验引用 0 条 < 1），降级记录（不计入合格样本）",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "降级通过",
+        "evidence_count": 5,
+        "result_chars": 160
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答中缺失【来源】标注，未列出可核验的URL，触发硬性否决规则，来源不可核验/疑似编造；虽然内容本身围绕'生物细胞的结构'展开、字数超过120字且证据有5条，但按硬性规则不得判'通过'。",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 160,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答中缺失【来源】标注，未列出可核验的URL，触发硬性否决规则，来源不可核验/疑似编造；虽然内容本身围绕'生物细胞的结构'展开、字数超过120字且证据有5条，但按硬性规则不得判'通过'。",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 160,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答中缺失【来源】标注，未列出可核验的URL，触发硬性否决规则，来源不可核验/疑似编造；虽然内容本身围绕'生物细胞的结构'展开、字数超过120字且证据有5条，但按硬性规则不得判'通过'。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S02",
+      "trap": "编造 URL（外部域名）",
+      "gold": "内容不合格",
+      "gold_note": "URL 不在检索来源清单里 → 按 v2 口径视为编造",
+      "gold_alt": "内容不合格",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "内容不合格",
+        "decision_source": "gate",
+        "reason": "来源含不可核验 URL：['https://fake.example.com/x']",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 199
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答中【来源】列出的 URL（https://fake.example.com/x）不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则。虽然回答内容本身贴合主题、字数达标且证据条数为5，但来源问题优先否决，不得判通过。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 199,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答中【来源】列出的 URL（https://fake.example.com/x）不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则。虽然回答内容本身贴合主题、字数达标且证据条数为5，但来源问题优先否决，不得判通过。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 199,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答中【来源】列出的 URL（https://fake.example.com/x）不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则。虽然回答内容本身贴合主题、字数达标且证据条数为5，但来源问题优先否决，不得判通过。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S03",
+      "trap": "编造 URL（同域不同路径）",
+      "gold": "内容不合格",
+      "gold_note": "同域但路径不匹配、也不是来源 URL 的前缀 → 编造",
+      "gold_alt": "内容不合格",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "内容不合格",
+        "decision_source": "gate",
+        "reason": "来源含不可核验 URL：['https://m.koolearn.com/gaokao/20200225/9999999.html']",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 251
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答字数约150字（≥120），内容贴合主题且覆盖细胞膜、细胞质、细胞核及原核/真核区分，证据条数为5。但回答中【来源】列出的URL为 https://m.koolearn.com/gaokao/20200225/9999999.html，该URL不在实际检索来源清单中（实际来源为 .../1265003.html），标题相似但地址不符，来源不可核验/疑似编造，触发硬性否决规则，不得判通过。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 251,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答字数约150字（≥120），内容贴合主题且覆盖细胞膜、细胞质、细胞核及原核/真核区分，证据条数为5。但回答中【来源】列出的URL为 https://m.koolearn.com/gaokao/20200225/9999999.html，该URL不在实际检索来源清单中（实际来源为 .../1265003.html），标题相似但地址不符，来源不可核验/疑似编造，触发硬性否决规则，不得判通过。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 251,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答字数约150字（≥120），内容贴合主题且覆盖细胞膜、细胞质、细胞核及原核/真核区分，证据条数为5。但回答中【来源】列出的URL为 https://m.koolearn.com/gaokao/20200225/9999999.html，该URL不在实际检索来源清单中（实际来源为 .../1265003.html），标题相似但地址不符，来源不可核验/疑似编造，触发硬性否决规则，不得判通过。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S04",
+      "trap": "过短且无来源",
+      "gold": "内容不合格",
+      "gold_note": "60 字 < PASS_MIN_CHARS=120，字数门控先命中",
+      "gold_alt": "内容不合格",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "内容不合格",
+        "decision_source": "gate",
+        "reason": "回答过短（61 字），未达 120 字下限",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": false,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 61
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答缺少【来源】标注，列出的URL无法在来源清单中核验，触发硬性否决规则；同时字数仅约60字，少于120字且未声明降级，末句在'能分隔细'处疑似截断，细节不足（仅提及三种基本结构和细胞膜成分，未展开细胞质、细胞核等内容）。",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": false,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 61,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答缺少【来源】标注，列出的URL无法在来源清单中核验，触发硬性否决规则；同时字数仅约60字，少于120字且未声明降级，末句在'能分隔细'处疑似截断，细节不足（仅提及三种基本结构和细胞膜成分，未展开细胞质、细胞核等内容）。",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": false,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 61,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答缺少【来源】标注，列出的URL无法在来源清单中核验，触发硬性否决规则；同时字数仅约60字，少于120字且未声明降级，末句在'能分隔细'处疑似截断，细节不足（仅提及三种基本结构和细胞膜成分，未展开细胞质、细胞核等内容）。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S05",
+      "trap": "正文过短但来源行很长",
+      "gold": "内容不合格",
+      "gold_note": "正文只有 60 字；但 v2 的字数门按「全文长度」计，来源行把它撑到 154 字 → 规则会放过。用于暴露「字数门可被来源行注水」的弱点（与 S13 同属定义敏感项）",
+      "gold_alt": "通过",
+      "subjective": false,
+      "definition_sensitive": true,
+      "R": {
+        "verdict": "通过",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: 对照实验：本列不调用 LLM",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 154
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答仅约60字，少于120字且未声明降级，触发硬性否决规则；末句'能分隔细。'明显截断，内容不完整；虽有【来源】且URL在检索来源清单中，证据5条满足，但内容详实度不足，未覆盖细胞质、细胞核等基本结构的具体功能细节。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 154,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答仅约60字，少于120字且未声明降级，触发硬性否决规则；末句'能分隔细。'明显截断，内容不完整；虽有【来源】且URL在检索来源清单中，证据5条满足，但内容详实度不足，未覆盖细胞质、细胞核等基本结构的具体功能细节。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 154,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答仅约60字，少于120字且未声明降级，触发硬性否决规则；末句'能分隔细。'明显截断，内容不完整；虽有【来源】且URL在检索来源清单中，证据5条满足，但内容详实度不足，未覆盖细胞质、细胞核等基本结构的具体功能细节。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S06",
+      "trap": "URL 被全角括号+句号包裹",
+      "gold": "通过",
+      "gold_note": "URL 可核验，规则不应被中文标点绊倒（规则误伤风险点）",
+      "gold_alt": "通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "通过",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: 对照实验：本列不调用 LLM",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 255
+      },
+      "L": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'生物细胞的结构'，具体阐述了细胞膜、细胞质、细胞核及植物细胞壁，并区分原核细胞与真核细胞，内容完整、有细节，未偏离主题；字数约160字≥120；【来源】存在且URL（m.koolearn.com/gaokao/20200225/1265003.html#1）在实际检索来源清单中可核验；证据5条≥1，无balance偏侧问题，覆盖率规则已关闭。三条通过条件均满足。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 255,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "C": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'生物细胞的结构'，具体阐述了细胞膜、细胞质、细胞核及植物细胞壁，并区分原核细胞与真核细胞，内容完整、有细节，未偏离主题；字数约160字≥120；【来源】存在且URL（m.koolearn.com/gaokao/20200225/1265003.html#1）在实际检索来源清单中可核验；证据5条≥1，无balance偏侧问题，覆盖率规则已关闭。三条通过条件均满足。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 255,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"通过\", \"reason\": \"回答紧扣主题'生物细胞的结构'，具体阐述了细胞膜、细胞质、细胞核及植物细胞壁，并区分原核细胞与真核细胞，内容完整、有细节，未偏离主题；字数约160字≥120；【来源】存在且URL（m.koolearn.com/gaokao/20200225/1265003.html#1）在实际检索来源清单中可核验；证据5条≥1，无balance偏侧问题，覆盖率规则已关闭。三条通过条件均满足。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S07",
+      "trap": "URL 带锚点",
+      "gold": "通过",
+      "gold_note": "_norm_url 去锚点后应精确命中（规则误伤风险点）",
+      "gold_alt": "通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "通过",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: 对照实验：本列不调用 LLM",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 260
+      },
+      "L": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "证据5条（≥1）；回答含【来源】，URL基础地址 m.koolearn.com/gaokao/20200225/1265003.html 与实际检索来源第1条一致（仅锚点差异，来源可核验，非编造）；正文约160字（≥120）；内容紧扣主题'生物细胞的结构'，完整涵盖细胞膜、细胞质、细胞核三大基本结构、植物细胞壁及原核/真核细胞区分，未偏离至上位概念，内容具体且有细节。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 260,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "C": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "证据5条（≥1）；回答含【来源】，URL基础地址 m.koolearn.com/gaokao/20200225/1265003.html 与实际检索来源第1条一致（仅锚点差异，来源可核验，非编造）；正文约160字（≥120）；内容紧扣主题'生物细胞的结构'，完整涵盖细胞膜、细胞质、细胞核三大基本结构、植物细胞壁及原核/真核细胞区分，未偏离至上位概念，内容具体且有细节。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 260,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"通过\", \"reason\": \"证据5条（≥1）；回答含【来源】，URL基础地址 m.koolearn.com/gaokao/20200225/1265003.html 与实际检索来源第1条一致（仅锚点差异，来源可核验，非编造）；正文约160字（≥120）；内容紧扣主题'生物细胞的结构'，完整涵盖细胞膜、细胞质、细胞核三大基本结构、植物细胞壁及原核/真核细胞区分，未偏离至上位概念，内容具体且有细节。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S08",
+      "trap": "URL 被截断（prefix）",
+      "gold": "通过",
+      "gold_note": "截断写法应判为可核验前缀，不能当编造（规则误伤风险点）",
+      "gold_alt": "通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "通过",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: 对照实验：本列不调用 LLM",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": [
+            "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller"
+          ]
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 228
+      },
+      "L": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'生物细胞的结构'，涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞分类，并给出细胞膜成分与功能等细节，非上位概念；字数约160字≥120；含【来源】且URL与实际检索来源中的超星链接（mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller...）前缀完全匹配，可核验；证据5条≥1，满足全部硬性通过条件。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": [
+            "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller"
+          ]
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 228,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "C": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'生物细胞的结构'，涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞分类，并给出细胞膜成分与功能等细节，非上位概念；字数约160字≥120；含【来源】且URL与实际检索来源中的超星链接（mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller...）前缀完全匹配，可核验；证据5条≥1，满足全部硬性通过条件。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": [
+            "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller"
+          ]
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 228,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"通过\", \"reason\": \"回答紧扣主题'生物细胞的结构'，涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞分类，并给出细胞膜成分与功能等细节，非上位概念；字数约160字≥120；含【来源】且URL与实际检索来源中的超星链接（mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller...）前缀完全匹配，可核验；证据5条≥1，满足全部硬性通过条件。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S09",
+      "trap": "只写域名根",
+      "gold": "降级通过",
+      "gold_note": "引用不完整：域名根不指向具体页面 → 不算可核验引用（应降级）。但门控把它并进「编造 URL」→ 判内容不合格，属规则过严（定义敏感项）",
+      "gold_alt": "内容不合格",
+      "subjective": false,
+      "definition_sensitive": true,
+      "R": {
+        "verdict": "内容不合格",
+        "decision_source": "gate",
+        "reason": "来源含不可核验 URL：['https://m.koolearn.com']",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 222
+      },
+      "L": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'生物细胞的结构'，涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞分类，细节具体、非上位概念；字数约157字≥120；含【来源】，来源标题与实际检索来源第1条完全一致，URL为该来源域名，可核验非编造；证据5条≥1。同时满足三条通过条件。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 222,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "gate",
+        "reason": "来源含不可核验 URL：['https://m.koolearn.com']",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 222,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"通过\", \"reason\": \"回答紧扣主题'生物细胞的结构'，涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞分类，细节具体、非上位概念；字数约157字≥120；含【来源】，来源标题与实际检索来源第1条完全一致，URL为该来源域名，可核验非编造；证据5条≥1。同时满足三条通过条件。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S10",
+      "trap": "证据 0 条",
+      "gold": "降级通过",
+      "gold_note": "门控第 1 条：证据为空 → 降级，不能计入合格样本",
+      "gold_alt": "降级通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "降级通过",
+        "decision_source": "gate",
+        "reason": "回答可读但无外部证据支撑，降级记录（不计入合格样本）",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "降级通过",
+        "evidence_count": 0,
+        "result_chars": 252
+      },
+      "L": {
+        "verdict": "检索失败",
+        "decision_source": "llm",
+        "reason": "检索证据统计显示证据 0 条，触发硬性否决规则，不得判通过，只能判检索失败。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "证据不足",
+        "evidence_count": 0,
+        "result_chars": 252,
+        "agreement": 1.0,
+        "all": [
+          "检索失败"
+        ]
+      },
+      "C": {
+        "verdict": "检索失败",
+        "decision_source": "llm",
+        "reason": "检索证据统计显示证据 0 条，触发硬性否决规则，不得判通过，只能判检索失败。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "证据不足",
+        "evidence_count": 0,
+        "result_chars": 252,
+        "agreement": 1.0,
+        "all": [
+          "检索失败"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"检索失败\", \"reason\": \"检索证据统计显示证据 0 条，触发硬性否决规则，不得判通过，只能判检索失败。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S11",
+      "trap": "兜底未声明",
+      "gold": "降级通过",
+      "gold_note": "构造项：覆盖门控第 2 条「无资料兜底」，真实链路少见",
+      "gold_alt": "降级通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "降级通过",
+        "decision_source": "gate",
+        "reason": "无外部检索证据（模型知识兜底），降级记录（不计入合格样本）",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "降级通过",
+        "evidence_count": 5,
+        "result_chars": 160
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答内容本身贴合主题'生物细胞的结构'且字数超过120字，但回答中缺少'【来源】'标注，无法将内容与实际检索来源对应核验，来源不可核验/疑似编造，依据硬性否决规则不得判'通过'",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 160,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答内容本身贴合主题'生物细胞的结构'且字数超过120字，但回答中缺少'【来源】'标注，无法将内容与实际检索来源对应核验，来源不可核验/疑似编造，依据硬性否决规则不得判'通过'",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 160,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答内容本身贴合主题'生物细胞的结构'且字数超过120字，但回答中缺少'【来源】'标注，无法将内容与实际检索来源对应核验，来源不可核验/疑似编造，依据硬性否决规则不得判'通过'\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S12",
+      "trap": "6 条来源只引 2 条",
+      "gold": "通过",
+      "gold_note": "分母封顶后 2/3 已满足门槛；不能因「没全引」判不合格",
+      "gold_alt": "通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "通过",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: 对照实验：本列不调用 LLM",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 2,
+          "citation_ratio": 0.667,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 414
+      },
+      "L": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣'生物细胞的结构'主题，直接阐述细胞膜、细胞质、细胞核及植物细胞壁、原核与真核细胞的区别，内容具体详实，字数约160字（≥120）；【来源】中列出的两个URL均可在实际检索来源清单中找到，可核验；证据5条≥1，满足全部硬性通过条件，无偏题或偏侧问题。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 2,
+          "citation_ratio": 0.667,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 414,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "C": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣'生物细胞的结构'主题，直接阐述细胞膜、细胞质、细胞核及植物细胞壁、原核与真核细胞的区别，内容具体详实，字数约160字（≥120）；【来源】中列出的两个URL均可在实际检索来源清单中找到，可核验；证据5条≥1，满足全部硬性通过条件，无偏题或偏侧问题。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 2,
+          "citation_ratio": 0.667,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 414,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"通过\", \"reason\": \"回答紧扣'生物细胞的结构'主题，直接阐述细胞膜、细胞质、细胞核及植物细胞壁、原核与真核细胞的区别，内容具体详实，字数约160字（≥120）；【来源】中列出的两个URL均可在实际检索来源清单中找到，可核验；证据5条≥1，满足全部硬性通过条件，无偏题或偏侧问题。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S13",
+      "trap": "正文提及非来源链接",
+      "gold": "内容不合格",
+      "gold_note": "按 v2 口径任何不可核验 URL 都视为风险；语义上回答可读，属规则假阳性（见文档局限）",
+      "gold_alt": "内容不合格",
+      "subjective": false,
+      "definition_sensitive": true,
+      "R": {
+        "verdict": "内容不合格",
+        "decision_source": "gate",
+        "reason": "来源含不可核验 URL：['https://other.example.com/blog/1']",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 292
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答中列出的URL https://other.example.com/blog/1 不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则；尽管回答主题贴合、字数达标且【来源】中koolearn链接可核验，仍不得判通过",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 292,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答中列出的URL https://other.example.com/blog/1 不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则；尽管回答主题贴合、字数达标且【来源】中koolearn链接可核验，仍不得判通过",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 292,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答中列出的URL https://other.example.com/blog/1 不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则；尽管回答主题贴合、字数达标且【来源】中koolearn链接可核验，仍不得判通过\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S14",
+      "trap": "偏题（换主题回答）",
+      "gold": "内容不合格",
+      "gold_note": "格式与引用都合格，只有语义能发现「答非所问」——规则在这里必然失手",
+      "gold_alt": "内容不合格",
+      "subjective": true,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "通过",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: 对照实验：本列不调用 LLM",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 2,
+          "citation_ratio": 0.667,
+          "len_ok": true,
+          "cited_loose": [
+            "https://cloud.kepuchina.cn/h5/detail"
+          ]
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 324
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "严重偏题：主题是'生物细胞的结构'，但回答内容完全在讲量子计算与经典计算的区别（量子比特、叠加态、纠缠、指数加速等），与细胞结构毫无关联，未涉及任何细胞相关内容。虽然来源URL可核验且字数达标，但内容与主题完全不符，判不合格。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 2,
+          "citation_ratio": 0.667,
+          "len_ok": true,
+          "cited_loose": [
+            "https://cloud.kepuchina.cn/h5/detail"
+          ]
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 324,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "严重偏题：主题是'生物细胞的结构'，但回答内容完全在讲量子计算与经典计算的区别（量子比特、叠加态、纠缠、指数加速等），与细胞结构毫无关联，未涉及任何细胞相关内容。虽然来源URL可核验且字数达标，但内容与主题完全不符，判不合格。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 2,
+          "citation_ratio": 0.667,
+          "len_ok": true,
+          "cited_loose": [
+            "https://cloud.kepuchina.cn/h5/detail"
+          ]
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 324,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"严重偏题：主题是'生物细胞的结构'，但回答内容完全在讲量子计算与经典计算的区别（量子比特、叠加态、纠缠、指数加速等），与细胞结构毫无关联，未涉及任何细胞相关内容。虽然来源URL可核验且字数达标，但内容与主题完全不符，判不合格。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S15",
+      "trap": "复合主题证据单侧",
+      "gold": "分解不合理",
+      "gold_note": "子任务 Java 在证据里 0 命中 → 覆盖率 50%，规则前置否决，LLM 根本不参与",
+      "gold_alt": "分解不合理",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "分解不合理",
+        "decision_source": "coverage_rule",
+        "reason": "子任务覆盖率仅 50%，未覆盖：Java",
+        "gate": {
+          "has_source_line": null,
+          "cited_count": null,
+          "citation_ratio": null,
+          "len_ok": null,
+          "cited_loose": null
+        },
+        "error_type": "分解不合理",
+        "evidence_count": 3,
+        "result_chars": 340
+      },
+      "L": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题，在并发编程（Python GIL限制/多进程/asyncio vs Java java.util.concurrent/线程池/CompletableFuture）和内存管理（Python引用计数+分代GC vs Java JVM分代追踪式GC及内存占用开销）两个维度均对Python和Java作了实质对比，非上位概念，内容具体完整，字数约200字≥120；证据3条≥1，【来源】中列出的两个URL均可在实际检索来源清单中核验，三项硬性通过条件同时满足；检索统计中未出现balance且覆盖率规则已关闭，无需按偏侧或覆盖率不足判分解不合理。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 2,
+          "citation_ratio": 0.667,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 3,
+        "result_chars": 340,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "C": {
+        "verdict": "分解不合理",
+        "decision_source": "coverage_rule",
+        "reason": "子任务覆盖率仅 50%，未覆盖：Java",
+        "gate": {
+          "has_source_line": null,
+          "cited_count": null,
+          "citation_ratio": null,
+          "len_ok": null,
+          "cited_loose": null
+        },
+        "error_type": "分解不合理",
+        "evidence_count": 3,
+        "result_chars": 340,
+        "agreement": 1.0,
+        "all": [
+          "分解不合理"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"通过\", \"reason\": \"回答紧扣主题，在并发编程（Python GIL限制/多进程/asyncio vs Java java.util.concurrent/线程池/CompletableFuture）和内存管理（Python引用计数+分代GC vs Java JVM分代追踪式GC及内存占用开销）两个维度均对Python和Java作了实质对比，非上位概念，内容具体完整，字数约200字≥120；证据3条≥1，【来源】中列出的两个URL均可在实际检索来源清单中核验，三项硬性通过条件同时满足；检索统计中未出现balance且覆盖率规则已关闭，无需按偏侧或覆盖率不足判分解不合理。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S16",
+      "trap": "无证据但已声明",
+      "gold": "降级通过",
+      "gold_note": "降级 ≠ 不合格；关键是它不能计入合格样本",
+      "gold_alt": "降级通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "降级通过",
+        "decision_source": "gate",
+        "reason": "回答可读但无外部证据支撑，降级记录（不计入合格样本）",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "降级通过",
+        "evidence_count": 0,
+        "result_chars": 194
+      },
+      "L": {
+        "verdict": "检索失败",
+        "decision_source": "llm",
+        "reason": "检索证据统计显示证据 0 条，实际检索来源为空，未获取任何外部检索证据。虽然回答内容贴合主题、字数达标且已声明降级，但按硬性否决规则，证据 0 条时不得判通过，只能判检索失败。",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "证据不足",
+        "evidence_count": 0,
+        "result_chars": 194,
+        "agreement": 1.0,
+        "all": [
+          "检索失败"
+        ]
+      },
+      "C": {
+        "verdict": "检索失败",
+        "decision_source": "llm",
+        "reason": "检索证据统计显示证据 0 条，实际检索来源为空，未获取任何外部检索证据。虽然回答内容贴合主题、字数达标且已声明降级，但按硬性否决规则，证据 0 条时不得判通过，只能判检索失败。",
+        "gate": {
+          "has_source_line": false,
+          "cited_count": 0,
+          "citation_ratio": 0.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "证据不足",
+        "evidence_count": 0,
+        "result_chars": 194,
+        "agreement": 1.0,
+        "all": [
+          "检索失败"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"检索失败\", \"reason\": \"检索证据统计显示证据 0 条，实际检索来源为空，未获取任何外部检索证据。虽然回答内容贴合主题、字数达标且已声明降级，但按硬性否决规则，证据 0 条时不得判通过，只能判检索失败。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S17",
+      "trap": "真 URL + 编造 URL 混排",
+      "gold": "内容不合格",
+      "gold_note": "一条真引用不能冲抵一条编造引用",
+      "gold_alt": "内容不合格",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "内容不合格",
+        "decision_source": "gate",
+        "reason": "来源含不可核验 URL：['https://fake.example.com/y']",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 286
+      },
+      "L": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答内容贴合主题、字数达标、证据条数≥1，但【来源】中列出的 https://fake.example.com/y 不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则，不得判通过。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 286,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "C": {
+        "verdict": "内容不合格",
+        "decision_source": "llm",
+        "reason": "回答内容贴合主题、字数达标、证据条数≥1，但【来源】中列出的 https://fake.example.com/y 不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则，不得判通过。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 1,
+          "citation_ratio": 0.333,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "内容不合格",
+        "evidence_count": 5,
+        "result_chars": 286,
+        "agreement": 1.0,
+        "all": [
+          "内容不合格"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"内容不合格\", \"reason\": \"回答内容贴合主题、字数达标、证据条数≥1，但【来源】中列出的 https://fake.example.com/y 不在实际检索来源清单中，来源不可核验/疑似编造，触发硬性否决规则，不得判通过。\"}"
+      ],
+      "elapsed_s": 0.0
+    },
+    {
+      "id": "S18",
+      "trap": "正常合格（对照组）",
+      "gold": "通过",
+      "gold_note": "对照组：三列都应该判通过",
+      "gold_alt": "通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "R": {
+        "verdict": "通过",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: 对照实验：本列不调用 LLM",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 3,
+          "citation_ratio": 1.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 473
+      },
+      "L": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'生物细胞的结构'，完整涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞的区分，内容具体且字数远超120字；【来源】齐全且三个URL均可在实际检索来源中核验，证据共5条满足硬性条件，无偏题或分解问题。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 3,
+          "citation_ratio": 1.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 473,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "C": {
+        "verdict": "通过",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'生物细胞的结构'，完整涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞的区分，内容具体且字数远超120字；【来源】齐全且三个URL均可在实际检索来源中核验，证据共5条满足硬性条件，无偏题或分解问题。",
+        "gate": {
+          "has_source_line": true,
+          "cited_count": 3,
+          "citation_ratio": 1.0,
+          "len_ok": true,
+          "cited_loose": []
+        },
+        "error_type": "通过",
+        "evidence_count": 5,
+        "result_chars": 473,
+        "agreement": 1.0,
+        "all": [
+          "通过"
+        ]
+      },
+      "llm_raw": [
+        "{\"error_type\": \"通过\", \"reason\": \"回答紧扣主题'生物细胞的结构'，完整涵盖细胞膜、细胞质、细胞核、植物细胞壁及原核/真核细胞的区分，内容具体且字数远超120字；【来源】齐全且三个URL均可在实际检索来源中核验，证据共5条满足硬性条件，无偏题或分解问题。\"}"
+      ],
+      "elapsed_s": 0.0
+    }
+  ]
+}

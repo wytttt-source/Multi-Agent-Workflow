@@ -1,0 +1,927 @@
+{
+  "meta": {
+    "generated_at": "2026-11-06T07:55:54.280475+00:00",
+    "generator": "python experiments/gate_vs_llm.py --build",
+    "n_cases": 18,
+    "base_records": {
+      "A": "data\\runs_v2\\E3\\生物细胞的结构-20261105-215051.json",
+      "B": "data\\runs_v2\\E3\\比较Python和Java在并发编程与内存管理上-20261105-222616.json",
+      "C": "data\\runs_v2\\E3\\量子计算和经典计算的区别-20261105-215823.json"
+    },
+    "note": "样本由 data/runs_v2/E3 的真实输出受控损坏得到；gold 按 v2 客观口径：证据非空 / 字数≥120 / URL 可在来源清单核验 / 贴合主题。"
+  },
+  "cases": [
+    {
+      "id": "S01",
+      "trap": "无【来源】行",
+      "derivation": "删除真实回答末行的【来源】，其余原样",
+      "gold": "降级通过",
+      "gold_note": "有 5 条证据但 0 条可核验引用；v2 口径只能降级，不计入合格样本",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "降级通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S02",
+      "trap": "编造 URL（外部域名）",
+      "derivation": "把【来源】的 URL 换成不存在的域名 fake.example.com",
+      "gold": "内容不合格",
+      "gold_note": "URL 不在检索来源清单里 → 按 v2 口径视为编造",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "内容不合格",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】细胞的基本结构 https://fake.example.com/x",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S03",
+      "trap": "编造 URL（同域不同路径）",
+      "derivation": "保留真实域名，只把路径段改掉（1265003 → 9999999）",
+      "gold": "内容不合格",
+      "gold_note": "同域但路径不匹配、也不是来源 URL 的前缀 → 编造",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "内容不合格",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 https://m.koolearn.com/gaokao/20200225/9999999.html",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S04",
+      "trap": "过短且无来源",
+      "derivation": "正文截断到 60 字并去掉【来源】",
+      "gold": "内容不合格",
+      "gold_note": "60 字 < PASS_MIN_CHARS=120，字数门控先命中",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "内容不合格",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细。",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S05",
+      "trap": "正文过短但来源行很长",
+      "derivation": "正文截断到 60 字，【来源】保留真实 URL（来源行本身 ~90 字）",
+      "gold": "内容不合格",
+      "gold_note": "正文只有 60 字；但 v2 的字数门按「全文长度」计，来源行把它撑到 154 字 → 规则会放过。用于暴露「字数门可被来源行注水」的弱点（与 S13 同属定义敏感项）",
+      "subjective": false,
+      "definition_sensitive": true,
+      "gold_alt": "通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细。\n【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S06",
+      "trap": "URL 被全角括号+句号包裹",
+      "derivation": "【来源】写成「标题（URL）。」——真实模型常见写法",
+      "gold": "通过",
+      "gold_note": "URL 可核验，规则不应被中文标点绊倒（规则误伤风险点）",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版（https://m.koolearn.com/gaokao/20200225/1265003.html#1）。",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S07",
+      "trap": "URL 带锚点",
+      "derivation": "引用时追加 #section2（来源存的是 #1）",
+      "gold": "通过",
+      "gold_note": "_norm_url 去锚点后应精确命中（规则误伤风险点）",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 https://m.koolearn.com/gaokao/20200225/1265003.html#section2",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S08",
+      "trap": "URL 被截断（prefix）",
+      "derivation": "把 chaoxing 长 URL 截到路径边界 /ztnodedetailcontroller（实跑案例）",
+      "gold": "通过",
+      "gold_note": "截断写法应判为可核验前缀，不能当编造（规则误伤风险点）",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】全屏显示 https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S09",
+      "trap": "只写域名根",
+      "derivation": "【来源】只给 https://域名，不给具体页面（域名真实存在于来源清单）",
+      "gold": "降级通过",
+      "gold_note": "引用不完整：域名根不指向具体页面 → 不算可核验引用（应降级）。但门控把它并进「编造 URL」→ 判内容不合格，属规则过严（定义敏感项）",
+      "subjective": false,
+      "definition_sensitive": true,
+      "gold_alt": "内容不合格",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 https://m.koolearn.com",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S10",
+      "trap": "证据 0 条",
+      "derivation": "回答与来源保持原样，把 state.evidence 置空（模拟检索层没拿到东西）",
+      "gold": "降级通过",
+      "gold_note": "门控第 1 条：证据为空 → 降级，不能计入合格样本",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "降级通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S11",
+      "trap": "兜底未声明",
+      "derivation": "used_fallback=True（补检索失败、模型知识兜底）但回答没写【声明】",
+      "gold": "降级通过",
+      "gold_note": "构造项：覆盖门控第 2 条「无资料兜底」，真实链路少见",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "降级通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": true,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S12",
+      "trap": "6 条来源只引 2 条",
+      "derivation": "来源清单 6 条（真实 5 条 + 叠加 1 条），回答只引用其中 2 条（引用率分母封顶 EVIDENCE_TOP_K=3）",
+      "gold": "通过",
+      "gold_note": "分母封顶后 2/3 已满足门槛；不能因「没全引」判不合格",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】《高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版》https://m.koolearn.com/gaokao/20200225/1265003.html#1；《真核細胞的構造（課本P.30-31）》https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+          "所以经典计算机不可能比量子计算机强大 | https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S13",
+      "trap": "正文提及非来源链接",
+      "derivation": "正文插入「延伸阅读：https://other.example.com/blog/1」，其余（含【来源】）保持原样",
+      "gold": "内容不合格",
+      "gold_note": "按 v2 口径任何不可核验 URL 都视为风险；语义上回答可读，属规则假阳性（见文档局限）",
+      "subjective": false,
+      "definition_sensitive": true,
+      "gold_alt": "内容不合格",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁（延伸阅读：https://other.example.com/blog/1）。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S14",
+      "trap": "偏题（换主题回答）",
+      "derivation": "主题=生物细胞的结构，result/sources/evidence 全换成「量子计算和经典计算」的真实记录",
+      "gold": "内容不合格",
+      "gold_note": "格式与引用都合格，只有语义能发现「答非所问」——规则在这里必然失手",
+      "subjective": true,
+      "definition_sensitive": false,
+      "gold_alt": "内容不合格",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "经典计算使用经典比特，每比特只能为0或1，通常逐个处理状态；量子计算使用量子比特，可同时处于0和1的叠加态，并借助纠缠、干涉等特性并行处理多种可能状态。量子态随规模增长呈指数增加，经典计算机难以完整存储和模拟；量子计算在某些问题上可实现指数级加速。\n\n【来源】《量子计算：打开未知领域的魔幻之门》https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568；《什么是量子计算？ - Azure Quantum》https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1",
+        "sources": [
+          "所以经典计算机不可能比量子计算机强大 | https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27",
+          "什么是量子计算？ - Azure Quantum - 跳至主要内容 跳到 Ask Learn 聊天体验 | https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1",
+          "量子计算：打开未知领域的魔幻之门 | https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568",
+          "什麼是量子運算？ - Azure Quantum | https://learn.microsoft.com/zh-tw/azure/quantum/overview-understanding-quantum-computing#1",
+          "量子计算和普通算数有什么区别？ | https://www.kepuchina.cn/article/articleinfo?ar_id=544732&business_type=100&classify=0"
+        ],
+        "evidence": [
+          {
+            "title": "所以经典计算机不可能比量子计算机强大",
+            "url": "https://www.phy.pku.edu.cn/wubiao/en/pdf/pop_qm_pkupress.pdf#27#31#27",
+            "summary": "所以经典计算机不可能比量子计算机强大",
+            "content": ""
+          },
+          {
+            "title": "什么是量子计算？ - Azure Quantum - 跳至主要内容 跳到 Ask Learn 聊天体验",
+            "url": "https://learn.microsoft.com/zh-cn/azure/quantum/overview-understanding-quantum-computing#1",
+            "summary": "什么是量子计算？ - Azure Quantum - 跳至主要内容 跳到 Ask Learn 聊天体验",
+            "content": ""
+          },
+          {
+            "title": "量子计算：打开未知领域的魔幻之门",
+            "url": "https://cloud.kepuchina.cn/h5/detail?id=7250593145392365568",
+            "summary": "量子计算：打开未知领域的魔幻之门",
+            "content": ""
+          },
+          {
+            "title": "什麼是量子運算？ - Azure Quantum",
+            "url": "https://learn.microsoft.com/zh-tw/azure/quantum/overview-understanding-quantum-computing#1",
+            "summary": "什麼是量子運算？ - Azure Quantum",
+            "content": ""
+          },
+          {
+            "title": "量子计算和普通算数有什么区别？",
+            "url": "https://www.kepuchina.cn/article/articleinfo?ar_id=544732&business_type=100&classify=0",
+            "summary": "量子计算和普通算数有什么区别？",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S15",
+      "trap": "复合主题证据单侧",
+      "derivation": "topic=比较Python和Java…，subtasks=[Python, Java]，证据/来源只保留 Python 一侧（3 条标题改写）",
+      "gold": "分解不合理",
+      "gold_note": "子任务 Java 在证据里 0 命中 → 覆盖率 50%，规则前置否决，LLM 根本不参与",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "分解不合理",
+      "state": {
+        "topic": "比较Python和Java在并发编程与内存管理上的差异",
+        "result": "并发上，Python（CPython）受GIL限制，多线程只能交替执行、难以利用多核，常借多进程或asyncio补足；Java依托JVM线程与java.util.concurrent，提供线程池、CompletableFuture等，更适合多核并发。内存管理上，Python以引用计数为主、分代GC为辅，循环引用需额外处理；Java依赖JVM分代追踪式GC，策略复杂高效，但JVM内存占用与冷启动开销较明显。\n【来源】《Python 并发编程与内存管理（派生自真实证据）》https://docs.python.org/3/library/asyncio.html；《Python GIL 与多进程实践（派生）》https://realpython.com/python-gil/",
+        "sources": [
+          "Python 并发编程与内存管理（派生自真实证据） | https://docs.python.org/3/library/asyncio.html",
+          "Python GIL 与多进程实践（派生） | https://realpython.com/python-gil/",
+          "Python 内存管理与引用计数（派生） | https://docs.python.org/3/c-api/memory.html"
+        ],
+        "evidence": [
+          {
+            "title": "Python 并发编程与内存管理（派生自真实证据）",
+            "url": "https://docs.python.org/3/library/asyncio.html",
+            "summary": "Python 并发编程与内存管理（派生自真实证据）",
+            "content": ""
+          },
+          {
+            "title": "Python GIL 与多进程实践（派生）",
+            "url": "https://realpython.com/python-gil/",
+            "summary": "Python GIL 与多进程实践（派生）",
+            "content": ""
+          },
+          {
+            "title": "Python 内存管理与引用计数（派生）",
+            "url": "https://docs.python.org/3/c-api/memory.html",
+            "summary": "Python 内存管理与引用计数（派生）",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": [
+          "Python",
+          "Java"
+        ]
+      }
+    },
+    {
+      "id": "S16",
+      "trap": "无证据但已声明",
+      "derivation": "回答前置【声明】（基于模型知识），evidence/sources 置空、used_fallback=True",
+      "gold": "降级通过",
+      "gold_note": "降级 ≠ 不合格；关键是它不能计入合格样本",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "降级通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "【声明】本文未获取到外部检索证据，内容基于模型内部知识，仅供参考。\n生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。",
+        "sources": [],
+        "evidence": [],
+        "used_fallback": true,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S17",
+      "trap": "真 URL + 编造 URL 混排",
+      "derivation": "【来源】里同时给真实可核验 URL 和 fake.example.com",
+      "gold": "内容不合格",
+      "gold_note": "一条真引用不能冲抵一条编造引用",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "内容不合格",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。\n【来源】高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 https://m.koolearn.com/gaokao/20200225/1265003.html#1；另一份资料 https://fake.example.com/y",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    },
+    {
+      "id": "S18",
+      "trap": "正常合格（对照组）",
+      "derivation": "E3 真实记录原样（含【来源】与 3 条可核验 URL）",
+      "gold": "通过",
+      "gold_note": "对照组：三列都应该判通过",
+      "subjective": false,
+      "definition_sensitive": false,
+      "gold_alt": "通过",
+      "state": {
+        "topic": "生物细胞的结构",
+        "result": "生物细胞的基本结构主要包括细胞膜、细胞质和细胞核；植物细胞还具细胞壁。细胞膜以脂质和蛋白质为主，具有选择透过性，能分隔细胞内外、控制物质进出并参与信息交流。细胞质中含多种细胞器，是代谢的重要场所。根据有无核膜包围的细胞核，细胞可分为原核细胞和真核细胞：原核细胞较小、无成形细胞核，真核细胞较大、有真正细胞核和多种细胞器。  \n【来源】《高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版》https://m.koolearn.com/gaokao/20200225/1265003.html#1；《真核細胞的構造（課本P.30-31）》https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1；《高三生物知识点：细胞的结构和功能》http://hf.xdf.cn/201510/148232962.html",
+        "sources": [
+          "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版 | https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+          "真核細胞的構造（課本P.30-31） | https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+          "高三生物知识点：细胞的结构和功能 | http://hf.xdf.cn/201510/148232962.html",
+          "全屏显示 专题 章节 | https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+          "生物分子组织-伯远生物 | https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html"
+        ],
+        "evidence": [
+          {
+            "title": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "url": "https://m.koolearn.com/gaokao/20200225/1265003.html#1",
+            "summary": "高一生物《细胞的基本结构》知识点归纳_高一生物资讯-新东方在线移动版",
+            "content": ""
+          },
+          {
+            "title": "真核細胞的構造（課本P.30-31）",
+            "url": "https://www.openclass.chc.edu.tw/storage/38/111/%e8%aa%b2%e7%a8%8b%e8%b3%87%e6%96%99.pdf/oMWUjgpgJ3KJpE3Z4SGMed74F5fAfodfrjg97ceI.pdf#1#1#1",
+            "summary": "真核細胞的構造（課本P.30-31）",
+            "content": ""
+          },
+          {
+            "title": "高三生物知识点：细胞的结构和功能",
+            "url": "http://hf.xdf.cn/201510/148232962.html",
+            "summary": "高三生物知识点：细胞的结构和功能",
+            "content": ""
+          },
+          {
+            "title": "全屏显示 专题 章节",
+            "url": "https://mooc1.chaoxing.com/mooc-ans/ztnodedetailcontroller/visitnodedetail?courseId=200901994&knowledgeId=116677997&_from_=&_fromV2_=&rtag=",
+            "summary": "全屏显示 专题 章节",
+            "content": ""
+          },
+          {
+            "title": "生物分子组织-伯远生物",
+            "url": "https://www.biorun.com/shengwufenzizuzhiboyuanshengwu.html",
+            "summary": "生物分子组织-伯远生物",
+            "content": ""
+          }
+        ],
+        "used_fallback": false,
+        "subtasks": []
+      }
+    }
+  ]
+}

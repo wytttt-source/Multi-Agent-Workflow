@@ -250,9 +250,19 @@ def rule_filter(topic: str, results: List[dict]) -> List[dict]:
 
 def llm_relevance_filter(topic: str, results: List[dict],
                          field: str = "summary",
-                         max_len: int = EVIDENCE_SUMMARY_MAX) -> List[dict]:
-    """第②层过滤：GLM 异构裁判，基于长摘要判断是否切题（上位概念应判不相关）。"""
+                         max_len: int = EVIDENCE_SUMMARY_MAX,
+                         stats_out: dict = None) -> List[dict]:
+    """第②层过滤：GLM 异构裁判，基于长摘要判断是否切题（上位概念应判不相关）。
+
+    stats_out：可选，写回 {applied, dropped/kept} 或 {applied: False, reason}。
+    论文里必须能区分「裁判没跑（故障/关闭）」与「跑了但没剔」——否则剔除率不可解释。
+    """
+    def _mark(**kw):
+        if stats_out is not None:
+            stats_out.update(kw)
+
     if not results:
+        _mark(applied=False, reason="无结果")
         return results
     items = "\n".join(
         f"{i+1}. 标题：{r.get('title', '')}\n"
@@ -276,9 +286,13 @@ def llm_relevance_filter(topic: str, results: List[dict],
             else:
                 kept.append(r)
         print(f"  -> [过滤-LLM] 保留 {len(kept)}/{len(results)} 条")
+        _mark(applied=True, kept=len(kept), dropped=len(drop_idx),
+              total=len(results))
         return kept
     except Exception as e:
         print(f"  -> [过滤-LLM] 判断失败({str(e)[:60]})，保留全部结果")
+        # 失败时行为与旧版一致（fail-safe 保留全部），但必须留下痕迹
+        _mark(applied=False, reason=str(e)[:80], total=len(results))
         return results
 
 def evidence_coverage(topic: str, results: List[dict]) -> dict:
@@ -433,7 +447,11 @@ def search_with_evidence(topic: str, query: str = "") -> Tuple[str, List[str], L
     print(f"  -> [过滤] 结构化信号过滤后：{gated_count} 条")
 
     if results and USE_LLM_RELEVANCE_FILTER:
-        results = llm_relevance_filter(topic, results)
+        filter_info = {}
+        results = llm_relevance_filter(topic, results, stats_out=filter_info)
+    else:
+        # 关闭开关时也显式落盘，避免「过滤条数=原始条数」被误读成裁判没剔
+        filter_info = {"applied": False, "reason": "disabled"}
 
     context, sources = build_evidence(results)
     archive_path = ""
@@ -456,6 +474,7 @@ def search_with_evidence(topic: str, query: str = "") -> Tuple[str, List[str], L
         "avg_summary": round(sum(len(r.get("summary") or "") for r in results) / len(results), 1) if results else 0.0,
         "avg_content": round(sum(len(r.get("content") or "") for r in results) / len(results), 1) if results else 0.0,
         "providers": providers,
+        "llm_filter": filter_info,      # v2.2：区分「裁判没跑」与「跑了没剔」
         "cache": cache_source,          # memory / disk / network / bing
         "cache_source": cache_source,   # P1-4：显式口径，论文统计只看这个字段
         "degraded": bool(SEARCH_PROVIDER == "deepseek" and "bing" in providers),

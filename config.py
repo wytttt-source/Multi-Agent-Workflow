@@ -52,6 +52,14 @@ PASS_MIN_CHARS = int(os.getenv("PASS_MIN_CHARS", "120"))
 #   drop_lang    = 去掉 lang:zh 语言限定，扩大召回
 #   same         = 沿用原 query（对照实验用，会命中同一份磁盘缓存）
 RETRY_QUERY_MODE = os.getenv("RETRY_QUERY_MODE", "missing_term").strip().lower()
+# v2.2 完整性：命中确定性截断信号（结尾落在逗号/连接词、括号不配对）即判「内容不合格」。
+# 只改判定，不改生成；关掉即回到 v2.1 的「只要够长且引用可核验就算通过」。
+ENABLE_TRUNCATION_RULE = _flag("ENABLE_TRUNCATION_RULE", True)
+# v2.2 降级救援：把「可读但缺资料」的否决改判「降级通过」，只修三态粒度，
+# **不会**把否决改判为通过（二分类指标不受影响）。关掉即回到 v2.1 的单向闸门。
+ENABLE_DEGRADE_RESCUE = _flag("ENABLE_DEGRADE_RESCUE", True)
+# v2.2 引用率下限：0 = 不参与判定（保持 v2.1 行为）；设 0.5 即要求「引用条数 / min(来源数, TOP_K) >= 50%」。
+PASS_MIN_CITATION_RATIO = float(os.getenv("PASS_MIN_CITATION_RATIO", "0") or 0)
 
 # ================= 1.3 实验开关（论文 E1~E6 的 A/B 变量） =================
 # 全部写入 data/runs_v2/<组>/ 的 JSON config 段，保证"某份记录属于哪组实验"可自证。

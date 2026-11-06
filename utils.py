@@ -80,6 +80,25 @@ _CITED_URL_RE = re.compile(r"https?://[^\s，。；、,;!?！？\"'”’）)】
 # 来源行标记：回答正文与"来源清单"的分界
 _SOURCE_MARK = "【来源】"
 
+# ================= 完整性信号（v2.2） =================
+# 只覆盖"确定能判定"的形态：结尾停在分隔符、停在连接词、括号没闭合。
+# 语义截断（以句号收尾但话没说完）不在确定性范围内，靠字数门与语义裁判兜住。
+_TRUNC_TAIL_CHARS = "，、；：,;:…"
+_TRUNC_CONNECTIVE_TAILS = ("以及", "和", "与", "及", "等", "例如", "比如",
+                           "但是", "而且", "并且", "其中", "包括")
+_BRACKET_PAIRS = (("（", "）"), ("(", ")"), ("【", "】"), ("「", "」"),
+                  ("《", "》"), ("“", "”"))
+
+
+def _body_text(text: str) -> str:
+    """回答「正文」：剔除【来源】及其后的全部内容，并去掉整行只有 URL 的行。
+
+    字数门与完整性检查共用同一份正文，避免两处口径再次分叉。
+    """
+    head = (text or "").split(_SOURCE_MARK, 1)[0]
+    lines = [ln.strip() for ln in head.splitlines()]
+    return "\n".join(ln for ln in lines if ln and not _CITED_URL_RE.fullmatch(ln))
+
 
 def _body_chars(text: str) -> int:
     """回答「正文」字数：剔除【来源】及其后的全部内容，并去掉整行只有 URL 的行。
@@ -87,10 +106,33 @@ def _body_chars(text: str) -> int:
     为什么要按正文而不按全文计：旧口径用 len(全文)，模型只要在【来源】里堆长标题
     就能把 60 字的正文撑到 154 字（样本 S05），字数门形同虚设。
     """
-    head = (text or "").split(_SOURCE_MARK, 1)[0]
-    lines = [ln.strip() for ln in head.splitlines()]
-    body = "\n".join(ln for ln in lines if ln and not _CITED_URL_RE.fullmatch(ln))
-    return len(body)
+    return len(_body_text(text))
+
+
+def _looks_truncated(text: str) -> dict:
+    """确定性截断信号：只报事实，判定在 agents._apply_pass_gate。
+
+    返回 {"truncated": bool, "hits": [...]}：hits 直接写进落盘，便于论文里复查
+    "这条为什么判内容不合格"——不用回看原文猜。
+    """
+    body = _body_text(text).rstrip()
+    if not body:
+        return {"truncated": False, "hits": []}
+
+    hits = []
+    if body[-1] in _TRUNC_TAIL_CHARS:
+        hits.append("结尾停在分隔符")
+    else:
+        for w in _TRUNC_CONNECTIVE_TAILS:
+            if body.endswith(w):
+                hits.append(f"结尾停在连接词({w})")
+                break
+    for left, right in _BRACKET_PAIRS:
+        n_left, n_right = body.count(left), body.count(right)
+        if n_left != n_right:
+            hits.append(f"括号不配对({right if n_left > n_right else left})")
+            break
+    return {"truncated": bool(hits), "hits": hits}
 
 
 def _verified_kind(url: str, source_urls: set) -> str:
@@ -115,15 +157,18 @@ def _verified_kind(url: str, source_urls: set) -> str:
 
 
 def content_gate(result: str, sources: list, evidence: list,
-                 min_chars: int = None) -> dict:
+                 min_chars: int = None, min_citation_ratio: float = None) -> dict:
     """确定性门控：把"回答是否满足可判通过的最低条件"变成可复现的事实清单。
 
     只报事实，不做判定（判定见 agents._apply_pass_gate），便于单测与论文复算。
     """
-    from config import PASS_MIN_CHARS, EVIDENCE_TOP_K
+    from config import PASS_MIN_CHARS, EVIDENCE_TOP_K, PASS_MIN_CITATION_RATIO
     text = (result or "").strip()
     limit = PASS_MIN_CHARS if min_chars is None else min_chars
+    limit_ratio = (PASS_MIN_CITATION_RATIO if min_citation_ratio is None
+                   else min_citation_ratio)
     body_chars = _body_chars(text)
+    trunc = _looks_truncated(text)
 
     cited = _CITED_URL_RE.findall(text)
     source_urls = set()
@@ -138,6 +183,7 @@ def content_gate(result: str, sources: list, evidence: list,
     # 引用率分母取"可用来源数，上限 EVIDENCE_TOP_K（默认 3）"：
     # 检索给了 6 条但只引用 3 条不算违规；阈值外置后做实验可直接调
     denom = max(1, min(len(source_urls), EVIDENCE_TOP_K))
+    ratio = round(min((len(verified) + len(loose)) / denom, 1.0), 3)
 
     return {
         # 字数门按「正文」计：来源清单再长也不算内容（否则 S05 靠来源行注水过关）
@@ -152,6 +198,11 @@ def content_gate(result: str, sources: list, evidence: list,
         "cited_count": len(verified) + len(loose),
         "cited_loose": sorted(loose)[:3],
         # 分母封顶 EVIDENCE_TOP_K，分子超过门槛时压到 1.0（原始条数看 cited_count）
-        "citation_ratio": round(min((len(verified) + len(loose)) / denom, 1.0), 3),
+        "citation_ratio": ratio,
+        "citation_ratio_ok": ratio >= limit_ratio,
+        "citation_ratio_limit": limit_ratio,
+        # 完整性信号（v2.2）：只覆盖可判定的截断形态，语义截断交给语义裁判
+        "truncated": trunc["truncated"],
+        "truncation_hits": trunc["hits"],
     }
 

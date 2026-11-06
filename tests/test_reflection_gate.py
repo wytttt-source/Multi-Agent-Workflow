@@ -357,6 +357,144 @@ class SearchCacheStatsTest(unittest.TestCase):
 
 
 
+class TruncationTest(unittest.TestCase):
+    """v2.2 完整性：只覆盖可判定的截断形态，正常回答不得误伤。"""
+
+    TRUNC = LONG + "，\n【来源】细胞结构 https://a.com/1"
+
+    def test_t1_ends_with_separator_is_truncated(self):
+        gate = content_gate(self.TRUNC, SOURCES, EVIDENCE)
+        self.assertTrue(gate["truncated"])
+        self.assertEqual(gate["truncation_hits"], ["结尾停在分隔符"])
+
+        verdict, reason, hit = nodes._apply_pass_gate(
+            _state(result=self.TRUNC), "通过", "LLM 判通过", gate)
+        self.assertEqual(verdict, "内容不合格")
+        self.assertEqual(hit, "回答截断")
+        self.assertIn("完整性不达标", reason)
+
+    def test_t2_unbalanced_bracket_is_truncated(self):
+        text = LONG + "（注：细胞膜\n【来源】细胞结构 https://a.com/1"
+        gate = content_gate(text, SOURCES, EVIDENCE)
+        self.assertTrue(gate["truncated"])
+        self.assertIn("括号不配对", gate["truncation_hits"][0])
+
+    def test_t3_normal_answer_not_truncated(self):
+        gate = content_gate(WITH_SOURCE, SOURCES, EVIDENCE)
+        self.assertFalse(gate["truncated"])
+        self.assertEqual(gate["truncation_hits"], [])
+
+    def test_t4_switch_off_keeps_v21_behavior(self):
+        with mock.patch.object(nodes, "ENABLE_TRUNCATION_RULE", False):
+            gate = content_gate(self.TRUNC, SOURCES, EVIDENCE)
+            verdict, _, hit = nodes._apply_pass_gate(
+                _state(result=self.TRUNC), "通过", "x", gate)
+        self.assertEqual(verdict, "通过")
+        self.assertEqual(hit, "")
+
+
+class DegradeRescueTest(unittest.TestCase):
+    """v2.2 降级救援：只把否决改判降级，永不改成通过；偏题/编造不得被救。"""
+
+    DECLARED = ("【声明】本文未获取到外部检索证据，内容基于模型内部知识，仅供参考。\n"
+                + LONG)
+    ON_TOPIC = ("生物细胞的结构包括细胞膜、细胞质和细胞核，植物细胞还具有细胞壁；"
+                "细胞膜具有选择透过性，细胞质中含多种细胞器，细胞核储存遗传信息，"
+                "原核细胞没有成形的细胞核，真核细胞有核膜包围的细胞核。") * 2
+
+    def test_r1_declared_no_evidence_is_degraded(self):
+        state = _state(result=self.DECLARED, sources=[], evidence=[], used_fallback=True)
+        rescued, reason, rule = nodes._apply_degrade_rescue(
+            state, "证据不足", "检索无结果", content_gate(self.DECLARED, [], []))
+        self.assertEqual(rescued, "降级通过")
+        self.assertEqual(rule, "声明式兜底")
+        self.assertIn("不计入合格样本", reason)
+
+    def test_r2_used_fallback_is_degraded(self):
+        state = _state(result=LONG, sources=[], evidence=[], used_fallback=True)
+        rescued, _, rule = nodes._apply_degrade_rescue(
+            state, "内容不合格", "偏题", content_gate(LONG, [], []))
+        self.assertEqual((rescued, rule), ("降级通过", "无资料兜底"))
+
+    def test_r3_readable_without_citation_is_degraded(self):
+        state = _state(result=self.ON_TOPIC)
+        rescued, _, rule = nodes._apply_degrade_rescue(
+            state, "内容不合格", "未标注来源",
+            content_gate(self.ON_TOPIC, SOURCES, EVIDENCE))
+        self.assertEqual((rescued, rule), ("降级通过", "未引用来源"))
+
+    def test_r3b_off_topic_is_not_rescued(self):
+        # LONG 讲的是量子计算，主题是生物细胞 → 偏题不得被降级救援放过
+        state = _state(result=LONG)
+        rescued, _, rule = nodes._apply_degrade_rescue(
+            state, "内容不合格", "偏题", content_gate(LONG, SOURCES, EVIDENCE))
+        self.assertEqual((rescued, rule), ("内容不合格", ""))
+
+    def test_r4_fabricated_url_is_not_rescued(self):
+        text = self.ON_TOPIC + "\n【来源】细胞结构 https://fake.example/x"
+        state = _state(result=text)
+        rescued, _, rule = nodes._apply_degrade_rescue(
+            state, "内容不合格", "编造来源", content_gate(text, SOURCES, EVIDENCE))
+        self.assertEqual((rescued, rule), ("内容不合格", ""))
+
+    def test_r5_switch_off_keeps_single_direction_gate(self):
+        state = _state(result=self.DECLARED, sources=[], evidence=[], used_fallback=True)
+        with mock.patch.object(nodes, "ENABLE_DEGRADE_RESCUE", False):
+            rescued, _, rule = nodes._apply_degrade_rescue(
+                state, "证据不足", "检索无结果", content_gate(self.DECLARED, [], []))
+        self.assertEqual((rescued, rule), ("证据不足", ""))
+
+
+class CitationRatioTest(unittest.TestCase):
+    """v2.2 引用率门槛：默认 0 不判定，显式设阈值后才生效。"""
+
+    MANY_SOURCES = ["细胞结构 | https://a.com/1", "细胞器 | https://a.com/2",
+                    "细胞核 | https://a.com/3"]
+
+    def test_ratio_threshold_downgrades(self):
+        gate = content_gate(WITH_SOURCE, self.MANY_SOURCES, EVIDENCE * 3,
+                            min_citation_ratio=0.5)
+        self.assertAlmostEqual(gate["citation_ratio"], 0.333, places=3)
+        self.assertFalse(gate["citation_ratio_ok"])
+
+        verdict, _, hit = nodes._apply_pass_gate(
+            _state(result=WITH_SOURCE, sources=self.MANY_SOURCES),
+            "通过", "x", gate)
+        self.assertEqual((verdict, hit), ("降级通过", "引用率不足"))
+
+    def test_default_threshold_does_not_judge(self):
+        gate = content_gate(WITH_SOURCE, self.MANY_SOURCES, EVIDENCE * 3)
+        self.assertTrue(gate["citation_ratio_ok"])
+
+
+class FilterDegradedTest(unittest.TestCase):
+    """P1 配套：GLM 过滤失败要留痕，否则「没剔」与「没跑」无法区分。"""
+
+    RESULTS = SearchCacheStatsTest.RESULTS
+
+    def test_llm_filter_failure_is_marked(self):
+        import tools
+        info = {}
+        with mock.patch.object(tools, "safe_llm_invoke",
+                               side_effect=RuntimeError("boom")):
+            kept = tools.llm_relevance_filter("生物细胞的结构", self.RESULTS,
+                                              stats_out=info)
+        self.assertEqual(kept, self.RESULTS)      # fail-safe：保留全部
+        self.assertFalse(info["applied"])
+        self.assertIn("boom", info["reason"])
+
+    def test_llm_filter_success_reports_dropped(self):
+        import tools
+        info = {}
+        payload = '[{"idx": 2, "judge": "不相关"}]'
+        with mock.patch.object(tools, "safe_llm_invoke", return_value=payload):
+            kept = tools.llm_relevance_filter("生物细胞的结构", self.RESULTS,
+                                              stats_out=info)
+        self.assertEqual(len(kept), 1)
+        self.assertEqual(info["dropped"], 1)
+        self.assertTrue(info["applied"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

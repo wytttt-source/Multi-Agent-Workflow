@@ -16,9 +16,11 @@ from datetime import datetime, timezone
 from typing import Any, Dict
 
 from config import (CRITIC_MODEL, DISABLE_CONTENT_GATE, ENABLE_COVERAGE_RULE,
-                    ENABLE_REFLECTION, ENABLE_REPEAT_RULE, EVIDENCE_TOP_K,
+                    ENABLE_DEGRADE_RESCUE, ENABLE_REFLECTION, ENABLE_REPEAT_RULE,
+                    ENABLE_TRUNCATION_RULE, EVIDENCE_TOP_K,
                     EXP_GROUP, GENERATOR_MODEL, INJECT_LLM_FAIL, PASS_MIN_CHARS,
-                    PASS_MIN_CITED, RETRY_QUERY_MODE, RUN_LOG_DIR, RUN_RECORD_DIR,
+                    PASS_MIN_CITATION_RATIO, PASS_MIN_CITED, RETRY_QUERY_MODE,
+                    RUN_LOG_DIR, RUN_RECORD_DIR,
                     SEARCH_COUNT, SEARCH_NEED_CONTENT, SEARCH_PROVIDER)
 
 
@@ -74,7 +76,8 @@ def _header(topic: str) -> str:
         f"- 模型：generator={GENERATOR_MODEL} critic={CRITIC_MODEL}",
         f"- 判定开关：reflection={ENABLE_REFLECTION} coverage_rule={ENABLE_COVERAGE_RULE} "
         f"repeat_rule={ENABLE_REPEAT_RULE} disable_gate={DISABLE_CONTENT_GATE} "
-        f"inject_fail={INJECT_LLM_FAIL}",
+        f"inject_fail={INJECT_LLM_FAIL} truncation={ENABLE_TRUNCATION_RULE} "
+        f"rescue={ENABLE_DEGRADE_RESCUE} min_citation_ratio={PASS_MIN_CITATION_RATIO}",
         "-" * 64,
         "",
     ])
@@ -134,6 +137,10 @@ def save_run_record(topic: str, state: Dict[str, Any], log_path: str,
             "pass_min_chars": PASS_MIN_CHARS,
             "evidence_top_k": EVIDENCE_TOP_K,
             "retry_query_mode": RETRY_QUERY_MODE,
+            # v2.2 双向门控：这两项决定「否决能否被改判降级」，必须随记录落盘
+            "enable_truncation_rule": ENABLE_TRUNCATION_RULE,
+            "enable_degrade_rescue": ENABLE_DEGRADE_RESCUE,
+            "pass_min_citation_ratio": PASS_MIN_CITATION_RATIO,
         },
         "search": stats.get("search", {}),
         "reflection": stats.get("reflection", {}),

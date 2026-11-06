@@ -140,6 +140,11 @@ def _config_note(data: dict) -> str:
     lines = []
     for group in sorted(seen):
         cfg = seen[group]
+        # v2.2 新增开关：老记录没有这些键，因此只在记录里有时才打印，避免出现 None
+        extra = "".join(
+            f"`{k}={cfg[k]}`、" for k in ("enable_truncation_rule",
+                                          "enable_degrade_rescue",
+                                          "pass_min_citation_ratio") if k in cfg)
         lines.append(
             f"- **{group}**：`enable_reflection={cfg.get('enable_reflection')}`、"
             f"`enable_coverage_rule={cfg.get('enable_coverage_rule')}`、"
@@ -148,11 +153,41 @@ def _config_note(data: dict) -> str:
             f"`inject_llm_fail={cfg.get('inject_llm_fail')}`、"
             f"`pass_min_cited={cfg.get('pass_min_cited')}`、"
             f"`pass_min_chars={cfg.get('pass_min_chars')}`、"
-            f"`evidence_top_k={cfg.get('evidence_top_k')}`、"
+            f"`evidence_top_k={cfg.get('evidence_top_k')}`、{extra}"
             f"`retry_query_mode={cfg.get('retry_query_mode')}`、"
             f"`generator={cfg.get('generator_model')}` / `critic={cfg.get('critic_model')}`")
     return "\n".join(lines)
 
+
+
+def _v22_note(data) -> str:
+    """v2.2 口径说明：本表记录由 v2.0/v2.1 产出，新门控只改粒度、不改二分类结论。"""
+    gated = rescued = truncated = 0
+    for recs in data.values():
+        for rec in recs:
+            cfg = rec.get("config") or {}
+            if not cfg.get("enable_reflection", True):
+                continue
+            gated += 1
+            refl = rec.get("reflection") or {}
+            if refl.get("rescue_rule"):
+                rescued += 1
+            if refl.get("truncated"):
+                truncated += 1
+    return "\n".join([
+        "- 本表记录由 **v2.0 / v2.1 代码**产出，`reflection` 段里**没有** v2.2 的新字段"
+        "（`truncated` / `truncation_hits`、`citation_ratio_ok`、`rescued_from` / `rescue_rule`）；"
+        "读到缺失字段属正常，不是数据损坏。",
+        "- v2.2 的两条新门控（完整性截断、降级救援）**只改三态粒度**：救援最多把「否决」改判"
+        " `降级通过`，`pass_kind` 仍非 `strict`，因此合格率 / 误判率 / 漏判率不变；"
+        "截断规则只认确定性形态（结尾分隔符/连接词、括号不配对）。",
+        f"- 用新门控对这 {gated} 份可反思记录的 `result` / `sources` 离线复算"
+        f"（`python experiments/reflection_attribution.py`）：终态翻转 **0** 份、"
+        f"`truncated` 命中 **{truncated}** 份、救援 **{rescued}** 次 —— "
+        "上表数字无需重算（逐条核对见 `docs/反思归因表.md` 第 6、7 节）。",
+        "- v2.2 生效后的第一份记录起，`config` 段会多出 `enable_truncation_rule` / "
+        "`enable_degrade_rescue` / `pass_min_citation_ratio` 三项，可据此区分记录属于哪一代口径。",
+    ])
 
 
 def build() -> str:
@@ -180,6 +215,10 @@ def build() -> str:
         "## 3. 各组实际配置（读自 JSON 的 config 段）",
         "",
         _config_note(data),
+        "",
+        "### 3.4 v2.2 判定口径说明（对既有 24 份记录的影响）",
+        "",
+        _v22_note(data),
         "",
         "## 4. 复现命令",
         "",

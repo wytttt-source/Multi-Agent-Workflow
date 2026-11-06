@@ -57,7 +57,7 @@ replan_count ≤ 3 与独立的 llm_fail_count ≤ 3（执行侧不重复计数�
 
 > 诚实说明：本批 4 个主题的回答恰好都带【来源】，所以 E2 与 E3 的合格率没拉开差距；「纯 LLM 到底会错在哪」由 3.2 的判决器对照回答（tests/test_gate_corpus.py 把这条结论固化成离线用例）。
 >
-> 版本说明：24 份记录生成于 v2.0 代码（字数门按全文计）。v2.1 把字数门改为按正文计后，已用新 `content_gate` 逐条复算这 24 份的 `result`/`sources`：**终态零翻转**（最短的合格样本文正 124 字，仍高于 120 阈值）；新增的 `body_chars` / `len_full` 字段只让记录更可核验。
+> 版本说明：24 份记录生成于 v2.0 代码（字数门按全文计）。v2.1 把字数门改为按正文计后，已用新 `content_gate` 逐条复算这 24 份的 `result`/`sources`：**终态零翻转**（最短的合格样本文正 124 字，仍高于 120 阈值）；新增的 `body_chars` / `len_full` 字段只让记录更可核验。v2.2 再加「完整性（截断）+ 降级救援」两条双向门控与引用率门槛，同样逐条复算过：**20 份过门控的记录零翻转、真实回答 `truncated` 0 命中**（`docs/反思归因表.md` 第 6、7 节），因此上文所有合格率/降级率数字仍然有效。
 
 ### 3.2 判决器对照：规则 vs LLM vs 组合（18 条带真值样本）
 
@@ -72,7 +72,8 @@ replan_count ≤ 3 与独立的 llm_fail_count ≤ 3（执行侧不重复计数�
 1. **错在不同的地方，所以互补**：规则只漏 S14（生物题写成量子计算，字面信号全合格）—— 语义它结构上读不懂；纯 LLM 漏 S09（只写域名根也当成引用）与 S15（证据单侧，但没有覆盖率数字可看）。失败集合不重合，组合才到 100%。
    > 原先规则还漏 S05「正文 60 字、靠【来源】行把全文注水到 154 字」；字数门已改为**按正文计**（剔除来源清单），该缺口关闭 —— 见 [docs/规则vsLLM-混淆矩阵.md](docs/规则vsLLM-混淆矩阵.md) 第 6、7 节。
 2. **规则的确定性只在能枚举的事实上成立**：覆盖率规则在 LLM 调用之前就否掉了 S15，decision_source=coverage_rule 可复算。
-3. **门控是「单向刹车」**：_apply_pass_gate 遇到非「通过」直接返回，只否决、不恢复 —— 5 条真值降级通过全被记成否决。二分类指标不受影响，但按「降级率」统计会偏低。
+3. **门控是双向的（v2.2）**：`_apply_pass_gate` 只做「否决/降级」，`_apply_degrade_rescue` 再把「可读但缺资料」的否决改判 `降级通过`（声明式兜底 / 无资料兜底 / 未引用来源）；C 列的 4 条真值 `降级通过` 已全部救回（原为 0/5）。救援**永不**把否决改成 `通过`，所以二分类指标与 v2.1 完全一致，只是三态粒度被修正 —— 见 [docs/反思归因表.md](docs/反思归因表.md) 第 5 节。
+   > 仍存的粒度缺口只有 1 条：S09「只写域名根」被记为 `内容不合格` 而非 `降级通过`（编造 URL 与「无效引用」共用同一个否决档），按「降级率」统计时需说明。
 
 ### 3.3 附录：检索层基础设施改造（v1 口径，不作为主线结论）
 
@@ -92,17 +93,17 @@ replan_count ≤ 3 与独立的 llm_fail_count ≤ 3（执行侧不重复计数�
 ```text
 zhinengti/
  ├── main.py                  # 入口：组装 LangGraph 状态图 + 运行归档
- ├── config.py                # 全局配置、检索参数、State 定义、双模型实例化（29 个模块级常量，其中 15 项可用环境变量覆盖，见手册 §3）
+ ├── config.py                # 全局配置、检索参数、State 定义、双模型实例化（32 个模块级常量，其中 18 项可用环境变量覆盖，见手册 §2）
  ├── agents/nodes.py          # planner / executor / reflection / free_reflection 四节点
  ├── tools.py                 # 检索层：Search API + 必应降级 + 三层过滤
  ├── prompts.py               # 集中管理的提示词（生成 / 语义过滤 / 质量判定）
- ├── utils.py                 # LLM 容错（异常分类 + 重试）与检索内存缓存
+ ├── utils.py                 # 正文口径（_body_chars / _looks_truncated）+ 确定性门控 + LLM 容错
  ├── search_store.py          # 检索原始响应磁盘缓存与证据归档
  ├── run_store.py             # 控制台日志双写 + 结构化运行记录
  ├── check_search.py          # Search/Fetch API 契约探针（改代码前先验字段）
  ├── docs/                    # 设计与实验文档（见下表）
- ├── tests/                   # 离线回归：31 条用例，不联网、不写 data/
- ├── experiments/             # run_matrix.py / build_v2_table.py / gate_vs_llm.py / 样本与归档
+ ├── tests/                   # 离线回归：45 条用例，不联网、不写 data/
+ ├── experiments/             # run_matrix.py / build_v2_table.py / gate_vs_llm.py / reflection_attribution.py
  ├── data/                    # 运行产物（首次运行自动创建，已 gitignore）
  └── logs/                    # 全链路控制台日志（已 gitignore）
 ```
@@ -113,11 +114,14 @@ zhinengti/
 | [docs/覆盖率的边界用例.md](docs/覆盖率的边界用例.md) | 想复核主题切分与覆盖率口径（含一次真实误判） |
 | [docs/实验记录-v2.md](docs/实验记录-v2.md) | 想逐条核对 E1-E6 的终态、引用数、耗时（自动生成，可复算） |
 | [docs/规则vsLLM-混淆矩阵.md](docs/规则vsLLM-混淆矩阵.md) | 想看 18 条样本的构造、混淆矩阵与逐条判定明细 |
-| [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md) | 想查 29 个模块级常量、运行记录字段字典、exp1-exp7 完整日志、复现注意事项 |
+| [docs/反思归因表.md](docs/反思归因表.md) | 想看判定来源分布、重规划空转率、降级救援台账与零翻转核对（自动生成，可复算） |
+| [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md) | 想查反思判定主线、32 个模块级常量、运行记录字段字典、复现注意事项 |
+| [docs/检索层-附录.md](docs/检索层-附录.md) | 想查检索层改造对照、三层过滤链路、exp1-exp7 完整日志与 v1 量化对照 |
 | experiments/run_matrix.py | 复现 E1-E6（环境变量切组，零改代码） |
 | experiments/build_v2_table.py | 由 data/runs_v2/ 重新生成上文的汇总表 |
 | experiments/gate_vs_llm.py | 复现判决器对照（--build 重建样本、--mock 离线复算） |
-| tests/test_reflection_gate.py、tests/test_gate_corpus.py | 改门控或改样本后，先跑这 31 条离线用例 |
+| experiments/reflection_attribution.py | 由 data/runs_v2/ 生成判定归因表（不调 LLM） |
+| tests/test_reflection_gate.py、tests/test_gate_corpus.py | 改门控或改样本后，先跑这 45 条离线用例 |
 
 ## 五、快速运行
 
@@ -134,19 +138,20 @@ python check_search.py "量子计算和经典计算的区别" --count 6 --save
 # 2. 跑一个主题（留空则交互输入）
 python main.py "量子计算和经典计算的区别"
 
-# 3. 离线回归（31 条，不联网、不写 data/）
+# 3. 离线回归（45 条，不联网、不写 data/）
 python -m unittest discover -s tests
 
 # 4. 复现实验
-python experiments/run_matrix.py       # E1-E6 × 4 主题 → data/runs_v2/<组>/
-python experiments/build_v2_table.py   # → docs/实验记录-v2.md
-python experiments/gate_vs_llm.py      # 判决器对照 → docs/规则vsLLM-混淆矩阵.md
+python experiments/run_matrix.py             # E1-E6 × 4 主题 → data/runs_v2/<组>/
+python experiments/build_v2_table.py         # → docs/实验记录-v2.md
+python experiments/gate_vs_llm.py            # 判决器对照 → docs/规则vsLLM-混淆矩阵.md
+python experiments/reflection_attribution.py # 判定归因表 → docs/反思归因表.md
 ```
 
 | 产物 | 位置 | 说明 |
 | --- | --- | --- |
 | 全链路日志 | logs/<主题>-<时间戳>.log | Tee 双写 stdout/stderr，表头记录命令行、模型、实验组与全部判定开关 |
-| 结构化记录 | data/runs_v2/<组>/<主题>-<时间戳>.json | 所有条数 / 字数 / 覆盖率 / 耗时 / 判定来源的唯一来源（字段字典见手册 §4） |
+| 结构化记录 | data/runs_v2/<组>/<主题>-<时间戳>.json | 所有条数 / 字数 / 覆盖率 / 耗时 / 判定来源的唯一来源（字段字典见手册 §3） |
 | 检索原始响应 | data/search_cache/<sha1>.json | 缓存键 = provider / query / count / need_content 四元组的 sha1 |
 | 证据块 | data/evidence/<主题>-<时间戳>.md | 送进生成器的证据，可直接作为证据附录 |
 
@@ -154,4 +159,4 @@ python experiments/gate_vs_llm.py      # 判决器对照 → docs/规则vsLLM-�
 
 ---
 
-> 全部数字都能在 experiments/DeepSeek检索-检索层改造成功验证/*.log、data/runs_v2/<组>/*.json 与 data/gate_vs_llm/*.json 里逐行核对；口径细节、29 个模块级常量（15 项环境变量）与 exp1-exp7 原始日志见 [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md)。
+> 全部数字都能在 experiments/DeepSeek检索-检索层改造成功验证/*.log、data/runs_v2/<组>/*.json 与 data/gate_vs_llm/*.json 里逐行核对；口径细节、32 个模块级常量（18 项环境变量）与反思判定主线见 [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md)，检索层改造与 exp1-exp7 原始日志见 [docs/检索层-附录.md](docs/检索层-附录.md)。

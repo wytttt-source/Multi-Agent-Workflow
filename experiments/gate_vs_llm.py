@@ -419,7 +419,11 @@ def _summarize(out):
         "reason": (refl.get("reason") or "").strip(),
         "gate": {k: refl.get(k) for k in ("has_source_line", "cited_count",
                                           "citation_ratio", "len_ok", "body_chars",
-                                          "len_full", "cited_loose")},
+                                          "len_full", "cited_loose", "truncated",
+                                          "truncation_hits")},
+        # v2.2：救援要能逐条追溯（从哪个否决类型、按哪条规则改判的降级）
+        "rescue_rule": refl.get("rescue_rule") or "",
+        "rescued_from": refl.get("rescued_from") or "",
         "error_type": (out or {}).get("error_type"),
         "evidence_count": refl.get("evidence_count"),
         "result_chars": refl.get("result_chars"),
@@ -628,9 +632,15 @@ def _conclusions(rows, repeat):
                and _bucket(r["C"]["verdict"]) == "否决"]
     if demoted:
         lines.append(f"- **C 列会丢掉「降级」这一档**：{len(demoted)} 条真值 `降级通过` 被判成 `否决`"
-                     f"（{'、'.join(demoted)}）。`_apply_pass_gate` 遇到非「通过」直接返回，"
-                     "门控只对「通过」行使否决权、不会把 LLM 的否决恢复成降级 → "
-                     "二分类指标不受影响，但按「降级率」统计会偏低（见第 6 节局限）。")
+                     f"（{'、'.join(demoted)}）。降级救援（v2.2）只覆盖「声明式兜底 / 无资料兜底 / "
+                     "未引用来源」三类，其余否决仍无法恢复成降级 → 二分类指标不受影响，"
+                     "但按「降级率」统计会偏低（见第 6 节局限）。")
+    rescued = [f"{r['id']}（{r['C'].get('rescue_rule')}）" for r in rows
+               if r["C"].get("rescue_rule")]
+    if rescued:
+        lines.append(f"- **降级救援（v2.2 双向门控）**：C 列把 {len(rescued)} 条「可读但缺资料」的"
+                     f"否决改判为 `降级通过`：{'、'.join(rescued)}。救援**永不**改判为 `通过`，"
+                     "因此二分类（合格/非合格）指标不变，只修正三态粒度。")
     if saved:
         lines.append("- **覆盖率规则前置否决**（不做 LLM 调用就直接判「分解不合理」）："
                      + "、".join(saved))
@@ -697,6 +707,10 @@ def _limitations_md(rows, repeat):
         f"{len(rows) - sum(1 for r in rows if _bucket(r['gold']) == '通过')} 非合格，"
         "准确率会被非合格一侧主导，所以第 3 节同时给出精确率/召回率，"
         "结论段里的「误判率」才是本实验的主指标。",
+        "9. **降级救援（v2.2）的覆盖边界**：救援只处理「可读但缺资料」三类（声明式兜底 / "
+        "无资料兜底 / 未引用来源），且要求正文够长、无编造 URL、未截断。S09（只写域名根）"
+        "因此仍被记成 `内容不合格`：域名根既不是可核验引用、又与「编造 URL」共用同一个否决档，"
+        "属**有意保留的保守口径**（宁可判否决，不可放行）。做「降级率」统计时需单列这一条。",
     ])
 
 

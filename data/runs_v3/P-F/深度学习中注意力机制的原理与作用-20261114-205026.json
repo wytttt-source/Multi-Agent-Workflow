@@ -1,0 +1,202 @@
+{
+  "topic": "深度学习中注意力机制的原理与作用",
+  "group": "P-F",
+  "ts": "2026-11-14T12:50:26.609609+00:00",
+  "elapsed_seconds": 303.02,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "深度学习中注意力机制的原理与作用",
+        "query": "深度学习中注意力机制的原理与作用 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 3,
+        "evidence_chars": 5241,
+        "sources": 3,
+        "avg_summary": 1515.7,
+        "avg_content": 4095.7,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 3,
+          "dropped": 3,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 54.62,
+        "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261114-204618.md"
+      },
+      {
+        "topic": "深度学习中注意力机制的原理与作用",
+        "query": "深度学习中注意力机制的原理与作用 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "深度学习中注意力机制的原理与作用 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      }
+    ],
+    "raw": 6,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 0,
+    "sources": 0,
+    "providers": [],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      }
+    ],
+    "elapsed_s": 0.0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "注意力"
+      ],
+      "hit": [
+        "注意力"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 324,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+    "gated_by": "rule_fallback",
+    "decision_source": "rule_fallback",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 3,
+    "result_chars": 666,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 324,
+    "len_full": 666,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail",
+      "https://cloud.kepuchina.cn/newsearch/imgtext"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "gate",
+        "reason": "确定性内容事实：回答截断",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 324,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 303.02
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "AI技术原理与大模型：注意力机制-大模型的核心“魔法” | https://cloud.kepuchina.cn/h5/detail?id=7520261333849837568",
+    "[科普中国]-注意力机制 - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1",
+    "基于深度学习的蛋白质建模与设计 - 注意力机制网络[32-33] (Attention neural network) 最早由图像数据建模而引入，随后在自然语言处理中发展壮大 | https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2"
+  ],
+  "result": "在深度学习尤其是大模型中，注意力机制是一种按相关性分配信息关注度的核心方法。其基本原理是：面对输入中的不同部分，模型不是平均处理，而是通过注意力权重区分轻重，把更多“注意力”放在与当前任务或上下文更相关的信息上，并相对抑制无关或次要信息，从而更有效地整合和利用输入信息。注意力机制网络最早由图像数据建模引入，随后在自然语言处理中发展壮大，逐渐成为大模型中的关键组件，被称为大模型的核心“魔法”。其作用主要体现在：帮助模型聚焦关键信息、提升信息利用的针对性和效率，并支撑模型在复杂任务中组织与调用信息；在自然语言处理等场景中，这一机制也成为模型能力提升的重要基础。概括而言，注意力机制通过权重化关注实现信息筛选与整合，是理解大模型运行原理的重要入口。\n\n【来源】AI技术原理与大模型：注意力机制-大模型的核心“魔法” | https://cloud.kepuchina.cn/h5/detail?id=7520261333849837568；[科普中国]-注意力机制 - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1；基于深度学习的蛋白质建模与设计 - 注意力机制网络[32-33] (Attention neural network) 最早由图像数据建模而引入，随后在自然语言处理中发展壮大 | https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2",
+  "artifacts": {
+    "log": "logs\\深度学习中注意力机制的原理与作用-20261114-204523.log",
+    "evidence": ""
+  }
+}

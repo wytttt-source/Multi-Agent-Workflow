@@ -1,8 +1,8 @@
 {
-  "topic": "比较Python和Java的并发性能",
+  "topic": "分布式系统中的CAP定理",
   "group": "P-B0",
-  "ts": "2026-11-14T03:13:01.426190+00:00",
-  "elapsed_seconds": 11.47,
+  "ts": "2026-11-14T11:42:36.271419+00:00",
+  "elapsed_seconds": 50.82,
   "config": {
     "group": "P-B0",
     "search_provider": "deepseek",
@@ -22,63 +22,63 @@
     "enable_degrade_rescue": true,
     "pass_min_citation_ratio": 0.0,
     "repair_policy": "hybrid",
-    "inject_fault": "one_side",
+    "inject_fault": "short",
     "repair_max_rounds": 3,
     "llm_temperature": 0.0
   },
   "search": {
     "per_query": [
       {
-        "topic": "Python",
-        "query": "Python",
+        "topic": "分布式系统中的CAP定理",
+        "query": "分布式系统中的CAP定理 lang:zh",
         "raw": 6,
-        "gated": 4,
+        "gated": 5,
         "filtered": 4,
-        "evidence_chars": 6859,
+        "evidence_chars": 6926,
         "sources": 4,
-        "avg_summary": 1885.0,
-        "avg_content": 5406.2,
+        "avg_summary": 1760.0,
+        "avg_content": 4838.2,
         "providers": [
           "deepseek"
         ],
         "llm_filter": {
           "applied": true,
           "kept": 4,
-          "dropped": 0,
-          "total": 4
+          "dropped": 1,
+          "total": 5
         },
-        "cache": "network",
-        "cache_source": "network",
+        "cache": "disk",
+        "cache_source": "disk",
         "degraded": false,
-        "elapsed_s": 4.4,
-        "evidence_path": "data\\evidence\\Python-20261114-111254.md"
+        "elapsed_s": 44.77,
+        "evidence_path": "data\\evidence\\分布式系统中的CAP定理-20261114-194230.md"
       }
     ],
     "raw": 6,
-    "gated": 4,
+    "gated": 5,
     "filtered": 4,
-    "evidence_chars": 6877,
+    "evidence_chars": 6950,
     "sources": 4,
     "providers": [
       "deepseek"
     ],
     "cache": [
-      "network"
+      "disk"
     ],
     "cache_sources": [
-      "network"
+      "disk"
     ],
     "degraded": false,
     "llm_filter": [
       {
         "applied": true,
         "kept": 4,
-        "dropped": 0,
-        "total": 4
+        "dropped": 1,
+        "total": 5
       }
     ],
-    "elapsed_s": 4.4,
-    "evidence_path": "data\\evidence\\Python-20261114-111254.md"
+    "elapsed_s": 44.77,
+    "evidence_path": "data\\evidence\\分布式系统中的CAP定理-20261114-194230.md"
   },
   "reflection": {
     "coverage": null,
@@ -89,12 +89,12 @@
     "repeat_hit": false,
     "llm_calls": 2,
     "evidence_count": 4,
-    "result_chars": 324,
+    "result_chars": 60,
     "pass_kind": "strict"
   },
   "repair": {
     "policy": "hybrid",
-    "inject_fault": "one_side",
+    "inject_fault": "short",
     "rounds": [
       {
         "round": 0,
@@ -105,9 +105,10 @@
         "reason": "基线：关闭反思（E1）",
         "repeat_hit": false,
         "rescued_from": "",
-        "cited_count": 0,
-        "body_chars": 0,
-        "truncated": false,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
         "llm_calls": 2
       }
     ],
@@ -117,24 +118,24 @@
     "cost": {
       "llm_calls": 2,
       "searches": 1,
-      "elapsed_s": 11.47
+      "elapsed_s": 50.82
     }
   },
   "injected": [
-    "one_side:first_object:Python"
+    "short"
   ],
   "replan_count": 0,
   "subtasks": [],
   "used_fallback": false,
   "sources": [
-    "Python 常见问题 | https://docs.python.org/zh-cn/3.14/faq/general.html",
-    "Python编程入门与实践(微视频版) | https://book.cppinfo.cn/Encyclopedias/home/index?id=4869960#1",
-    "10. 标准库概览 | https://docs.python.org/zh-cn/3.14/tutorial/stdlib.html",
-    "Python程序设计基础与应用（微课视频版） - 回到顶部 | https://www.shuimushuhui.com/book?isbn=9787302697381#1"
+    "图文详情——科普中国资源服务 - [科普中国]-CAP原则 | https://cloud.kepuchina.cn/h5/detail?id=6974124255662841856#1",
+    "分布式系统架构常识：CAP理论。 | https://developer.aliyun.com/article/619324",
+    "分布式系统理论基础2 ：CAP - Java技术江湖 | https://cloud.tencent.cn/developer/article/1547141#1",
+    "分布式理论与分布式事务 - leobhao | https://cloud.tencent.cn/developer/article/2032991?from=15425&policyId=undefined&traceId=&frompage=seopage#1"
   ],
-  "result": "现有资料未包含 Java 并发机制或两者并发性能的基准数据，因此无法可靠比较 Python 与 Java 的并发性能优劣。资料可确认 Python 是解释型、面向对象语言，支持多范式并可用 C/C++ 扩展；另有教材目录涉及“Python 多线程编程技术”。若要做科普比较，需补充 Java 并发资料及统一场景实测数据，避免仅凭语言类型下结论。\n【来源】《Python 常见问题》https://docs.python.org/zh-cn/3.14/faq/general.html；《Python编程入门与实践(微视频版)》https://book.cppinfo.cn/Encyclopedias/home/index?id=4869960#1",
+  "result": "CAP定理又称CAP原则，指分布式系统中一致性（C）、可用性（A）和分区容忍性（P）三者不可同时兼得，最多同时满足两项。",
   "artifacts": {
-    "log": "logs\\比较Python和Java的并发性能-20261114-111249.log",
-    "evidence": "data\\evidence\\Python-20261114-111254.md"
+    "log": "logs\\分布式系统中的CAP定理-20261114-194145.log",
+    "evidence": "data\\evidence\\分布式系统中的CAP定理-20261114-194230.md"
   }
 }

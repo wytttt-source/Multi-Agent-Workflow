@@ -6,12 +6,20 @@ from typing import List
 from config import (State, PASS_MIN_CITED, PASS_MIN_CHARS, RETRY_QUERY_MODE,
                     DISABLE_CONTENT_GATE, ENABLE_COVERAGE_RULE,
                     ENABLE_DEGRADE_RESCUE, ENABLE_REFLECTION, ENABLE_REPEAT_RULE,
-                    ENABLE_TRUNCATION_RULE, REPAIR_POLICY, INJECT_FAULT)
+                    ENABLE_TRUNCATION_RULE, REPAIR_POLICY, INJECT_FAULT,
+                    REQUIRED_OBJECTS)
 from utils import (safe_llm_invoke, LLMInfraError, LLMParseError, content_gate,
-                   _body_chars, _body_text, llm_call_count)
+                   _body_chars, _body_text, llm_call_count, answer_completeness)
 from tools import (search_with_evidence, evidence_coverage,
                    _is_composite_topic, _clean_composite_topic, build_query)
 import prompts
+
+# 修复轮的最小正文长度（v2.4）：与自由反思**同一口径**。
+# 旧口径只给自由反思的改写提示加了字数要求，局部修复沿用"生成"的简述式回答，
+# v2.4a 记录里 H 臂 C 组修复后正文只有 127~158 字（刚过 120 字门，判卷也只卡 120），
+# 而 R 臂同一道题重写到 657 字 —— 同一份证据、同一道题，差别只来自提示措辞，
+# 不是"定向修复不如整篇重写"。门限必须两边一致，否则 C 组的结论无法归因。
+REPAIR_MIN_CHARS = max(PASS_MIN_CHARS * 2, 200)
 
 def planner_node(state: State):
     print("\n【规划节点】拆解任务...")
@@ -94,25 +102,99 @@ def _active_fault(state: State) -> str:
     return fault
 
 
+def _object_terms(topic: str) -> List[str]:
+    """必答对象清单：优先用实验任务集注入的 REQUIRED_OBJECTS，否则回落到主题切分。
+
+    回落时要在"的"处截断：`evidence_coverage` 会保留"Java的并发性能"这类修饰语，
+    而答案里只可能出现"Java"，拿长串去匹配等于永远匹配不上（P2 的同一个坑）。
+    """
+    if REQUIRED_OBJECTS:
+        return [t for t in REQUIRED_OBJECTS if t]
+    terms = []
+    for t in (evidence_coverage(topic, []).get("terms") or []):
+        short = (t or "").split("的", 1)[0].strip()
+        if len(short) >= 2 and short not in terms:
+            terms.append(short)
+    return terms
+
+
+def _split_body(content: str) -> tuple:
+    """拆出正文与【来源】段。门控只认正文，注入因此也必须落在正文里（P1 的根因）。"""
+    head, sep, tail = (content or "").partition("【来源】")
+    return head.rstrip(), (sep + tail if sep else "")
+
+
+_FAULT_SENT_SPLIT = re.compile(r"(?<=[。！？!?])|\n+")
+_FAULT_CLAUSE_SPLIT = re.compile(r"(?<=[，；、,;])")
+
+
+def _drop_object_sentences(body: str, terms: List[str],
+                           keep_min: int = PASS_MIN_CHARS) -> str:
+    """删掉只谈指定对象的句子，制造"答案只讲了一侧"的真实缺陷（P3）。
+
+    两级策略：
+    1. 整句删（默认）——比较类答案通常一句讲一个对象，删得干净；
+    2. 退到分句删——长答案常把两个对象写进同一句（"资料里有 Python…；也没有 Java…"），
+       整句删会剩不下内容，于是按逗号/分号逐分句剔。
+    删完不足 `keep_min` 字就原样返回：注入要制造"缺一侧"，
+    不能把答案删成"过短"，两种缺陷必须可区分（由调用方如实记"未生效"）。
+    """
+    picked = [t.lower() for t in terms if t]
+    if not picked:
+        return body
+    sentences = [s for s in _FAULT_SENT_SPLIT.split(body) if s.strip()]
+    hit = lambda s: any(t in s.lower() for t in picked)   # noqa: E731
+
+    kept = [s for s in sentences if not hit(s)]
+    if len(kept) >= 3 and len("".join(kept).strip()) >= keep_min:
+        return "".join(kept).strip()
+
+    rebuilt = []
+    for sent in sentences:
+        clauses = [c for c in _FAULT_CLAUSE_SPLIT.split(sent) if c.strip()]
+        remain = "".join(c for c in clauses if not hit(c))
+        if remain.strip():
+            rebuilt.append(remain)
+    text = "".join(rebuilt).strip()
+    return text if len(text) >= keep_min else body
+
+
 def _inject_fault_content(content: str, state: State) -> tuple:
-    """首轮答案受控缺陷：short（过短）/ no_cite（无引用）/ truncate（截断）。
+    """首轮答案受控缺陷：short（过短）/ no_cite（无引用）/ truncate（截断）/ one_side。
 
     注入的是"真实世界里会出现的坏形态"，不是随机字符串：
     - short    只保留半段正文 → 触发字数门；
     - no_cite  砍掉【来源】段并明说没列来源 → 触发引用门（会被降级救援接住）；
-    - truncate 停在连接词上 → 触发 v2.2 的确定性截断规则。
+    - truncate 停在连接词上 → 触发 v2.2 的确定性截断规则；
+    - one_side 删掉"另一侧对象"的句子 → 触发答案侧对象覆盖缺口。
+
+    v2.4 修正两处"注入实际没生效"的实现缺陷（详见 docs/反思判定状态机-改动清单.md 附录 D）：
+    - D5 旧实现按**全文**长度算截断点，而内容门只认【来源】之前的正文；切点常常落在
+      来源清单里，被 `_body_text()` 整段剔除，于是 C1/C4 两次注入从未真的截断过。
+    - D6 旧 one_side 只改检索、不改答案，模型靠自身知识补齐另一侧，缺陷到不了答案层。
     """
     fault = _active_fault(state)
-    text = content or ""
+    if not fault:
+        return content or "", []
+    body, source_block = _split_body(content)
     if fault == "short":
-        return text[: max(PASS_MIN_CHARS // 2, 40)], ["short"]
+        # 只截正文：按全文截同样会把来源段整个切掉，缺陷就变成"无引用"了
+        return body[: max(PASS_MIN_CHARS // 2, 40)], ["short"]
     if fault == "no_cite":
-        body = text.split("【来源】", 1)[0].rstrip()
         return body + "\n\n（本节未列出来源链接）", ["no_cite"]
     if fault == "truncate":
-        cut = text[: max(PASS_MIN_CHARS + 20, int(len(text) * 0.6))]
-        return cut.rstrip("。！？!?\n ") + "，以及", ["truncate"]
-    return text, []
+        cut = body[: max(PASS_MIN_CHARS + 20, int(len(body) * 0.6))]
+        truncated = cut.rstrip("。！？!?\n，、；： ") + "，以及"
+        # 保留来源段：缺陷只落在"内容不完整"上，不牵连引用，两个信号才可分离
+        return truncated + (("\n\n" + source_block) if source_block else ""), ["truncate"]
+    if fault == "one_side":
+        drop = _object_terms(state.get("topic") or "")[1:]
+        degraded = _drop_object_sentences(body, drop) if drop else body
+        if degraded == body:
+            return content or "", []
+        return degraded + (("\n\n" + source_block) if source_block else ""), [
+            "one_side:answer_drop:" + "/".join(drop)]
+    return content or "", []
 
 
 def _retry_query_for(search_topic: str, state: State) -> tuple:
@@ -161,7 +243,8 @@ def executor_node(state: State):
     # 事后裁剪会把注入变成空操作（P-B0 首轮直接判通过就是这种假阴性）。
     injected = []
     if _active_fault(state) == "one_side" and search_topics:
-        terms = evidence_coverage(topic, []).get("terms") or []
+        # v2.4：对象清单与判卷同源（REQUIRED_OBJECTS），回落才用主题切分
+        terms = _object_terms(topic)
         if len(search_topics) > 1:
             search_topics = search_topics[:1]
             injected.append("one_side:first_subtask")
@@ -249,6 +332,28 @@ def executor_node(state: State):
     if previous_errors:
         prompt += f"\n注意：上一次的尝试因为以下原因被指出了问题：\n{previous_errors}\n请务必避免重蹈覆辙。"
 
+    if retry_round > 0:
+        # 修复轮的字数/质量要求：只在**修复轮**加，首轮口径不变（首轮缺陷由 INJECT_FAULT 控制）。
+        # 不加这一条的后果是"修复"退化成为凑门限的补丁式重写（C 组实测只有 127 字），
+        # 于是 H/F 与 R 的差距里混进了"提示不同"这个与路径无关的变量。
+        prompt += (
+            f"\n【修复要求】这是一次修复性重写，不是打补丁：正文不少于 {REPAIR_MIN_CHARS} 字，"
+            "必须把上一轮被指出的问题彻底补上（被截断的要把话写完、缺的对象要逐个讲清、"
+            "该有引用的要给出可核验 URL），"
+            "但不要靠「资料未提供 XX」这类声明去凑对象覆盖。"
+        )
+
+    if injected and _active_fault(state) == "one_side":
+        # v2.4：注入要在**答案侧**成立。只砍检索不够——模型会用自身知识把另一侧补齐，
+        # 于是"检索缺口"变成"其实答得挺全"（旧 48 次里 A/B 组 8/8 判卷合格）。
+        # 这里把"只有一侧资料"如实告诉生成侧，答案才会真的缺对象，修复路径也才有事可做。
+        others = [t for t in _object_terms(topic) if t != search_topics[0]]
+        prompt += (
+            f"\n【检索限制】本轮只检索到「{search_topics[0]}」这一侧的资料"
+            + (f"，其他比较对象（{'、'.join(others)}）没有可用证据" if others else "")
+            + "。请只基于已获得的资料作答：不要用你自己的知识补充其他对象，"
+            "也不要在正文里提及或讨论其他对象（「缺少某侧资料」这类说明由系统判定，不必写）。")
+
     try:
         content = safe_llm_invoke(prompt, use_critic=False)
         # v2.3 受控缺陷注入（只作用于首轮）：让"修复路径"有确定的样本可比
@@ -327,9 +432,12 @@ def _repair_trace(repair: dict, verdict: str, path: str, gate: dict = None,
         "reason": (reason or "")[:160],
         "repeat_hit": bool(repeat_hit),
         "rescued_from": rescued_from,
-        "cited_count": (gate or {}).get("cited_count", 0),
-        "body_chars": (gate or {}).get("body_chars", 0),
-        "truncated": bool((gate or {}).get("truncated", False)),
+        # v2.4：没跑门控的轮次（如纯覆盖率判定的轮）必须写 null 而不是 0，
+        # 否则"首轮正文 0 字""引用 0 条"会被误读成答案为空/没引用
+        "gate_measured": bool(gate),
+        "cited_count": (gate or {}).get("cited_count") if gate else None,
+        "body_chars": (gate or {}).get("body_chars") if gate else None,
+        "truncated": bool((gate or {}).get("truncated", False)) if gate else None,
         "llm_calls": llm_call_count(),
     })
     repair.update({
@@ -389,6 +497,23 @@ def _reflection_stats(state: State, coverage, verdict: str, reason: str,
         decision_source=stats["decision_source"], repeat_hit=repeat_hit,
         rescued_from=(rescue[0] if rescue else ""))
     return {"run_stats": run_stats}
+
+
+def _hard_content_facts(gate: dict) -> List[str]:
+    """答案层的"硬事实"：与主题怎么拆无关，重拆也救不回，判定时应优先于语义结论。
+
+    为什么单独抽出来：旧 48 次里 C 组（截断/过短）被裁判 LLM 判成「分解不合理」——
+    因为提示词里"证据覆盖率 < 100% 即分解不合理"同时成立，而"截断"不在 LLM 的硬规则里。
+    于是修复路径走向全局重拆，改完还是截断。这三条都能用确定性方式量出来，让它们先说话。
+    """
+    hits = []
+    if not gate.get("len_ok", True):
+        hits.append(f"正文仅 {gate.get('body_chars', 0)} 字")
+    if ENABLE_TRUNCATION_RULE and gate.get("truncated"):
+        hits.append("回答截断")
+    if not gate.get("no_fabricated_url", True):
+        hits.append("疑似编造 URL")
+    return hits
 
 
 def _apply_pass_gate(state: State, error_type: str, reason: str, gate: dict):
@@ -556,46 +681,30 @@ def reflection_node(state: State):
     evidence_items = state.get("evidence", [])
     subtasks = state.get("subtasks", [])
 
-    if ENABLE_COVERAGE_RULE and has_subtasks and evidence_items:
-        # 已拆解：每个子任务都是"需覆盖对象"，用子任务字面量匹配证据 blob
-        blob = " ".join(
+    if ENABLE_COVERAGE_RULE and evidence_items:
+        # 证据侧覆盖率：v2.4 起只作**提示**与"该补哪个对象"的依据，不再单独做终判
+        # 证据全文一次拼好：既有子任务口径要用，也要判断"缺的对象在证据里到底有没有"
+        ev_blob = " ".join(
             " ".join([r.get("title") or "", r.get("summary") or "",
                       r.get("snippet") or "", (r.get("content") or "")[:200]])
             for r in evidence_items
         )
-        hit = [st for st in subtasks if st in blob]
-        missing = [st for st in subtasks if st not in blob]
-        ratio = len(hit) / len(subtasks) if subtasks else 1.0
-        coverage = {"terms": subtasks, "hit": hit, "missing": missing,
-                    "ratio": ratio, "count": len(evidence_items)}
+        if has_subtasks:
+            # 已拆解：子任务字面量匹配证据 blob（保留 v2.1 口径，作为证据侧信号）
+            hit = [st for st in subtasks if st in ev_blob]
+            missing = [st for st in subtasks if st not in ev_blob]
+            coverage = {"terms": subtasks, "hit": hit, "missing": missing,
+                        "ratio": len(hit) / len(subtasks) if subtasks else 1.0,
+                        "count": len(evidence_items)}
+        else:
+            coverage = evidence_coverage(topic, evidence_items)
+        coverage["scope"] = "evidence"
         coverage_info = coverage
-        evidence_stats = (
-            f"证据 {coverage['count']} 条；子任务 {subtasks}；"
-            f"已覆盖 {hit or ['无']}；未覆盖 {missing or ['无']}；"
-            f"覆盖率 {ratio:.0%}"
-        )
-        print(f"  -> [反思] {evidence_stats}")
-
-        if ratio < 1.0:
-            reason = f"子任务覆盖率仅 {ratio:.0%}，未覆盖：{'、'.join(missing)}"
-            print("  -> [反思] 已拆解但子任务覆盖率 < 100%，判分解不合理")
-            decision = _decide_next(state, "分解不合理", reason)
-            repeat_hit = decision.pop("_repeat_hit", False)
-            path = decision.get("repair_path", "")      # 不 pop：路由要读这个字段
-            return {**decision,
-                    **_reflection_stats(state, coverage, "分解不合理", reason,
-                                        "coverage_rule", repeat_hit=repeat_hit,
-                                        path=path)}
-
-    elif ENABLE_COVERAGE_RULE and is_composite and evidence_items:
-        # 首轮整体检索：走原来的复合主题切分逻辑
-        coverage = evidence_coverage(topic, evidence_items)
-        coverage_info = coverage
-        # 偏侧检测：把 per_term_counts 和 balance 一并喂给 GLM 裁判
-        balance_str = (
-            f"；偏侧检测：{coverage.get('per_term_counts', {})}，"
-            f"balance={coverage.get('balance', 1.0):.2f}"
-        )
+        balance_str = ""
+        if coverage.get("per_term_counts"):
+            # 偏侧检测：字面覆盖 100% 但证据全压在某一侧时，这条才是真正的"分解不合理"信号
+            balance_str = (f"；偏侧检测：{coverage['per_term_counts']}，"
+                           f"balance={coverage.get('balance', 1.0):.2f}")
         evidence_stats = (
             f"证据 {coverage['count']} 条；需覆盖对象 {coverage['terms'] or ['无']}；"
             f"已覆盖 {coverage['hit'] or ['无']}；未覆盖 {coverage['missing'] or ['无']}；"
@@ -603,7 +712,55 @@ def reflection_node(state: State):
         )
         print(f"  -> [反思] {evidence_stats}")
 
-        if coverage["terms"] and coverage["ratio"] < 1.0:
+        if REQUIRED_OBJECTS:
+            # v2.4 终判改用**答案侧**对象覆盖，证据侧覆盖率只当提示。
+            # 旧口径拿"子任务整串"去逐字匹配证据 blob，而这类串几乎不可能逐字出现：
+            # 48 份旧记录里有 54/100 轮因此判「分解不合理」，其中 8 轮判卷其实合格
+            # （F 臂"67% 误判"是**规则**缺陷，不是 fixed 路径的能力差）。
+            answer_cov = answer_completeness(state.get("result") or "",
+                                             list(REQUIRED_OBJECTS))
+            answer_cov["scope"] = "answer"
+            coverage_info = answer_cov
+            if answer_cov["missing"]:
+                miss = answer_cov["missing"]
+                # 缺的对象在**证据里也没有**：文本重写救不回来，只能换检索式补证据。
+                # 旧口径一律判"内容不合格"→局部重写，于是 A/B 组先白白重写一轮
+                # （48 份旧记录里 H 臂 A/B 平均修复轮次 3.0，比 R 臂多一轮）。
+                gap = [m for m in miss if m not in ev_blob]
+                if gap:
+                    error_type = "证据不足"
+                    reason = (f"答案与证据均缺必答对象：{'、'.join(gap)}"
+                              f"（属检索缺口，重写文本补不出内容，需换检索式补证据）")
+                    print(f"  -> [反思] {reason}，判证据不足（答案侧+证据侧都缺）")
+                else:
+                    error_type = "内容不合格"
+                    reason = (f"答案未覆盖 {len(miss)}/{len(answer_cov['terms'])} "
+                              f"个必答对象：{'、'.join(miss)}"
+                              f"（证据里已有这些对象，属生成缺口，局部重写即可）")
+                    print(f"  -> [反思] {reason}，判内容不合格（证据够、答案漏）")
+                # 这一轮没走语义裁判，但门控事实仍要量出来落盘：
+                # 否则对照表里这一轮记为"正文 null / 引用 null"，看起来像没测
+                gate = content_gate(state.get("result", ""), state.get("sources", []),
+                                    evidence_items)
+                decision = _decide_next(state, error_type, reason)
+                repeat_hit = decision.pop("_repeat_hit", False)
+                path = decision.get("repair_path", "")   # 不 pop：路由要读这个字段
+                return {**decision,
+                        **_reflection_stats(state, answer_cov, error_type, reason,
+                                            "coverage_rule", gate=gate,
+                                            repeat_hit=repeat_hit, path=path)}
+        elif has_subtasks and coverage["ratio"] < 1.0:
+            reason = f"子任务覆盖率仅 {coverage['ratio']:.0%}，未覆盖：{'、'.join(coverage['missing'])}"
+            print("  -> [反思] 已拆解但子任务覆盖率 < 100%，判分解不合理")
+            decision = _decide_next(state, "分解不合理", reason)
+            repeat_hit = decision.pop("_repeat_hit", False)
+            path = decision.get("repair_path", "")
+            return {**decision,
+                    **_reflection_stats(state, coverage, "分解不合理", reason,
+                                        "coverage_rule", repeat_hit=repeat_hit,
+                                        path=path)}
+        elif (not has_subtasks and is_composite and coverage.get("terms")
+              and coverage["ratio"] < 1.0):
             print("  -> [反思] 复合主题证据覆盖率 < 100%，跳过 LLM 直接判分解不合理")
             reason = f"证据覆盖率仅 {coverage['ratio']:.0%}，未覆盖：{'、'.join(coverage['missing'])}"
             decision = _decide_next(state, "分解不合理", reason)
@@ -623,10 +780,14 @@ def reflection_node(state: State):
             evidence_stats = f"证据 {len(evidence_items)} 条（单主题，无需比较对象覆盖率检查）"
         print(f"  -> [反思] {evidence_stats}")
 
+    # 覆盖率口径随 REQUIRED_OBJECTS 切换：有必答对象就按答案侧讲，没有就保持历史口径
+    coverage_rule_hint = (prompts.COVERAGE_RULE_HINT_ANSWER if REQUIRED_OBJECTS
+                          else prompts.COVERAGE_RULE_HINT_LEGACY)
     prompt = prompts.REFLECTION_PROMPT.format(
         topic=topic, result=state['result'],
         sources="\n".join(state.get('sources', [])) or "（无）",
         evidence_stats=evidence_stats, composite_check_hint=composite_check_hint,
+        coverage_rule_hint=coverage_rule_hint,
         min_chars=PASS_MIN_CHARS,     # 阈值单一来源：config.PASS_MIN_CHARS
     )
 
@@ -654,6 +815,14 @@ def reflection_node(state: State):
     # ===== 确定性门控（不依赖 LLM，对「通过」拥有最终否决权）=====
     gate = content_gate(state.get("result", ""), state.get("sources", []),
                         evidence_items)
+    # v2.4：答案层硬事实优先于「分解不合理」（见 _hard_content_facts 的说明）
+    pre_gate = ""
+    if llm_error_type == "分解不合理" and not DISABLE_CONTENT_GATE:
+        hard = _hard_content_facts(gate)
+        if hard:
+            pre_gate = "，".join(hard)
+            print(f"  -> [门控] 确定性内容事实（{pre_gate}）优先于「分解不合理」，改判「内容不合格」")
+            llm_error_type, reason = "内容不合格", f"确定性内容事实：{pre_gate}"
     error_type, reason, gate_hit = _apply_pass_gate(state, llm_error_type, reason, gate)
     if gate_hit:
         print(f"  -> [门控] {gate_hit}，将「{llm_error_type}」改判为「{error_type}」")
@@ -666,7 +835,7 @@ def reflection_node(state: State):
         rescue = (error_type, rescue_rule)
         error_type = rescued
 
-    gated_by = "llm" if error_type == llm_error_type else "gate"
+    gated_by = "llm" if (error_type == llm_error_type and not pre_gate) else "gate"
     decision = _decide_next(state, error_type, reason)
     repeat_hit = decision.pop("_repeat_hit", False)
     path = decision.get("repair_path", "")
@@ -847,13 +1016,20 @@ def free_reflection_node(state: State):
     context, sources, results, retry_stats = search_with_evidence(topic, query=retry_query)
     retry_stats = {**retry_stats, "retry_query": retry_query, "retry_mode": retry_mode}
 
+    # v2.4：重写长度必须**高于**门控阈值，否则重写刚生成就被自己的字数门否掉。
+    # 旧 prompt 写"100 字左右"，而 PASS_MIN_CHARS=120 —— 20 次重写的失败样本正文
+    # 是 108/108/108/111/119 字，全部差 1~12 字，纯粹是prompt 与阈值互斥造成的假失败。
+    # 口径与执行侧修复轮共用 REPAIR_MIN_CHARS（见文件头注释），两条路的字数要求必须一致。
+    min_chars = REPAIR_MIN_CHARS
+
     if context:
         print("  -> [补检索] 成功，基于新证据重写")
-        prompt = prompts.FREE_REFLECT_SUCCESS_PROMPT.format(topic=topic, context=context)
+        prompt = prompts.FREE_REFLECT_SUCCESS_PROMPT.format(
+            topic=topic, context=context, min_chars=min_chars)
         used_fallback = False
     else:
         print("  -> [补检索] 仍失败，走模型知识兜底并声明")
-        prompt = prompts.FREE_REFLECT_FAIL_PROMPT.format(topic=topic)
+        prompt = prompts.FREE_REFLECT_FAIL_PROMPT.format(topic=topic, min_chars=min_chars)
         used_fallback = True
 
     # 把最终判定写回 run_stats.reflection，保证 JSON 与终端一致

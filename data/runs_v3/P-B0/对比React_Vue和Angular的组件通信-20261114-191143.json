@@ -1,0 +1,142 @@
+{
+  "topic": "对比React、Vue和Angular的组件通信方式",
+  "group": "P-B0",
+  "ts": "2026-11-14T11:11:43.656744+00:00",
+  "elapsed_seconds": 14.16,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "React",
+        "query": "React",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8303,
+        "sources": 5,
+        "avg_summary": 2204.4,
+        "avg_content": 2316.6,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.75,
+        "evidence_path": "data\\evidence\\React-20261114-191136.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 8320,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 1,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 6.75,
+    "evidence_path": "data\\evidence\\React-20261114-191136.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 356,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 14.16
+    }
+  },
+  "injected": [
+    "one_side:first_object:React"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Built-in React Hooks – React | https://18.react.dev/reference/react/hooks",
+    "深入浅出React.js：原理与实战 | http://book.cppinfo.cn/Encyclopedias/home/index?id=4873057",
+    "(无标题) | https://react.dev/learn/installation.md",
+    "(无标题) | https://libopac.nudt.edu.cn/opac/book/968675?view=simple&flag=printer",
+    "React Reference Overview – React | https://react.dev/reference/react"
+  ],
+  "result": "React组件通信主要依托props、state与Context。父组件通过props向子组件传值并触发更新；子组件可向父组件反馈，兄弟组件及跨组件分层通信也有对应路径。Hooks中，useState用于声明可直接更新的状态变量，useReducer将更新逻辑放入reducer；Context则让组件无需逐层传递即可接收远端父级信息。由此，React通信体现数据驱动、组件组合与分层传递相结合的特点。\n\n【来源】Built-in React Hooks – React：https://18.react.dev/reference/react/hooks；深入浅出React.js：原理与实战：http://book.cppinfo.cn/Encyclopedias/home/index?id=4873057",
+  "artifacts": {
+    "log": "logs\\对比React_Vue和Angular的组件通信-20261114-191129.log",
+    "evidence": "data\\evidence\\React-20261114-191136.md"
+  }
+}

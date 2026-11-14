@@ -173,8 +173,21 @@ def content_gate(result: str, sources: list, evidence: list,
     cited = _CITED_URL_RE.findall(text)
     source_urls = set()
     for s in sources or []:
-        if " | " in s:
-            source_urls.add(_norm_url(s.split(" | ", 1)[1]))
+        # 来源行格式是"标题 | URL"，但标题本身可能再含 " | "（如
+        # "5.3 全文与倒排对照 | SQLite内核与优化 - 灏天文库 | https://aiknowledge.cn/..."），
+        # 用 split(" | ")[1] 会把"标题后半段 | URL"整串当成 URL，于是答案里逐字引用的
+        # 真实来源被判成"编造 URL"（2026-11-14 P-H/P-R 的 B2 就是 1/3 条引用这样误杀，
+        # 一份 649 字、对象全覆盖的回答被直接判 failed）。所以从**最后一个**分隔符切。
+        # 也不能用 _CITED_URL_RE 兜底提取：它的字符类排除了 "?"，
+        # 会把 `...visitnodedetail?courseId=...` 截成 `...visitnodedetail`，
+        # 于是"截断写法"的引用（C3b 案例）失去前缀比对依据。
+        raw = (s or "").strip()
+        url = raw.rsplit(" | ", 1)[1].strip() if " | " in raw else ""
+        if not url.lower().startswith(("http://", "https://")):
+            m = _CITED_URL_RE.search(raw)
+            url = m.group(0) if m else ""
+        if url:
+            source_urls.add(_norm_url(url))
     fabricated = [u for u in cited if not _verified_kind(_norm_url(u), source_urls)]
     verified = {u for u in (_norm_url(x) for x in cited)
                 if _verified_kind(u, source_urls) == "exact"}
@@ -207,14 +220,57 @@ def content_gate(result: str, sources: list, evidence: list,
     }
 
 
+# 「资料未提供 / 仅覆盖 X」这类**可得性声明**：句子里有对象名，但没有讲这个对象。
+# 判卷时若把这些句子算作覆盖，就会出现"答案自己声明没查到 Kafka"却被判为讲清了 Kafka
+# （v2.4 复核：Kafka / PostgreSQL / Podman 三例都这样，系统判不合格、判卷判合格 = 假误否决）。
+# 只匹配"资料/数据/证据…"与否定词紧邻的写法，避免把
+# "Redis 未提供事务回滚，而 MySQL 提供" 这类**实质结论**当成声明句删掉。
+_MATERIAL_RE = r"(?:资料|数据|证据|信息|来源|文献|材料|内容)"
+_AVAILABILITY_RE = re.compile(
+    rf"{_MATERIAL_RE}[^，。；]{{0,6}}?(?:未|没有|无|不足|仅|只)"
+    rf"|(?:未|没有|无)(?:提供|涉及|检索到|找到|获取到|覆盖|给出|提及|披露)"
+    rf"[^，。；]{{0,20}}?{_MATERIAL_RE}"
+    rf"|{_MATERIAL_RE}[^，。；]{{0,10}}?(?:中)?(?:未|没有)"
+    rf"|无法(?:比较|获取|确认|判断|展开|据实)"
+    rf"|缺少{_MATERIAL_RE}"
+    # 拒答/免责型结尾（2026-11-14 P-F 的 B4 实跑）：模型不再伪装覆盖，而是整段
+    # 说明"我不能把资料改写成三者比较""当前资料不足以完成比较"，句子里照样出现
+    # 全部对象名。这类句子必须一起剔掉，否则一份"只讲 Docker、其余声明查不到"的
+    # 拒答会被判成三对象全覆盖（系统判否决 → 记成误否决）。
+    rf"|不能把[^。；]{{0,40}}?(?:改写|写成|拼成|凑成|补齐成)"
+    rf"|不足以(?:完成|支撑|作|进行|给出|形成|覆盖)"
+    rf"|只能(?:引入|依据|诉诸|靠)(?:无来源|自身知识|模型内部)"
+    # "下一步该补哪些资料"的施工说明（同一份 B4 拒答的第二段）：句子里点名了
+    # Podman / containerd，但给的是检索计划（"需补充三类官方资料…""可按 site:… 检索式补齐"），
+    # 不是关于这些对象的内容。不剔掉就会把施工计划算成覆盖。
+    rf"|(?:需|需要|应|可|建议)[^。；]{{0,10}}?(?:补充|补齐|补检|检索)[^。；]{{0,24}}?(?:资料|文档|证据|检索式)"
+    rf"|检索式")
+
+
+def _substantive_text(text: str) -> str:
+    """剔掉可得性声明句，只留"实际讲了内容"的句子（判卷专用）。
+
+    只按强标点（。；！？换行）切句：若连逗号也切，
+    "Kafka 吞吐更高，而 RabbitMQ 数据未提供" 会被切成两半，前半仍然是实质内容；
+    反之若整段一起判，又可能把同一段里的实质内容一起丢掉——强标点是折中。
+    """
+    parts = re.split(r"[。；;！？!?\n]", text or "")
+    keep = [p.strip() for p in parts if p.strip() and not _AVAILABILITY_RE.search(p)]
+    return "。".join(keep)
+
+
 def answer_completeness(result: str, required_objects: list,
-                        min_chars: int = None) -> dict:
+                        min_chars: int = None, substantive: bool = False) -> dict:
     """答案完整性复核（v2.3）：对**最终答案**检查"该覆盖的对象是否都覆盖了"。
 
     为什么需要：`content_gate` 只看字数/引用/截断，看完不知道"回答是否答完"。
     补检索重写之后最容易退化成"补上了引用、却只讲了一个对象"，仅靠字数门看不出来。
     因此这里改用「任务给定的必答对象」做字面覆盖，口径与 content_gate 的正文一致
     （同一个 `_body_text`），三臂共用同一份判定，避免各臂自己判自己。
+
+    参数 `substantive=True`（判卷用）：先剔除"资料未提供 / 仅涉及 X"这类**可得性声明**句
+    再数字面覆盖。理由见 `_substantive_text`：那种句子只是提了对象名，没有讲对象。
+    系统侧的判定仍用默认 False（口径一旦改动，历史记录就不可比）。
 
     返回 dict：
     - terms / hit / missing / ratio：必答对象的覆盖情况
@@ -224,9 +280,10 @@ def answer_completeness(result: str, required_objects: list,
     from config import PASS_MIN_CHARS
     limit = PASS_MIN_CHARS if min_chars is None else min_chars
     body = _body_text(result or "")
+    scope = _substantive_text(body) if substantive else body
     terms = [t for t in (required_objects or []) if t]
-    hit = [t for t in terms if t in body]
-    missing = [t for t in terms if t not in body]
+    hit = [t for t in terms if t in scope]
+    missing = [t for t in terms if t not in scope]
     body_chars = _body_chars(result or "")
     trunc = _looks_truncated(result or "")["truncated"]
     return {
@@ -236,6 +293,7 @@ def answer_completeness(result: str, required_objects: list,
         "ratio": round(len(hit) / len(terms), 3) if terms else 1.0,
         "body_chars": body_chars,
         "truncated": trunc,
+        "substantive": bool(substantive),
         "complete": (not missing) and (not trunc) and body_chars >= limit,
     }
 

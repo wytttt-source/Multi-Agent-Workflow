@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""v2.3 修复路径三臂对照执行器（12 任务 × 4 臂 = 48 次运行）。
+"""v2.4 修复路径三臂对照执行器（12 任务 × 4 臂 = 48 次运行）。
 
 用法：
     python experiments/repair_matrix.py --dry-run                # 只打印将执行的 48 条命令
@@ -14,8 +14,14 @@
     R   REPAIR_POLICY=free         自由反思：一律补检索+重写，不做定向修复
     H   REPAIR_POLICY=hybrid       本文方法：有确定性依据走定向，判断不清走自由反思
 
+除臂开关外，每个任务还会注入三项**任务级**变量（三臂完全一致，比较才公平）：
+    INJECT_FAULT     首轮受控缺陷（none/short/no_cite/truncate/one_side），只作用于第 0 轮
+    REQUIRED_OBJECTS tasks_repair.json 的 required_objects —— 判定与判卷共用的必答对象，
+                     覆盖率终判因此看"答案有没有讲到"，而不是"子任务串能不能在证据里逐字命中"
+
 结果写入 data/runs_v3/P-<臂>/（**不写 v2 的 data/runs_v2/**，两者判定口径不同不可混表），
 汇总表用 `python experiments/evaluate_answers.py` 生成 docs/修复路径对照.md。
+v2.4 重跑前把旧记录移到 data/runs_v3_pre_v24/（口径变了，同表不可混）。
 """
 import argparse
 import glob
@@ -78,7 +84,9 @@ def _plan(arms: list, tasks: list) -> list:
 
 def run_one(arm: str, task: dict, timeout: int = 1200, dry_run: bool = False) -> bool:
     group = f"P-{arm}"
-    env_over = {**ARMS[arm], "INJECT_FAULT": task["inject"]}
+    env_over = {**ARMS[arm], "INJECT_FAULT": task["inject"],
+                # v2.4：判定用与判卷同源的必答对象，覆盖率终判才不会被"子任务串匹配"污染
+                "REQUIRED_OBJECTS": ",".join(task.get("required_objects") or [])}
     cmd = [sys.executable, "main.py", task["topic"]]
     print(f"\n[RUN] {group} | {task['id']} | {task['topic']}")
     print("      env: " + " ".join(f"{k}={v}" for k, v in env_over.items()))
@@ -100,9 +108,14 @@ def run_one(arm: str, task: dict, timeout: int = 1200, dry_run: bool = False) ->
     rec = _record_for(group, task["topic"])
     refl = rec.get("reflection") or {}
     repair = rec.get("repair") or {}
-    print(f"      [完成] {elapsed:.1f}s | verdict={refl.get('verdict')} "
-          f"| outcome={repair.get('outcome')} | replan={rec.get('replan_count')} "
-          f"| cited={refl.get('cited_count')} | llm_calls={refl.get('llm_calls')}")
+    # 打印「判定/路径」链路与运行时注入标记：
+    # 注入失败（任务写着 truncate 但没真注入）在跑的时候就该看见，而不是事后对表才发现
+    rounds = repair.get("rounds") or []
+    chain = " → ".join(
+        f"{x.get('verdict')}{('/' + x['path']) if x.get('path') else ''}" for x in rounds) or "-"
+    print(f"      [完成] {elapsed:.1f}s | outcome={repair.get('outcome')} | {chain} "
+          f"| 注入={rec.get('injected')} | replan={rec.get('replan_count')} "
+          f"| llm_calls={refl.get('llm_calls')}")
     return True
 
 
@@ -118,7 +131,7 @@ def _select(ids: str, tasks: list) -> list:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description="v2.3 修复路径四臂对照（12 任务 × 4 臂）")
+    parser = argparse.ArgumentParser(description="v2.4 修复路径四臂对照（12 任务 × 4 臂）")
     parser.add_argument("--arms", default=",".join(ARMS),
                         help="逗号分隔，默认 B0,F,R,H")
     parser.add_argument("--tasks", default="", help="逗号分隔任务编号，如 A1,B2；留空=全部 12 条")

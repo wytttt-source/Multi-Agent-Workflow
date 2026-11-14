@@ -90,6 +90,14 @@ REPAIR_POLICY = (os.getenv("REPAIR_POLICY", "hybrid").strip().lower() or "hybrid
 INJECT_FAULT = (os.getenv("INJECT_FAULT", "none").strip().lower() or "none")
 # 定向修复的轮次上限；自由反思固定只有 1 次机会（由路由保证）
 REPAIR_MAX_ROUNDS = int(os.getenv("REPAIR_MAX_ROUNDS", "3") or 3)
+# v2.4 实验用「必答对象」（逗号分隔，如 "Python,Java"）：由 experiments/repair_matrix.py
+# 从任务集的 required_objects 注入，与判卷脚本同源。
+# 为什么要单独给一份：覆盖率终判如果靠"子任务/主题串逐字出现在证据里"，这些串几乎不可能
+# 逐字命中（48 份旧记录里 54/100 轮都因此判"分解不合理"）。有了必答对象，判定与判卷
+# 用同一份对象清单，两边的差异才只剩"谁来检查"。
+# 留空 = 沿用 v2.1~v2.3 的证据侧覆盖率口径，不影响常规运行与历史记录。
+REQUIRED_OBJECTS = [x.strip() for x in
+                    (os.getenv("REQUIRED_OBJECTS", "") or "").split(",") if x.strip()]
 
 # ================= 1.4 模型名（代码 / 日志 / 论文三处必须一致） =================
 CRITIC_MODEL = os.getenv("CRITIC_MODEL", "glm-5.3-flash")

@@ -1,0 +1,209 @@
+{
+  "topic": "对比LSTM、GRU和Transformer的长文本建模能力",
+  "group": "P-H",
+  "ts": "2026-11-14T12:25:13.783284+00:00",
+  "elapsed_seconds": 239.5,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "LSTM",
+        "query": "LSTM",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8834,
+        "sources": 5,
+        "avg_summary": 3026.6,
+        "avg_content": 10774.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 7.81,
+        "evidence_path": "data\\evidence\\LSTM-20261114-202122.md"
+      },
+      {
+        "topic": "LSTM、GRU和Transformer的长文本建模能力",
+        "query": "LSTM、GRU和Transformer的长文本建模能力 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 1,
+        "filtered": 1,
+        "evidence_chars": 1724,
+        "sources": 1,
+        "avg_summary": 1970.0,
+        "avg_content": 7476.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 1,
+          "dropped": 0,
+          "total": 1
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 20.22,
+        "evidence_path": "data\\evidence\\LSTM_GRU和Transformer的长文本-20261114-202153.md",
+        "retry_query": "LSTM、GRU和Transformer的长文本建模能力 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      }
+    ],
+    "raw": 6,
+    "gated": 1,
+    "filtered": 1,
+    "evidence_chars": 1764,
+    "sources": 1,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 1,
+        "dropped": 0,
+        "total": 1
+      }
+    ],
+    "elapsed_s": 20.22,
+    "evidence_path": "data\\evidence\\LSTM_GRU和Transformer的长文本-20261114-202153.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "LSTM",
+        "GRU",
+        "Transformer"
+      ],
+      "hit": [
+        "LSTM",
+        "GRU",
+        "Transformer"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 373,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+    "gated_by": "rule_fallback",
+    "decision_source": "rule_fallback",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 1,
+    "result_chars": 488,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 1,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 373,
+    "len_full": 488,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 2/3 个必答对象：GRU、Transformer（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 174,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 373,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 239.5
+    }
+  },
+  "injected": [
+    "one_side:first_object:LSTM"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "围绕序列数据建模问题，学术界与工业界已开展了大量研究 | https://ai.nju.edu.cn/rinc/publish/download/2026graduate/1009.pdf#3#20#3"
+  ],
+  "result": "在长文本建模中，LSTM、GRU与Transformer体现了不同思路。LSTM和GRU都属于以循环神经网络为基础的递归类模型，核心是通过隐状态递推在时间维度上压缩并传递历史信息。标准RNN在序列变长时易出现梯度消失或爆炸，长程依赖难以有效学习；LSTM通过输入门、遗忘门和输出门对信息流进行选择性控制，从而在一定程度上缓解梯度消失，并增强对长期记忆的保持能力。GRU同属门控循环结构，与LSTM一样借助门控机制改进循环建模，目标同样是缓解长程依赖学习问题，因而适合逐步处理长文本中的时序上下文。相比之下，Transformer属于自注意力模型，与循环模型不同，它通过全局交互机制增强远距离关联捕捉能力，在长文本中更强调直接建立跨距离依赖。总体看，LSTM/GRU以门控递推维护长期记忆，Transformer以全局交互捕捉远距离关联，各有侧重。\n\n【来源】检索：LSTM、GRU和Transformer的长文本建模能力，URL: https://ai.nju.edu.cn/rinc/publish/download/2026graduate/1009.pdf#3#20#3",
+  "artifacts": {
+    "log": "logs\\对比LSTM_GRU和Transformer的长-20261114-202114.log",
+    "evidence": "data\\evidence\\LSTM_GRU和Transformer的长文本-20261114-202153.md"
+  }
+}

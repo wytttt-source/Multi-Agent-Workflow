@@ -1,0 +1,202 @@
+{
+  "topic": "什么是Serverless架构",
+  "group": "P-H",
+  "ts": "2026-11-14T12:40:54.556958+00:00",
+  "elapsed_seconds": 199.62,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "no_cite",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "什么是Serverless架构",
+        "query": "什么是Serverless架构 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 11045,
+        "sources": 6,
+        "avg_summary": 1951.7,
+        "avg_content": 5224.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 25.75,
+        "evidence_path": "data\\evidence\\什么是Serverless架构-20261114-203800.md"
+      },
+      {
+        "topic": "什么是Serverless架构",
+        "query": "什么是Serverless架构 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "什么是Serverless架构 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      }
+    ],
+    "raw": 6,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 0,
+    "sources": 0,
+    "providers": [],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      }
+    ],
+    "elapsed_s": 0.0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Serverless"
+      ],
+      "hit": [
+        "Serverless"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 405,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "证据6条≥1；【来源】齐全且4个URL均可在实际检索来源中核验；正文约350字，远超120字。主题'什么是Serverless架构'为单一必答对象，覆盖率100%、未覆盖为'无'，回答直接定义Serverless架构并展开其平台承接运行环境与资源、FaaS关联、容器云支撑及架构模式演进等内容，贴合主题、内容完整。balance=0.17仅因该单一对象在证据标题层面匹配数少所致，本主题不含多个需独立回答的子问题，证据亦无缺失，不构成分解不合理。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 6,
+    "result_chars": 1366,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 405,
+    "len_full": 1366,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "no_cite",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "llm",
+        "reason": "回答正文虽贴合主题'什么是Serverless架构'、覆盖完整且字数达标，但未附【来源】及URL（自述'未列出来源链接'），来源不可核验/疑似编造，触发硬性否决规则，不满足通过的三个必要条件。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 190,
+        "truncated": false,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "证据6条≥1；【来源】齐全且4个URL均可在实际检索来源中核验；正文约350字，远超120字。主题'什么是Serverless架构'为单一必答对象，覆盖率100%、未覆盖为'无'，回答直接定义Serverless架构并展开其平台承接运行环境与资源、FaaS关联、容器云支撑及架构模式演进等内容，贴合主题、内容完整。bal",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 405,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 199.62
+    }
+  },
+  "injected": [
+    "no_cite"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "中国信息通信研究院云大所云计算部工程师 刘如明：《可信云服务评估函数即服务》标准解读--2019云计算开源产业大会 | http://www.caict.ac.cn/pphd/zb/oscar/2019/pm/3/201907/t20190703_202328.htm",
+    "Apache OpenWhisk Committer郭迎春：Apache OpenWhisk让容器云Serverless--OSCAR云计算开源产业大会 | http://www.caict.ac.cn/pphd/zb/oscar2018/21pm/2/201804/t20180428_160610.html",
+    "一文读懂Serverless的起源、发展和落地实践 | https://docs.serverless-devs.com/blog/%e4%b8%80%e6%96%87%e8%af%bb%e6%87%82Serverless%e7%9a%84%e8%b5%b7%e6%ba%90%e3%80%81%e5%8f%91%e5%b1%95%e5%92%8c%e8%90%bd%e5%9c%b0%e5%ae%9e%e8%b7%b5",
+    "1. 引言 Serverless 是一种 “无服务器架构”，让用户无需关心程序运行环境、资源及数量，只要将精力 Focus 到业务逻辑上的技术。 现在公司已经实现 DevOps 化，正在向 Serverless 迈进，而为什么前端要关注 Serverles... - 1. 引言 Serverless 是一种 “无服务器架构”，让用户无需关心程序运行环境、资源及数量，只要将精力 Focus 到业务逻辑上的技术。 现在公司已经实现 DevOps 化，正在向 Serverless 迈进，而为什么前端要关注 Serverles... | https://raw.githubusercontent.com/Nepheway99Cyog/weekly/5368800e88dab799ee4a2c3dc3ad455a669d5f9a/%e5%89%8d%e6%b2%bf%e6%8a%80%e6%9c%af/94.%E7%B2%BE%E8%AF%BB%E3%80%8AServerless%20%E7%BB%99%E5%89%8D%E7%AB%AF%E5%B8%A6%E6%9D%A5%E4%BA%86%E4%BB%80%E4%B9%88%E3%80%8B.md#1",
+    "6 岁！是时候重新认识下 Serverless 了 - 切换模式 | https://zhuanlan.zhihu.com/p/307637959#1",
+    "Serverless 架构模式及演进 | https://docs.serverless-devs.com/blog/Serverless%e6%9e%b6%e6%9e%84%e6%a8%a1%e5%bc%8f%e5%8f%8a%e6%bc%94%e8%bf%9b"
+  ],
+  "result": "Serverless（无服务器架构）是一种让开发者无需关心程序运行环境、资源及数量的云计算使用方式，用户可以把主要精力聚焦在业务逻辑上。其关键在于服务器和运行环境等由平台侧承接，使用者无需逐项管理资源数量，而是通过函数或服务完成业务。从参考资料看，Serverless 与函数即服务（FaaS）密切相关，相关标准解读讨论了可信云服务评估中的函数即服务；Apache OpenWhisk 的实践体现了以容器云支撑 Serverless 的思路；同时，Serverless 还涉及多种架构模式及其演进。由此可见，Serverless 既是一种面向业务逻辑的开发交付理念，也是一套由平台提供运行环境、资源管理和函数服务能力的架构方式。对使用者而言，它减少了环境和资源数量的直接管理；对平台而言，需要把函数服务、容器云和架构模式等能力组织起来，支撑应用运行。随着实践发展，Serverless 的架构模式仍在持续演进。\n【来源】1. 引言 Serverless 是一种 “无服务器架构”，让用户无需关心程序运行环境、资源及数量，只要将精力 Focus 到业务逻辑上的技术。 现在公司已经实现 DevOps 化，正在向 Serverless 迈进，而为什么前端要关注 Serverles... - 1. 引言 Serverless 是一种 “无服务器架构”，让用户无需关心程序运行环境、资源及数量，只要将精力 Focus 到业务逻辑上的技术。 现在公司已经实现 DevOps 化，正在向 Serverless 迈进，而为什么前端要关注 Serverles...，https://raw.githubusercontent.com/Nepheway99Cyog/weekly/5368800e88dab799ee4a2c3dc3ad455a669d5f9a/%e5%89%8d%e6%b2%bf%e6%8a%80%e6%9c%af/94.%E7%B2%BE%E8%AF%BB%E3%80%8AServerless%20%E7%BB%99%E5%89%8D%E7%AB%AF%E5%B8%A6%E6%9D%A5%E4%BA%86%E4%BB%80%E4%B9%88%E3%80%8B.md#1；2. 中国信息通信研究院云大所云计算部工程师 刘如明：《可信云服务评估函数即服务》标准解读--2019云计算开源产业大会，http://www.caict.ac.cn/pphd/zb/oscar/2019/pm/3/201907/t20190703_202328.htm；3. Apache OpenWhisk Committer郭迎春：Apache OpenWhisk让容器云Serverless--OSCAR云计算开源产业大会，http://www.caict.ac.cn/pphd/zb/oscar2018/21pm/2/201804/t20180428_160610.html；4. Serverless 架构模式及演进，https://docs.serverless-devs.com/blog/Serverless%e6%9e%b6%e6%9e%84%e6%a8%a1%e5%bc%8f%e5%8f%8a%e6%bc%94%e8%bf%9b",
+  "artifacts": {
+    "log": "logs\\什么是Serverless架构-20261114-203734.log",
+    "evidence": ""
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "topic": "比较Docker、Podman和containerd的镜像管理",
+  "group": "P-H",
+  "ts": "2026-11-14T11:12:34.892637+00:00",
+  "elapsed_seconds": 58.32,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Docker",
+        "query": "Docker",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10329,
+        "sources": 6,
+        "avg_summary": 2212.2,
+        "avg_content": 7571.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 5.34,
+        "evidence_path": "data\\evidence\\Docker-20261114-191141.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10347,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 5.34,
+    "evidence_path": "data\\evidence\\Docker-20261114-191141.md",
+    "retry_query": "比较Docker、Podman和containerd的镜像管理 Podman lang:zh",
+    "retry_mode": "missing_term:Podman"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Docker",
+        "Podman",
+        "containerd"
+      ],
+      "hit": [
+        "Docker"
+      ],
+      "missing": [
+        "Podman",
+        "containerd"
+      ],
+      "ratio": 0.333,
+      "body_chars": 184,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：Podman、containerd（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 1,
+    "result_chars": 927,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 1,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 927,
+    "len_full": 1038,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Podman、containerd（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 184,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 927,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 1,
+      "elapsed_s": 58.32
+    }
+  },
+  "injected": [
+    "one_side:first_object:Docker"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "怎么通过理解 OCI 标准 Runtime 规范评估从 Docker 转向 Podman 或 Containerd 的架构迁移成本 - 怎么通过理解 OCI 标准 Runtime 规范评估从 Docker 转向 Podman 或 Containerd 的架构迁移成本 | https://www.php.cn/faq/2720749.html#1"
+  ],
+  "result": "Docker：在镜像管理上，Docker 常用 `docker build`、`docker pull` 完成镜像构建与拉取，并可将镜像推送到 Docker Hub、Quay、Harbor 等符合 OCI 的 registry。比较时要把“OCI 镜像规范”当作核心契约：只要镜像符合 OCI Image Spec，分层结构、manifest 等格式就可移植；但若依赖 Docker 特有实现逻辑，例如 Docker Desktop 的 BuildKit 特有语法且未确认 OCI 兼容性，迁移成本就会上升。因此 Docker 镜像管理的关键不是只看能否 `pull`，还要看构建语法、运行时调用链是否绑定了 dockerd 等 Docker 专有环节。\n\nPodman：Podman 的镜像管理可通过 `podman build`、`podman pull` 等完成，资料强调它可直接拉取并运行符合 OCI 标准的公开镜像，且权限模型宜适配 rootless。与 Docker 相比，Podman 迁移评估的重点是避免对 dockerd 的依赖，让镜像构建、拉取和运行更贴近 OCI 契约本身。也就是说，若企业镜像主要由标准工具生成并存放在 OCI registry 中，Podman 的镜像管理兼容性通常较好；真正需要排查的是是否使用了 Docker 专有扩展或特殊构建语法。\n\ncontainerd：containerd 同样是 OCI 标准的实现者，镜像管理更偏底层运行时链路，资料提到可用 `ctr images pull` 拉取 OCI 镜像。比较 Docker、Podman 和 containerd 时，containerd 的迁移成本评估应重点关注运行时调用链是否避免 dockerd 依赖，以及镜像是否真正符合 OCI Image Spec、是否存放在符合 OCI 的 registry 中。对科普理解而言，Docker 更强调完整工具链体验，Podman 强调 rootless 与无 dockerd 依赖，containerd 更偏底层镜像与运行时管理；三者能否互换，取决于你依赖的是 OCI 契约，还是 Docker 特有实现逻辑。\n\n【来源】怎么通过理解 OCI 标准 Runtime 规范评估从 Docker 转向 Podman 或 Containerd 的架构迁移成本，https://www.php.cn/faq/2720749.html#1",
+  "artifacts": {
+    "log": "logs\\比较Docker_Podman和containe-20261114-191136.log",
+    "evidence": "data\\evidence\\Docker-20261114-191141.md"
+  }
+}

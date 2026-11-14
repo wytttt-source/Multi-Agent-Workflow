@@ -1,0 +1,191 @@
+{
+  "topic": "对比LSTM、GRU和Transformer的长文本建模能力",
+  "group": "P-R",
+  "ts": "2026-11-14T11:11:30.311363+00:00",
+  "elapsed_seconds": 133.13,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "LSTM",
+        "query": "LSTM",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8834,
+        "sources": 5,
+        "avg_summary": 3026.6,
+        "avg_content": 10774.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 7.6,
+        "evidence_path": "data\\evidence\\LSTM-20261114-190924.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8850,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 7.6,
+    "evidence_path": "data\\evidence\\LSTM-20261114-190924.md",
+    "retry_query": "对比LSTM、GRU和Transformer的长文本建模能力 GRU lang:zh",
+    "retry_mode": "missing_term:GRU"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "LSTM",
+        "GRU",
+        "Transformer"
+      ],
+      "hit": [
+        "LSTM"
+      ],
+      "missing": [
+        "GRU",
+        "Transformer"
+      ],
+      "ratio": 0.333,
+      "body_chars": 142,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案未覆盖 2/3 个必答对象：GRU、Transformer（证据里已有这些对象，属生成缺口，局部重写即可）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 670,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 670,
+    "len_full": 1151,
+    "cited_loose": [
+      "http://mp.weixin.qq.com/s",
+      "https://cloud.tencent.com.cn/developer/article/2550669"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 2/3 个必答对象：GRU、Transformer（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 142,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 670,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 1,
+      "elapsed_s": 133.13
+    }
+  },
+  "injected": [
+    "one_side:first_object:LSTM"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "从RNN循环神经网络到Transformer注意力机制：解析神经网络架构的华丽蜕变 - - Transformer测试损失：6.5362 | https://cloud.tencent.com.cn/developer/article/2550669?policyId=1003#2",
+    "从RNN到GRU、LSTM再到Transformer的全面解析 | https://bbs.huaweicloud.com/blogs/453594#1#1",
+    "Transformer 相比于传统的 RNN优势 - Transformer 相比于传统的 RNN优势 | https://blog.csdn.net/Wei_sx/article/details/149354331#1",
+    "LSTM/GRU和TRANSFORMER的长距离依赖处理 | http://mp.weixin.qq.com/s?__biz=Mzk5MDg0MzE3MA==&mid=2247484799&idx=1&sn=b62a10c85b1972ace1b6a5cceb9b4164"
+  ],
+  "result": "在长文本建模中，LSTM依靠输入门、遗忘门和输出门来控制细胞状态，能够选择性地保留关键信息、丢弃次要信息，因此相比普通RNN更能缓解梯度消失和梯度爆炸问题，在较长序列中捕捉远距离依赖。资料指出，LSTM的长程依赖建模能力较强，但门控结构带来较高的参数和计算开销，训练速度相对较慢；同时它必须按时间步顺序处理序列，难以高效并行，这使它在超长文本和大规模训练中受到限制。\n\nGRU是LSTM的简化变体，只保留重置门和更新门：重置门调节新输入与旧记忆的结合，更新门控制前一时刻状态被带入当前状态的程度。它的优势是参数更少、训练更快、过拟合风险较低，在许多任务上能达到与LSTM相近的性能；但资料也提醒，其表达能力略弱于LSTM。对长文本建模而言，GRU仍属于循环结构，需要顺序传递隐状态，因此长距离信息传播和并行计算能力不如基于注意力的模型，不过在资源受限场景下仍有实用价值。\n\nTransformer使用自注意力机制，让每个token直接与序列中任意位置交互，建模长距离依赖不受距离限制；多头注意力还能从不同子空间捕捉语义关系，位置编码则补足顺序信息。资料中的序列预测实验显示，Transformer测试损失为6.5362，低于SimpleRNN、LSTM和GRU的32.2622，训练时间22.43秒也短于LSTM的62.72秒和GRU的55.43秒，说明它更容易优化且能并行处理整个序列。不过其代价是内存消耗较大。总体看，长文本建模若追求全局依赖和并行效率，Transformer通常更合适；若资源受限或任务较短，LSTM/GRU仍是可选方案。\n\n【来源】\n- 【从RNN循环神经网络到Transformer注意力机制：解析神经网络架构的华丽蜕变 - - Transformer测试损失：6.5362】https://cloud.tencent.com.cn/developer/article/2550669?policyId=1003#2\n- 【从RNN到GRU、LSTM再到Transformer的全面解析】https://bbs.huaweicloud.com/blogs/453594#1#1\n- 【Transformer 相比于传统的 RNN优势 - Transformer 相比于传统的 RNN优势】https://blog.csdn.net/Wei_sx/article/details/149354331#1\n- 【LSTM/GRU和TRANSFORMER的长距离依赖处理】http://mp.weixin.qq.com/s?__biz=Mzk5MDg0MzE3MA==&mid=2247484799&idx=1&sn=b62a10c85b1972ace1b6a5cceb9b4164",
+  "artifacts": {
+    "log": "logs\\对比LSTM_GRU和Transformer的长-20261114-190917.log",
+    "evidence": "data\\evidence\\LSTM-20261114-190924.md"
+  }
+}

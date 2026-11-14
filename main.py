@@ -70,8 +70,9 @@ def _print_report(result: dict) -> None:
     if result.get("sources"):
         print("\n=== 引用来源 ===")
         for s in result["sources"]:
+            # rsplit：标题自身可能含 " | "，URL 永远在最后一个分隔符之后
             if " | " in s:
-                title, url = s.split(" | ", 1)
+                title, url = s.rsplit(" | ", 1)
                 print(f"- {title}\n  {url}")
             else:
                 print(f"- {s}")

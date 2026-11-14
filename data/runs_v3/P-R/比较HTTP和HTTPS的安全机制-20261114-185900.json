@@ -1,0 +1,189 @@
+{
+  "topic": "比较HTTP和HTTPS的安全机制",
+  "group": "P-R",
+  "ts": "2026-11-14T10:59:00.840179+00:00",
+  "elapsed_seconds": 37.57,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "HTTP",
+        "query": "HTTP",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10153,
+        "sources": 6,
+        "avg_summary": 1723.5,
+        "avg_content": 153401.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 7.05,
+        "evidence_path": "data\\evidence\\HTTP-20261114-185830.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10169,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 7.05,
+    "evidence_path": "data\\evidence\\HTTP-20261114-185830.md",
+    "retry_query": "比较HTTP和HTTPS的安全机制 HTTPS lang:zh",
+    "retry_mode": "missing_term:HTTPS"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "hit": [
+        "HTTP"
+      ],
+      "missing": [
+        "HTTPS"
+      ],
+      "ratio": 0.5,
+      "body_chars": 161,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：HTTPS（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 610,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 610,
+    "len_full": 978,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail",
+      "https://www-kepuchina-cn-443.webvpn.imac.edu.cn/article/articleinfo"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：HTTPS（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 161,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 610,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 1,
+      "elapsed_s": 37.57
+    }
+  },
+  "injected": [
+    "one_side:first_object:HTTP"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "图文详情——科普中国资源服务 | https://cloud.kepuchina.cn/h5/detail?id=7294157615342628864#1",
+    "HTTPS协议为什么安全？ - 版权归原作者所有，如有侵权，请联系我们 | https://www-kepuchina-cn-443.webvpn.imac.edu.cn/article/articleinfo?business_type=100&classify=0&ar_id=409275#1",
+    "多维度对比HTTP与HTTPS的安全性能及连接方式差异-开发者社区-阿里云 - HTTP和HTTPS的区别有哪些？ | https://developer.aliyun.com/article/1628000#1",
+    "HTTP 与 HTTPS — 传输协议之间的区别 — AWS - HTTP 与 HTTPS 之间有何区别？ | https://aws.amazon.com/cn/compare/the-difference-between-https-and-http/#1"
+  ],
+  "result": "HTTP 的安全机制较为薄弱：它通常通过 TCP 80 端口以明文传输请求和响应，数据没有加密，第三方一旦在传输链路中窃听，就可能读取登录信息、手机号码、身份证号码、信用卡号等敏感内容。HTTP 对内容是否被篡改也不作确认，资料指出其完整性检验主要依赖报文头部中的数据长度，攻击者仍可能篡改传输内容；同时它缺少对服务器身份的可靠认证，因而难以防范欺骗、中间人攻击和窃听。\n\nHTTPS 则是在 HTTP 与 TCP 之间加入 SSL/TLS 安全层，可理解为 HTTP over SSL/TLS。通信前，客户端与服务器先通过 SSL/TLS 握手协商建立安全信道，服务器需出示由独立证书颁发机构（CA）签发的 SSL/TLS 证书，浏览器据此验证服务器身份并协商会话密钥；随后业务报文在该安全信道上加密传输。因此，HTTPS 从保密性、完整性和身份校验三方面提供保护：加密内容防止窃听，检测篡改保护完整性，证书和身份验证降低冒充与中间人攻击风险。它默认使用 443 端口，但并非简单“换个端口”，关键在于 SSL/TLS 提供的加密、认证和完整性机制。\n\n总体比较，HTTP 的安全机制基本缺位，主要面向一般性传输；HTTPS 通过 SSL/TLS、数字证书、加密算法和非对称密钥等技术弥补了 HTTP 的不足，更适合交易支付、个人信息传输等安全敏感场景。代价是 HTTPS 需要证书验证和握手协商，连接建立过程相对更复杂。\n\n【来源】\n科普中国-HTTPS：https://cloud.kepuchina.cn/h5/detail?id=7294157615342628864#1\nHTTPS协议为什么安全？：https://www-kepuchina-cn-443.webvpn.imac.edu.cn/article/articleinfo?business_type=100&classify=0&ar_id=409275#1\nHTTP和HTTPS的区别有哪些？：https://developer.aliyun.com/article/1628000#1\nHTTP 与 HTTPS 之间有何区别？：https://aws.amazon.com/cn/compare/the-difference-between-https-and-http/#1",
+  "artifacts": {
+    "log": "logs\\比较HTTP和HTTPS的安全机制-20261114-185823.log",
+    "evidence": "data\\evidence\\HTTP-20261114-185830.md"
+  }
+}

@@ -124,9 +124,16 @@ def save_run_record(topic: str, state: Dict[str, Any], log_path: str,
     # v2.3：修复路径的"总成本"在这里补齐（llm_calls 是全场累计，searches 数轮次）
     repair = dict(stats.get("repair") or {})
     if repair:
+        search_stats = stats.get("search") or {}
+        # 检索次数口径（v2.4 修正）：per_query 只累计"首轮 + 局部修复的补检索"，
+        # 自由反思的补检索写在 search_retry 里、不并入 per_query，
+        # 直接数条数会把 free 臂的补检索漏掉（旧记录里 free 臂恒为 1）。
+        # 这里按"每轮补检索 = 1 次 query"补齐：free 轮的检索式由 _build_retry_query 单发。
+        free_rounds = sum(1 for r in repair.get("rounds") or []
+                          if r.get("path") == "free" and (r.get("round") or 0) > 0)
         repair["cost"] = {
             "llm_calls": (stats.get("reflection") or {}).get("llm_calls", 0),
-            "searches": len((stats.get("search") or {}).get("per_query") or []),
+            "searches": len(search_stats.get("per_query") or []) + free_rounds,
             "elapsed_s": round(elapsed_s, 2),
         }
     record = {

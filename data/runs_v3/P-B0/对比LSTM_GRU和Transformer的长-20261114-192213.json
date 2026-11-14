@@ -1,0 +1,142 @@
+{
+  "topic": "对比LSTM、GRU和Transformer的长文本建模能力",
+  "group": "P-B0",
+  "ts": "2026-11-14T11:22:13.467949+00:00",
+  "elapsed_seconds": 19.79,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "LSTM",
+        "query": "LSTM",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8834,
+        "sources": 5,
+        "avg_summary": 3026.6,
+        "avg_content": 10774.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 8.87,
+        "evidence_path": "data\\evidence\\LSTM-20261114-192202.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8850,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 8.87,
+    "evidence_path": "data\\evidence\\LSTM-20261114-192202.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 653,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 19.79
+    }
+  },
+  "injected": [
+    "one_side:first_object:LSTM"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Long Short-Term Memory - Chapters and Articles | https://www.sciencedirect.com/topics/engineering/long-short-term-memory#1",
+    "torch.nn.LSTM | https://docs.pytorch.org/docs/2.13/generated/torch.nn.LSTM.html",
+    "torch.nn.modules.rnn.LSTM | https://docs.pytorch.org/docs/2.13/generated/torch.nn.modules.rnn.LSTM.html",
+    "[科普中国]-长短期记忆人工神经网络 - 版权归原作者所有，如有侵权，请联系我们 | https://www.kepuchina.cn/article/articleinfo?ar_id=215353&business_type=100&classify=0#1",
+    "Deep Learning in Sentiment Analysis: Recent Architectures Deep Learning in Sentiment Analysis: Recent Architectures - 2.2.1 Long Short-Term Memory (LSTM) | https://dlnext.acm.org/doi/fullHtml/10.1145/3548772#2"
+  ],
+  "result": "LSTM是一种面向序列数据的循环神经网络，其核心是用细胞状态保存跨时间步信息，并由遗忘门、输入门和输出门决定信息的保留、写入与输出。这种显式记忆与门控结构有助于缓解梯度消失和长期记忆不足，使模型能处理时间间隔、延迟较长的重要事件，并已用于语音识别、语言建模、翻译和手写识别等任务。因此，LSTM的长文本建模能力主要来自可持久化的细胞状态与门控式记忆管理；但其计算仍沿时间步递推。\n\n【来源】Long Short-Term Memory - Chapters and Articles，https://www.sciencedirect.com/topics/engineering/long-short-term-memory#1；[科普中国]-长短期记忆人工神经网络 - 版权归原作者所有，如有侵权，请联系我们，https://www.kepuchina.cn/article/articleinfo?ar_id=215353&business_type=100&classify=0#1；Deep Learning in Sentiment Analysis: Recent Architectures Deep Learning in Sentiment Analysis: Recent Architectures - 2.2.1 Long Short-Term Memory (LSTM)，https://dlnext.acm.org/doi/fullHtml/10.1145/3548772#2",
+  "artifacts": {
+    "log": "logs\\对比LSTM_GRU和Transformer的长-20261114-192153.log",
+    "evidence": "data\\evidence\\LSTM-20261114-192202.md"
+  }
+}

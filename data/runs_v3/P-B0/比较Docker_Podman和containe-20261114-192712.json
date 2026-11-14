@@ -1,0 +1,143 @@
+{
+  "topic": "比较Docker、Podman和containerd的镜像管理",
+  "group": "P-B0",
+  "ts": "2026-11-14T11:27:12.891145+00:00",
+  "elapsed_seconds": 13.5,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Docker",
+        "query": "Docker",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10329,
+        "sources": 6,
+        "avg_summary": 2212.2,
+        "avg_content": 7571.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 5.48,
+        "evidence_path": "data\\evidence\\Docker-20261114-192704.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10347,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 5.48,
+    "evidence_path": "data\\evidence\\Docker-20261114-192704.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 6,
+    "result_chars": 492,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 13.5
+    }
+  },
+  "injected": [
+    "one_side:first_object:Docker"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Docker技术解析 | https://developer.aliyun.com/article/1720267#1",
+    "软件包：docker.io（28.5.2+dfsg4-5） | https://packages.debian.org/zh-cn/sid/docker.io?pow_referer=",
+    "Docker — Community Edition (CE) | https://web-docs.gsi.de/~vpenso/notes/posts/linux/container/docker.html#1",
+    "Package: docker.io (28.5.2+dfsg4-5) | https://packages.debian.org/en/forky/docker.io?pow_referer=",
+    "2. Docker | https://zn.igadc.cn/catalog/kd02/",
+    "Linux 云服务器部署 Docker | https://docs.yuxingcloud.com/user_guide/compute/vm/best_practices/linux/docker_deployment/"
+  ],
+  "result": "在Docker镜像管理中，镜像可视为特殊文件系统，包含容器运行所需程序、库、资源和配置，以及匿名卷、环境变量、用户等参数；镜像不含动态数据，构建后内容不变。镜像是静态定义，容器是其运行实例。镜像由Registry集中存储分发，一个Registry含多个仓库，仓库用多个标签对应镜像，Docker CE默认使用DockerHub。构建时镜像按层生成，层不可变、可缓存复用，前层变化会重建后续层；运行时通过镜像名和版本指定镜像。\n\n【来源】Docker技术解析：https://developer.aliyun.com/article/1720267#1；Linux 云服务器部署 Docker：https://docs.yuxingcloud.com/user_guide/compute/vm/best_practices/linux/docker_deployment/；Docker — Community Edition (CE)：https://web-docs.gsi.de/~vpenso/notes/posts/linux/container/docker.html#1",
+  "artifacts": {
+    "log": "logs\\比较Docker_Podman和containe-20261114-192659.log",
+    "evidence": "data\\evidence\\Docker-20261114-192704.md"
+  }
+}

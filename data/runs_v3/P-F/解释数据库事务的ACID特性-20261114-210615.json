@@ -1,0 +1,259 @@
+{
+  "topic": "解释数据库事务的ACID特性",
+  "group": "P-F",
+  "ts": "2026-11-14T13:06:15.104520+00:00",
+  "elapsed_seconds": 567.19,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8613,
+        "sources": 5,
+        "avg_summary": 1464.8,
+        "avg_content": 5671.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 23.66,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261114-205711.md"
+      },
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 2,
+        "filtered": 2,
+        "evidence_chars": 3581,
+        "sources": 2,
+        "avg_summary": 1988.0,
+        "avg_content": 6456.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 2,
+          "dropped": 0,
+          "total": 2
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 82.1,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261114-210151.md",
+        "retry_query": "解释数据库事务的ACID特性 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 持久性 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 7289,
+        "sources": 6,
+        "avg_summary": 293.3,
+        "avg_content": 5299.8,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 97.42,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261114-210400.md",
+        "retry_query": "解释数据库事务的ACID特性 持久性 lang:zh",
+        "retry_mode": "missing_term:持久性",
+        "retry_round": 2
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 7315,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 97.42,
+    "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261114-210400.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "hit": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 420,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧扣主题，完整解释了原子性、一致性、隔离性、持久性四个特性及回滚、事务日志等机制，无偏题；证据6条≥1；【来源】中3个URL均可在实际检索来源清单中核验；正文字数远超120字。覆盖率0%与balance=0.00仅为标题精确匹配的统计假象，证据标题（如'数据库事务的ACID特性解释'、'深入理解数据库事务的四大特性ACID'）语义高度相关，且本主题为单一对象、无弱侧，回答已完整覆盖必答对象，各项硬性规则均满足。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 8,
+    "evidence_count": 6,
+    "result_chars": 734,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 420,
+    "len_full": 734,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "gate",
+        "reason": "回答疑似截断（结尾停在连接词(以及)），完整性不达标",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 1/4 个必答对象：持久性（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": true,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 411,
+        "truncated": false,
+        "llm_calls": 5
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题，完整解释了原子性、一致性、隔离性、持久性四个特性及回滚、事务日志等机制，无偏题；证据6条≥1；【来源】中3个URL均可在实际检索来源清单中核验；正文字数远超120字。覆盖率0%与balance=0.00仅为标题精确匹配的统计假象，证据标题（如'数据库事务的ACID特性解释'、'深入理解数据库事务的四大特性",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 420,
+        "truncated": false,
+        "llm_calls": 8
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 8,
+      "searches": 3,
+      "elapsed_s": 567.19
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 2,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "数据库事务(Transaction)的ACID特性解释 - 数据库事务(Transaction)的ACID特性解释 | https://developer.aliyun.com/article/565095#1",
+    "超级详细的数据库中的事务机制学习笔记 - 超级详细的数据库中的事务机制学习笔记 | https://developer.aliyun.com/article/935873#1",
+    "谈谈ACID - 谈谈ACID | https://developer.aliyun.com/article/1392801#slide-2#1",
+    "数据库 | https://raw.githubusercontent.com/DrAugus/draugus.github.io/refs/heads/master/life/code/interview/db.md#1",
+    "(无标题) | https://raw.githubusercontent.com/noughtq/notebook/master/docs/sys/db/13.md#2",
+    "深入理解数据库事务的四大特性ACID | https://cloud.baidu.com/article/2860456"
+  ],
+  "result": "数据库事务是一组数据库操作组成的逻辑工作单元，这些操作要么全部执行，要么全部不执行，不可分割。事务的ACID特性包括四个方面：原子性（Atomicity）指事务中的所有操作要么全部完成，要么全部不完成；执行中发生错误时，会回滚到事务开始前的状态，就像事务从未执行过。一致性（Consistency）指事务执行前后数据库都必须处于一致状态，事务成功时变化正确应用，事务出错时变化自动回滚，数据库的完整性约束不能被破坏。隔离性（Isolation）指在并发环境中，不同事务同时操作相同数据时，每个事务拥有各自完整的数据空间，一个事务的修改与其他并发事务隔离，不会查看到中间状态的数据。持久性（Durability）指只要事务成功结束或提交，它对数据库所做的更新就必须永久保存下来；即使发生系统崩溃，重新启动数据库系统后，数据库也能恢复到事务成功结束时的状态，持久性通常可通过事务日志等机制保证。ACID特性共同保证了数据库事务的正确性和可靠性。\n【来源】数据库事务(Transaction)的ACID特性解释 - 数据库事务(Transaction)的ACID特性解释 https://developer.aliyun.com/article/565095#1；超级详细的数据库中的事务机制学习笔记 - 超级详细的数据库中的事务机制学习笔记 https://developer.aliyun.com/article/935873#1；【数据库】（GitHub） https://raw.githubusercontent.com/DrAugus/draugus.github.io/refs/heads/master/life/code/interview/db.md#1",
+  "artifacts": {
+    "log": "logs\\解释数据库事务的ACID特性-20261114-205647.log",
+    "evidence": "data\\evidence\\解释数据库事务的ACID特性-20261114-210400.md"
+  }
+}

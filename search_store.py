@@ -85,8 +85,9 @@ def save_evidence(topic: str, context: str, sources: List[str]) -> str:
         "",
     ]
     for s in sources:
+        # rsplit：标题自身可能含 " | "，URL 永远在最后一个分隔符之后
         if " | " in s:
-            title, url = s.split(" | ", 1)
+            title, url = s.rsplit(" | ", 1)
             lines.append(f"- [{title}]({url})")
         else:
             lines.append(f"- {s}")

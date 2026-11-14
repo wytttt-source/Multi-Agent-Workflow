@@ -1,0 +1,187 @@
+{
+  "topic": "比较Python和Java的并发性能",
+  "group": "P-R",
+  "ts": "2026-11-14T10:54:18.397417+00:00",
+  "elapsed_seconds": 82.71,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Python",
+        "query": "Python",
+        "raw": 6,
+        "gated": 4,
+        "filtered": 4,
+        "evidence_chars": 6859,
+        "sources": 4,
+        "avg_summary": 1885.0,
+        "avg_content": 5406.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 0,
+          "total": 4
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.06,
+        "evidence_path": "data\\evidence\\Python-20261114-185301.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 4,
+    "filtered": 4,
+    "evidence_chars": 6877,
+    "sources": 4,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 4,
+        "dropped": 0,
+        "total": 4
+      }
+    ],
+    "elapsed_s": 6.06,
+    "evidence_path": "data\\evidence\\Python-20261114-185301.md",
+    "retry_query": "比较Python和Java的并发性能 Java lang:zh",
+    "retry_mode": "missing_term:Java"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Python",
+        "Java"
+      ],
+      "hit": [
+        "Python"
+      ],
+      "missing": [
+        "Java"
+      ],
+      "ratio": 0.5,
+      "body_chars": 183,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：Java（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 2,
+    "result_chars": 788,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 788,
+    "len_full": 1004,
+    "cited_loose": [
+      "https://cloud.tencent.com.cn/developer/article/2576608",
+      "https://cloud.tencent.com.cn/developer/ask/sof/102688183"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Java（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 183,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 788,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 1,
+      "elapsed_s": 82.71
+    }
+  },
+  "injected": [
+    "one_side:first_object:Python"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "十五天Python系统学习教程第十一天 - 紫风 | https://cloud.tencent.com.cn/developer/article/2576608?frompage=seopage#1",
+    "问Python与Java --您会选择哪一种来进行并发编程?为什么？EN | https://cloud.tencent.com.cn/developer/ask/sof/102688183?from=16139"
+  ],
+  "result": "比较 Python 和 Java 的并发性能，关键要看任务类型和运行时机制。就 Java 而言，传统多线程基于操作系统线程，线程池常使用 `ExecutorService`，资料指出其接口设计与 Python 的 `ThreadPoolExecutor` 类似；在 JVM 上运行多线程通常不会像 CPython 那样受到全局解释器锁的全局限制，因此 CPU 密集型并发更有优势。资料也提醒，Java 不一定总是多线程问题的最佳选择，Clojure、Scala 的 actors 可能更适合某些场景；若用 Java 并发，应多用成熟库、避免直接依赖 `synchronized` 等底层原语。此外，Java 还提供虚拟线程（Loom 项目）作为协程支持。\n\n就 Python 而言，其线程同样是操作系统线程，但受 GIL 限制，资料明确说 Python 线程不适合 CPU 密集型任务。示例中单线程计时约 0.3 秒，而双线程 `join` 后约 0.6 秒，反而更慢；较早的讨论也强调，Python 线程必须等待全局解释器锁，使 CPU 受限程序在单个进程内难以实现真正并发。Python 的优势在 I/O 密集和高并发异步：`asyncio` 协程是单线程异步、更轻量，示例总耗时约 1 秒而非 2 秒；CPU 并行则可用 `multiprocessing` 进程池绕过 GIL，资料还称其进程间通信更简洁。Stackless Python 等变体虽被提及，但并非 CPython 的通用替代。\n\n因此，选择可概括为：CPU 密集型、需要真正并行时，优先考虑 Java 多线程/线程池，或用 Python 多进程；I/O 密集型、高并发网络任务中，Python 的 `asyncio` 协程更轻量，Java 则有成熟线程池与虚拟线程。最终仍要结合目标平台、生态和任务目标判断。\n\n【来源】\n1. 十五天Python系统学习教程第十一天 - 紫风：https://cloud.tencent.com.cn/developer/article/2576608?frompage=seopage#1\n2. 问Python与Java --您会选择哪一种来进行并发编程?为什么？：https://cloud.tencent.com.cn/developer/ask/sof/102688183?from=16139",
+  "artifacts": {
+    "log": "logs\\比较Python和Java的并发性能-20261114-185255.log",
+    "evidence": "data\\evidence\\Python-20261114-185301.md"
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "topic": "对比Kafka与RabbitMQ在吞吐上的表现",
+  "group": "P-R",
+  "ts": "2026-11-14T10:56:11.890300+00:00",
+  "elapsed_seconds": 49.72,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Kafka",
+        "query": "Kafka",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10645,
+        "sources": 6,
+        "avg_summary": 3558.8,
+        "avg_content": 14692.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 7.12,
+        "evidence_path": "data\\evidence\\Kafka-20261114-185529.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10662,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 7.12,
+    "evidence_path": "data\\evidence\\Kafka-20261114-185529.md",
+    "retry_query": "对比Kafka与RabbitMQ在吞吐上的表现 RabbitMQ lang:zh",
+    "retry_mode": "missing_term:RabbitMQ"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Kafka",
+        "RabbitMQ"
+      ],
+      "hit": [
+        "Kafka"
+      ],
+      "missing": [
+        "RabbitMQ"
+      ],
+      "ratio": 0.5,
+      "body_chars": 221,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：RabbitMQ（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 688,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 688,
+    "len_full": 1069,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：RabbitMQ（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 221,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 688,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 1,
+      "elapsed_s": 49.72
+    }
+  },
+  "injected": [
+    "one_side:first_object:Kafka"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "产品对比 | https://doc.yun.unionpay.com/tcloud/MiddlewareService/UPRocketMQ/introduction/comparison",
+    "Linux Kafka与其他消息队列系统的比较分析 - Linux Kafka与其他消息队列系统的比较分析 | https://m.yisu.com/ask/53152423.html#1",
+    "消息队列 MQ 性能大揭秘 | https://developer.aliyun.com/article/1646155#1",
+    "Linux Kafka与RabbitMQ如何比较 | https://www.yisu.com/ask/23124167.html#1"
+  ],
+  "result": "在吞吐表现上，Kafka通常明显高于RabbitMQ。银联主站的产品对比把Kafka的常规性能列为“百万级QPS”，2C 4GB压测为“读写20万QPS”，吞吐量评价为“较大”；亿速云资料也给出Kafka单机约“十万至百万级TPS”的量级。另有对比文章指出，在同类高负载测试中，Kafka吞吐通常比RabbitMQ高1—2个数量级，并在高吞吐下仍能保持毫秒级延迟。需要说明的是，这些数字是典型量级或特定环境下的测试结果，实际吞吐会受硬件、网络、参数配置和业务负载影响，不能把某一压测值简单当作产品极限。\n\nRabbitMQ的吞吐量通常处在万级到十万级。银联主站将RabbitMQ常规性能列为“十万级QPS”，2C 4GB压测为“读写10万QPS”，吞吐量评价为“一般”；亿速云资料称RabbitMQ单机约“万级TPS”；阿里云开发者社区文章则称RabbitMQ吞吐量保持在万级，低吞吐时延迟可低至微秒/毫秒级，但高吞吐下延迟会明显上升，超过约30K消息/秒易出现CPU瓶颈。由此可见，RabbitMQ并不是以极限吞吐见长的消息代理，更适合吞吐要求不极端、但重视可靠投递、复杂路由和企业应用集成的场景。\n\n总体看，若核心指标是吞吐量，Kafka一般优于RabbitMQ：前者面向大规模日志与事件流，常达到十万至百万级TPS/QPS；后者常见为万级到十万级QPS。不同资料的数据口径并不完全一致，例如银联表中两者在2C 4GB压测下为20万对10万QPS，而其他文章更强调Kafka高1—2个数量级，这正说明选型时应结合目标吞吐、延迟、可靠性和运维成本综合判断，而不只看单一峰值数字。\n\n【来源】\n- 【产品对比】（银联主站，2026-04-08） https://doc.yun.unionpay.com/tcloud/MiddlewareService/UPRocketMQ/introduction/comparison\n- 【Linux Kafka与其他消息队列系统的比较分析】（Yisu，2025-12-08） https://m.yisu.com/ask/53152423.html#1\n- 【消息队列 MQ 性能大揭秘】（阿里云开发者社区，2024-12-19） https://developer.aliyun.com/article/1646155#1\n- 【Linux Kafka与RabbitMQ如何比较】（亿速云，2025-12-02） https://www.yisu.com/ask/23124167.html#1",
+  "artifacts": {
+    "log": "logs\\对比Kafka与RabbitMQ在吞吐上的表现-20261114-185522.log",
+    "evidence": "data\\evidence\\Kafka-20261114-185529.md"
+  }
+}

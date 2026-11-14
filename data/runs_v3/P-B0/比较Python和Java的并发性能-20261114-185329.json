@@ -1,0 +1,141 @@
+{
+  "topic": "比较Python和Java的并发性能",
+  "group": "P-B0",
+  "ts": "2026-11-14T10:53:29.050370+00:00",
+  "elapsed_seconds": 13.17,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Python",
+        "query": "Python",
+        "raw": 6,
+        "gated": 4,
+        "filtered": 4,
+        "evidence_chars": 6859,
+        "sources": 4,
+        "avg_summary": 1885.0,
+        "avg_content": 5406.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 0,
+          "total": 4
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 4.03,
+        "evidence_path": "data\\evidence\\Python-20261114-185319.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 4,
+    "filtered": 4,
+    "evidence_chars": 6877,
+    "sources": 4,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 4,
+        "dropped": 0,
+        "total": 4
+      }
+    ],
+    "elapsed_s": 4.03,
+    "evidence_path": "data\\evidence\\Python-20261114-185319.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 4,
+    "result_chars": 333,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 13.17
+    }
+  },
+  "injected": [
+    "one_side:first_object:Python"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Python 常见问题 | https://docs.python.org/zh-cn/3.14/faq/general.html",
+    "Python编程入门与实践(微视频版) | https://book.cppinfo.cn/Encyclopedias/home/index?id=4869960#1",
+    "10. 标准库概览 | https://docs.python.org/zh-cn/3.14/tutorial/stdlib.html",
+    "Python程序设计基础与应用（微课视频版） - 回到顶部 | https://www.shuimushuhui.com/book?isbn=9787302697381#1"
+  ],
+  "result": "现有资料显示，Python是一种解释型、交互式、面向对象语言，支持过程式、函数式和面向对象等多种范式，并可用C/C++扩展，具备较好的可移植性；相关教材目录还列有“Python多线程编程技术”，说明多线程属于其编程学习内容。不过，所给资料未提供并发场景下的吞吐量、延迟、扩展性等实测数据，也没有可核验的性能对比结果，因此仅凭这些资料难以对并发性能作出定量判断。\n\n【来源】《Python 常见问题》https://docs.python.org/zh-cn/3.14/faq/general.html；《Python编程入门与实践(微视频版)》https://book.cppinfo.cn/Encyclopedias/home/index?id=4869960#1",
+  "artifacts": {
+    "log": "logs\\比较Python和Java的并发性能-20261114-185315.log",
+    "evidence": "data\\evidence\\Python-20261114-185319.md"
+  }
+}

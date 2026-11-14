@@ -1,0 +1,143 @@
+{
+  "topic": "比较HTTP和HTTPS的安全机制",
+  "group": "P-B0",
+  "ts": "2026-11-14T11:07:00.545939+00:00",
+  "elapsed_seconds": 15.91,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "HTTP",
+        "query": "HTTP",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10153,
+        "sources": 6,
+        "avg_summary": 1723.5,
+        "avg_content": 153401.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.0,
+        "evidence_path": "data\\evidence\\HTTP-20261114-190650.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10169,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 6.0,
+    "evidence_path": "data\\evidence\\HTTP-20261114-190650.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 6,
+    "result_chars": 304,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 15.91
+    }
+  },
+  "injected": [
+    "one_side:first_object:HTTP"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "超文本传输协议 | https://docs.oracle.com/cd/E19263-01/817-7511/agaphttp.html",
+    "Sun ONE Web Server 6.1 管理员指南 | https://docs.oracle.com/cd/E19857-01/817-4164-10/agaphttp.html",
+    "Hypertext Transfer Protocol -- HTTP/1.1 | https://svn.apache.org/repos/asf/labs/webarch/tags/draft-fielding-http/partioned2616/rfc2616.html",
+    "Chapter 8 Hypertext Transfer Protocol (Sun Java System Web Proxy Server 4.0.8 NSAPI Developer's Guide) - Chapter 8 Hypertext Transfer Protocol | https://docs.oracle.com/cd/E19316-01/820-5727/6nh3rkaol/index.html#1",
+    "(无标题) | https://www.ietf.org/archive/id/draft-ietf-httpbis-semantics-09.txt",
+    "HTTP Semantics | https://www.ietf.org/archive/id/draft-ietf-httpbis-semantics-14.xml"
+  ],
+  "result": "HTTP被描述为应用层无状态协议，采用请求/响应模式：客户端连接服务器后发送含请求方法、URI、协议版本和标头的请求；服务器返回协议版本、状态码、标头及数据，随后关闭连接。已获资料主要说明信息交换规则、请求方法和响应状态码等语义，未见对加密、身份认证或完整性校验等安全机制的说明。就现有证据看，其安全机制披露有限。\n\n【来源】超文本传输协议，https://docs.oracle.com/cd/E19263-01/817-7511/agaphttp.html；(无标题)，https://www.ietf.org/archive/id/draft-ietf-httpbis-semantics-09.txt",
+  "artifacts": {
+    "log": "logs\\比较HTTP和HTTPS的安全机制-20261114-190644.log",
+    "evidence": "data\\evidence\\HTTP-20261114-190650.md"
+  }
+}

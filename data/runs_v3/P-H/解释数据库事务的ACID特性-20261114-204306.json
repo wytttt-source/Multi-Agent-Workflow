@@ -1,0 +1,214 @@
+{
+  "topic": "解释数据库事务的ACID特性",
+  "group": "P-H",
+  "ts": "2026-11-14T12:43:06.953791+00:00",
+  "elapsed_seconds": 126.07,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8613,
+        "sources": 5,
+        "avg_summary": 1464.8,
+        "avg_content": 5671.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 10.36,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261114-204111.md"
+      },
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 2,
+        "filtered": 2,
+        "evidence_chars": 3581,
+        "sources": 2,
+        "avg_summary": 1988.0,
+        "avg_content": 6456.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 2,
+          "dropped": 0,
+          "total": 2
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 9.07,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261114-204201.md",
+        "retry_query": "解释数据库事务的ACID特性 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      }
+    ],
+    "raw": 6,
+    "gated": 2,
+    "filtered": 2,
+    "evidence_chars": 3607,
+    "sources": 2,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 2,
+        "dropped": 0,
+        "total": 2
+      }
+    ],
+    "elapsed_s": 9.07,
+    "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261114-204201.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "hit": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 615,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧扣主题，完整讲解原子性、一致性、隔离性、持久性四项ACID特性，细节充分且有来源支撑；证据2条、【来源】URL与实际检索来源完全一致可核验、正文字数远超120字，满足通过的全部硬性条件。覆盖率0%与balance=0.00仅为标题层面匹配的统计现象，单一必答对象不存在强弱侧偏侧问题，回答已讲清全部必答对象，不构成分解不合理。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 6,
+    "evidence_count": 2,
+    "result_chars": 903,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 615,
+    "len_full": 903,
+    "cited_loose": [
+      "https://learn.microsoft.com/zh-hk/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "llm",
+        "reason": "回答正文在解释持久性时被截断，以'持久性指事务提交，以及'结尾，句子未完成，持久性说明不完整，属内容不完整/细节缺失。来源URL均在实际检索来源中，字数达标，主题贴合，但正文残缺不能通过。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题，完整讲解原子性、一致性、隔离性、持久性四项ACID特性，细节充分且有来源支撑；证据2条、【来源】URL与实际检索来源完全一致可核验、正文字数远超120字，满足通过的全部硬性条件。覆盖率0%与balance=0.00仅为标题层面匹配的统计现象，单一必答对象不存在强弱侧偏侧问题，回答已讲清全部必答对象，不构成",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 615,
+        "truncated": false,
+        "llm_calls": 6
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 6,
+      "searches": 2,
+      "elapsed_s": 126.07
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "交易鎖定與資料列版本設定指南 - SQL Server - 跳至主內容 | https://learn.microsoft.com/zh-hk/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide?view=sql-server-2016#1",
+    "事务（ACID）支持 - ClickHouse Documentation | https://clickhouse.com/docs/zh/concepts/features/operations/insert/transactions"
+  ],
+  "result": "数据库事务是把一连串作业当作单一工作逻辑单元执行；SQL Server 资料指出，一笔交易要具备不可部份完成性（Atomicity）、一致性（Consistency）、隔离性（Isolation）与耐久性（Durability），合称 ACID，才有资格成为交易。原子性强调数据的修改“若非全部执行，就是全部不执行”；以 ClickHouse 的 INSERT 为例，一次插入要么整体成功，确认时所有行都已插入，要么整体被拒绝，返回错误时不会插入任何行。一致性要求交易完成时所有数据处于一致状态：SQL Server 要求把全部规则套用于交易的修改，以维护数据完整性，并确保 B 树索引、双向链表等内部数据结构在交易终止时正确；ClickHouse 则说明，未违反表约束时所有行插入成功，违反约束时不会插入任何行。隔离性使并发客户端只观察到表的一致性快照——要么是发起插入前的状态，要么是插入成功后的状态，不会看到中间部分状态；另一事务中的客户端具有快照隔离，事务外的客户端具有读未提交隔离级别。持久性指成功的 INSERT 会在响应客户端前写入文件系统，可写入单个副本或多个副本（由 insert_quorum 设置控制），并且 ClickHouse 可要求操作系统把文件系统中的数据同步到存储介质（由 fsync_after_insert 设置控制），从而在事务成功后保留写入结果。以上四项共同保证事务在多用户环境中的完整性。\n【来源】交易鎖定與資料列版本設定指南 - SQL Server：https://learn.microsoft.com/zh-hk/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide?view=sql-server-2016#1；事务（ACID）支持 - ClickHouse Documentation：https://clickhouse.com/docs/zh/concepts/features/operations/insert/transactions",
+  "artifacts": {
+    "log": "logs\\解释数据库事务的ACID特性-20261114-204100.log",
+    "evidence": "data\\evidence\\解释数据库事务的ACID特性-20261114-204201.md"
+  }
+}

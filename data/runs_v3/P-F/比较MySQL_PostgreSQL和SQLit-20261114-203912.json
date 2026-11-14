@@ -1,0 +1,278 @@
+{
+  "topic": "比较MySQL、PostgreSQL和SQLite的索引实现",
+  "group": "P-F",
+  "ts": "2026-11-14T12:39:12.812038+00:00",
+  "elapsed_seconds": 257.6,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "MySQL",
+        "query": "MySQL",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10513,
+        "sources": 6,
+        "avg_summary": 2679.5,
+        "avg_content": 4278.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 5.61,
+        "evidence_path": "data\\evidence\\MySQL-20261114-203500.md"
+      },
+      {
+        "topic": "MySQL、PostgreSQL和SQLite的索引实现",
+        "query": "MySQL、PostgreSQL和SQLite的索引实现 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "MySQL、PostgreSQL和SQLite的索引实现 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "MySQL和PostgreSQL索引实现",
+        "query": "MySQL和PostgreSQL索引实现 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "network",
+        "cache_source": "network",
+        "degraded": false,
+        "elapsed_s": 0.78,
+        "evidence_path": "",
+        "retry_query": "MySQL和PostgreSQL索引实现 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "SQLite索引实现",
+        "query": "SQLite索引实现 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "SQLite索引实现 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "raw": 12,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 0,
+    "sources": 0,
+    "providers": [],
+    "cache": [
+      "network",
+      "disk"
+    ],
+    "cache_sources": [
+      "network",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": false,
+        "reason": "disabled"
+      }
+    ],
+    "elapsed_s": 0.78,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "MySQL",
+        "PostgreSQL",
+        "SQLite"
+      ],
+      "hit": [
+        "MySQL",
+        "PostgreSQL",
+        "SQLite"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 430,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+    "gated_by": "rule_fallback",
+    "decision_source": "rule_fallback",
+    "repeat_hit": false,
+    "llm_calls": 7,
+    "evidence_count": 6,
+    "result_chars": 563,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 1,
+    "citation_ratio": 0.333,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 430,
+    "len_full": 563,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：PostgreSQL、SQLite（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 153,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "复合比较主题（MySQL、PostgreSQL、SQLite 三者索引实现）的证据仅覆盖单一对象：6 条证据全部为 MySQL 相关，PostgreSQL 与 SQLite 覆盖数为 0，覆盖率仅 33%，balance=0.00<0.5 属严重偏侧。回答虽诚实声明 PostgreSQL/SQLite 索引实现不可核验",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 459,
+        "truncated": false,
+        "llm_calls": 4
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 430,
+        "truncated": false,
+        "llm_calls": 7
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 7,
+      "searches": 4,
+      "elapsed_s": 257.6
+    }
+  },
+  "injected": [
+    "one_side:first_object:MySQL"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "MySQL和PostgreSQL索引实现",
+    "SQLite索引实现"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "MySQL :: MySQL 9.7 Reference Manual :: 1.2.2 The Main Features of MySQL | https://dev.mysql.com/doc/refman/9.7/en/features.html",
+    "MySQL :: MySQL 8.4 Reference Manual :: 2 Installing MySQL | https://dev.mysql.com/doc/refman/8.4/en/installing.html",
+    "MySQL :: MySQL 9.0 参考手册 :: 1.2.2 MySQL 的主要功能 - 1.2.2 MySQL 的主要功能 | https://dev.mysqld.com.cn/doc/refman/9.0/en/features.html#1",
+    "MySQL :: MySQL 9.0 參考手冊 :: 2.5.4 使用 Oracle 提供的 RPM 套件在 Linux 上安裝 MySQL | https://dev.mysql.com.tw/doc/refman/9.0/en/linux-installation-rpm.html#1",
+    "MySQL :: MySQL 9.0 參考手冊 :: 1.7 MySQL 標準相容性 | https://dev.mysql.com.tw/doc/refman/9.0/en/compatibility.html",
+    "数据库MySQL入门到精通私房菜 | http://book.cppinfo.cn/Encyclopedias/home/index?id=4751240"
+  ],
+  "result": "无法按给定约束产出“比较 MySQL、PostgreSQL 和 SQLite 索引实现”的科普摘要。原因不是篇幅或写作问题，而是证据结构不满足比较任务：参考资料清单中的 6 条全部指向 MySQL（功能、安装、兼容性、入门等），没有 PostgreSQL 与 SQLite 的官方索引文档；同时，现有 MySQL 资料标题也未直接覆盖索引结构细节。因此，若写出“PostgreSQL 使用某类索引”“SQLite 的索引如何组织”或三者差异，只能依赖模型记忆，违反“内容必须基于参考资料，不要编造事实”。这不是用“资料未提供”去凑对象覆盖，而是停止生成无证据的伪比较。修复路径应先拆子任务并分别补充可核验材料：MySQL 官方 InnoDB 索引章节、PostgreSQL 官方索引类型/索引章节、SQLite 官方索引与查询优化章节；再按“索引结构、适用场景、限制、差异”逐项提取后重写不少于 240 字的摘要，并逐条附原始 URL。当前不能合规交付该摘要。\n\n【来源】MySQL :: MySQL 9.7 Reference Manual :: 1.2.2 The Main Features of MySQL | https://dev.mysql.com/doc/refman/9.7/en/features.html",
+  "artifacts": {
+    "log": "logs\\比较MySQL_PostgreSQL和SQLit-20261114-203455.log",
+    "evidence": ""
+  }
+}

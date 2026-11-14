@@ -40,3 +40,25 @@ logs/
 .vscode/
 .idea/
 .DS_Store
+
+# ========================================
+# 临时产物（本地调试 / 半成品 / 日志，不入库）
+# ========================================
+tmp_*.md
+tmp_*.txt
+tmp_*.log
+data/_*.py
+data/_*.md
+data/_*.log
+data/run_matrix_*.log
+data/run_matrix_*.err
+data/runs_smoke*/
+
+# ========================================
+# 非正式批次（只保留 data/runs_v2/ 与 data/runs_v3/ 两批入表数据）
+# ========================================
+data/runs_v3_scratch_*/
+data/runs_v3_pre_v24/
+data/runs_v3_v24a/
+data/runs_v3_superseded/
+data/runs_v2_superseded/

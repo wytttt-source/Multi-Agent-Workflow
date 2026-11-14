@@ -1,0 +1,277 @@
+{
+  "topic": "对比React、Vue和Angular的组件通信方式",
+  "group": "P-F",
+  "ts": "2026-11-14T12:34:49.025607+00:00",
+  "elapsed_seconds": 268.37,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "React",
+        "query": "React",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8303,
+        "sources": 5,
+        "avg_summary": 2204.4,
+        "avg_content": 2316.6,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.29,
+        "evidence_path": "data\\evidence\\React-20261114-203026.md"
+      },
+      {
+        "topic": "React、Vue和Angular的组件通信方式",
+        "query": "React、Vue和Angular的组件通信方式 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "React、Vue和Angular的组件通信方式 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "React组件通信方式",
+        "query": "React组件通信方式 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "React组件通信方式 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "Vue和Angular组件通信方式",
+        "query": "Vue和Angular组件通信方式 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Vue和Angular组件通信方式 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "raw": 12,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 0,
+    "sources": 0,
+    "providers": [],
+    "cache": [
+      "disk",
+      "disk"
+    ],
+    "cache_sources": [
+      "disk",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": false,
+        "reason": "disabled"
+      }
+    ],
+    "elapsed_s": 0.0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "React",
+        "Vue",
+        "Angular"
+      ],
+      "hit": [
+        "React",
+        "Vue",
+        "Angular"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 684,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "降级通过",
+    "reason": "回答缺少可核验来源（【来源】=有，可核验引用 0 条 < 1），降级记录（不计入合格样本）",
+    "gated_by": "gate",
+    "decision_source": "gate",
+    "repeat_hit": false,
+    "llm_calls": 7,
+    "evidence_count": 5,
+    "result_chars": 773,
+    "pass_kind": "degraded",
+    "has_source_line": true,
+    "cited_count": 0,
+    "citation_ratio": 0.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 684,
+    "len_full": 773,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Vue、Angular（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 192,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "主题为React/Vue/Angular三者对比，但5条证据全部来自React生态，Vue与Angular的资料在证据侧和回答侧均缺失（覆盖率33%，balance=0.00）。回答虽诚实声明证据缺口且未编造，但按复合主题规则，证据只覆盖单一对象，需拆解为子任务并补充检索Vue与Angular官方文档或可核验教材后再分",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 5,
+        "body_chars": 528,
+        "truncated": false,
+        "llm_calls": 4
+      },
+      {
+        "round": 2,
+        "verdict": "降级通过",
+        "pass_kind": "degraded",
+        "path": "",
+        "decision_source": "gate",
+        "reason": "回答缺少可核验来源（【来源】=有，可核验引用 0 条 < 1），降级记录（不计入合格样本）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 684,
+        "truncated": false,
+        "llm_calls": 7
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "降级通过",
+    "outcome": "partial",
+    "cost": {
+      "llm_calls": 7,
+      "searches": 4,
+      "elapsed_s": 268.37
+    }
+  },
+  "injected": [
+    "one_side:first_object:React"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "React组件通信方式",
+    "Vue和Angular组件通信方式"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "Built-in React Hooks – React | https://18.react.dev/reference/react/hooks",
+    "深入浅出React.js：原理与实战 | http://book.cppinfo.cn/Encyclopedias/home/index?id=4873057",
+    "(无标题) | https://react.dev/learn/installation.md",
+    "(无标题) | https://libopac.nudt.edu.cn/opac/book/968675?view=simple&flag=printer",
+    "React Reference Overview – React | https://react.dev/reference/react"
+  ],
+  "result": "无法在现有约束下合规完成这次“修复性重写”：给定参考资料全部属于 React 生态（React Hooks、安装、Reference Overview 及一本 React 教材），没有任何 Vue 或 Angular 的可核验材料；而修复要求又必须逐一讲清 Vue、Angular 的组件通信方式，并给出可核验 URL，且来源 URL 只能从给定参考资料中原样复制。  \n这两组要求直接冲突：若写入 Vue/Angular 内容，就会违反“基于参考资料、不编造事实”；若只写 React，则仍无法覆盖三框架，重蹈上一轮“单一对象覆盖”的问题。因此，本轮不能靠改写文字补出 Vue 与 Angular 的证据缺口，也不能伪造官方文档 URL 来凑来源。\n\n要真正完成 240 字以上、覆盖三框架且可核验的摘要，需先补充检索并纳入以下材料后再分别作答：  \n1. Vue 官方文档中关于 props、自定义事件、`provide/inject` 的组件通信页面；  \n2. Angular 官方文档中关于 `@Input`/`@Output`、组件事件、依赖注入服务的页面；  \n3. 保留现有 React Hooks/Reference 资料作为 React 部分来源。  \n\n补齐后可按“React：props/Hooks/Context 等（仅依据现有 React 资料）—Vue：props/events/provide-inject（依据新增 Vue 官方资料）—Angular：inputs/outputs/DI 服务（依据新增 Angular 官方资料）—三者对比”的结构重写，并在【来源】中逐条列出实际使用资料标题及从资料中原样复制的 URL。当前若强行输出正文，将不可避免地违反“不编造事实”或“来源 URL 不得改写”的硬性要求。",
+  "artifacts": {
+    "log": "logs\\对比React_Vue和Angular的组件通信-20261114-203020.log",
+    "evidence": ""
+  }
+}

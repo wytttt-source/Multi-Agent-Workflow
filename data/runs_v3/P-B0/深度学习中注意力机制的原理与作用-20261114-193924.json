@@ -1,8 +1,8 @@
 {
   "topic": "深度学习中注意力机制的原理与作用",
   "group": "P-B0",
-  "ts": "2026-11-14T03:29:58.580374+00:00",
-  "elapsed_seconds": 183.36,
+  "ts": "2026-11-14T11:39:24.976986+00:00",
+  "elapsed_seconds": 203.93,
   "config": {
     "group": "P-B0",
     "search_provider": "deepseek",
@@ -42,16 +42,15 @@
           "deepseek"
         ],
         "llm_filter": {
-          "applied": true,
-          "kept": 6,
-          "dropped": 0,
+          "applied": false,
+          "reason": "LLM 服务持续不可用: Request timed out.",
           "total": 6
         },
         "cache": "disk",
         "cache_source": "disk",
         "degraded": false,
-        "elapsed_s": 170.68,
-        "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261114-112945.md"
+        "elapsed_s": 189.29,
+        "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261114-193910.md"
       }
     ],
     "raw": 6,
@@ -71,14 +70,13 @@
     "degraded": false,
     "llm_filter": [
       {
-        "applied": true,
-        "kept": 6,
-        "dropped": 0,
+        "applied": false,
+        "reason": "LLM 服务持续不可用: Request timed out.",
         "total": 6
       }
     ],
-    "elapsed_s": 170.68,
-    "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261114-112945.md"
+    "elapsed_s": 189.29,
+    "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261114-193910.md"
   },
   "reflection": {
     "coverage": null,
@@ -89,7 +87,7 @@
     "repeat_hit": false,
     "llm_calls": 2,
     "evidence_count": 6,
-    "result_chars": 294,
+    "result_chars": 595,
     "pass_kind": "strict"
   },
   "repair": {
@@ -105,9 +103,10 @@
         "reason": "基线：关闭反思（E1）",
         "repeat_hit": false,
         "rescued_from": "",
-        "cited_count": 0,
-        "body_chars": 0,
-        "truncated": false,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
         "llm_calls": 2
       }
     ],
@@ -117,7 +116,7 @@
     "cost": {
       "llm_calls": 2,
       "searches": 1,
-      "elapsed_s": 183.36
+      "elapsed_s": 203.93
     }
   },
   "injected": [
@@ -134,9 +133,9 @@
     "一种数据处理方法及相关设备 - 其中，s＝1、2、……n，n为大于1的自然数，Ws为xs的权重，b为神经单元的偏置 | https://patents.google.com/patent/CN116432019A/zh#3",
     "基于深度学习的蛋白质建模与设计 - 注意力机制网络[32-33] (Attention neural network) 最早由图像数据建模而引入，随后在自然语言处理中发展壮大 | https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2"
   ],
-  "result": "注意力机制模仿人类选择性视觉注意：在信息过载时决定关注输入的哪些部分，并把有限计算资源分配给重要部分。深度模型中通常用查询、键、值计算相关性并加权，从而突出关键特征、抑制无关信息；自注意力还能捕捉序列内部长程依赖，并支持并行计算。其作用在于提升特征区分度与任务表现，帮助模型在长文本中抓住上下文关键，减少对外部信息的依赖。\n\n【来源】[科普中国]-注意力机制，https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1；AI技术原理与大模型：注意力机制-大模型的核心“魔法”，https://cloud，以及",
+  "result": "注意力机制借鉴人类选择性视觉注意，核心是在有限计算资源下“从关注全部到关注重点”：以Query与Key的相似性计算权重，对Value加权求和，筛选高价值信息。自注意力可捕捉序列内部相关性与长程依赖并支持并行；通道/空间注意力可突出具区分度的局部特征、降低背景权重。其作用在于提升特，以及\n\n【来源】[科普中国]-注意力机制，https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1；一种数据处理方法及相关设备，https://patents.google.com/patent/WO2022222854A1#4；基于深度学习的蛋白质建模与设计，https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2；深度学习中的注意力机制基本上类似于人类选择性视觉注意机制（专利文献节选），https://patentimages.storage.googleapis.com/ce/e5/cd/f07651e6256062/CN110765841A.pdf#2#2#2；AI技术原理与大模型：注意力机制-大模型的核心“魔法”，https://cloud.kepuchina.cn/h5/detail?id=7520261333849837568",
   "artifacts": {
-    "log": "logs\\深度学习中注意力机制的原理与作用-20261114-112655.log",
-    "evidence": "data\\evidence\\深度学习中注意力机制的原理与作用-20261114-112945.md"
+    "log": "logs\\深度学习中注意力机制的原理与作用-20261114-193601.log",
+    "evidence": "data\\evidence\\深度学习中注意力机制的原理与作用-20261114-193910.md"
   }
 }

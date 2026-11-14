@@ -1,0 +1,143 @@
+{
+  "topic": "比较MySQL、PostgreSQL和SQLite的索引实现",
+  "group": "P-B0",
+  "ts": "2026-11-14T11:16:38.971629+00:00",
+  "elapsed_seconds": 16.48,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "MySQL",
+        "query": "MySQL",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10513,
+        "sources": 6,
+        "avg_summary": 2679.5,
+        "avg_content": 4278.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.1,
+        "evidence_path": "data\\evidence\\MySQL-20261114-191628.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10530,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 6.1,
+    "evidence_path": "data\\evidence\\MySQL-20261114-191628.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 6,
+    "result_chars": 289,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 16.48
+    }
+  },
+  "injected": [
+    "one_side:first_object:MySQL"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "MySQL :: MySQL 9.7 Reference Manual :: 1.2.2 The Main Features of MySQL | https://dev.mysql.com/doc/refman/9.7/en/features.html",
+    "MySQL :: MySQL 8.4 Reference Manual :: 2 Installing MySQL | https://dev.mysql.com/doc/refman/8.4/en/installing.html",
+    "MySQL :: MySQL 9.0 参考手册 :: 1.2.2 MySQL 的主要功能 - 1.2.2 MySQL 的主要功能 | https://dev.mysqld.com.cn/doc/refman/9.0/en/features.html#1",
+    "MySQL :: MySQL 9.0 參考手冊 :: 2.5.4 使用 Oracle 提供的 RPM 套件在 Linux 上安裝 MySQL | https://dev.mysql.com.tw/doc/refman/9.0/en/linux-installation-rpm.html#1",
+    "MySQL :: MySQL 9.0 參考手冊 :: 1.7 MySQL 標準相容性 | https://dev.mysql.com.tw/doc/refman/9.0/en/compatibility.html",
+    "数据库MySQL入门到精通私房菜 | http://book.cppinfo.cn/Encyclopedias/home/index?id=4751240"
+  ],
+  "result": "MySQL的索引实现与存储引擎紧密相关。手册指出，MySQL提供事务性和非事务性存储引擎，并便于添加其他存储引擎；MyISAM使用“非常快的B树磁盘表”并支持索引压缩，内存哈希表则用于临时表。可见，MySQL并非只有单一索引结构，具体数据结构与压缩策略会随存储引擎及表/临时表场景变化，分析索引实现时应先明确存储引擎。\n\n【来源】MySQL :: MySQL 9.0 参考手册 :: 1.2.2 MySQL 的主要功能 - 1.2.2 MySQL 的主要功能，https://dev.mysqld.com.cn/doc/refman/9.0/en/features.html#1",
+  "artifacts": {
+    "log": "logs\\比较MySQL_PostgreSQL和SQLit-20261114-191622.log",
+    "evidence": "data\\evidence\\MySQL-20261114-191628.md"
+  }
+}

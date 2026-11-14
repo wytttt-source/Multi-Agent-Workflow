@@ -1,0 +1,189 @@
+{
+  "topic": "Redis和MySQL的缓存一致性方案",
+  "group": "P-R",
+  "ts": "2026-11-14T10:57:32.838895+00:00",
+  "elapsed_seconds": 30.32,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Redis",
+        "query": "Redis",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8634,
+        "sources": 5,
+        "avg_summary": 2748.4,
+        "avg_content": 6688.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 3.87,
+        "evidence_path": "data\\evidence\\Redis-20261114-185706.md"
+      }
+    ],
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8651,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 3.87,
+    "evidence_path": "data\\evidence\\Redis-20261114-185706.md",
+    "retry_query": "Redis和MySQL的缓存一致性方案 MySQL lang:zh",
+    "retry_mode": "missing_term:MySQL"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Redis",
+        "MySQL"
+      ],
+      "hit": [
+        "Redis"
+      ],
+      "missing": [
+        "MySQL"
+      ],
+      "ratio": 0.5,
+      "body_chars": 247,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：MySQL（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 5,
+    "result_chars": 586,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 586,
+    "len_full": 971,
+    "cited_loose": [
+      "https://cloud.tencent.cn/developer/article/2721613"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：MySQL（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 247,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 586,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 1,
+      "elapsed_s": 30.32
+    }
+  },
+  "injected": [
+    "one_side:first_object:Redis"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "MySQL 与 Redis 如何保证双写一致性？ - MySQL 与 Redis 如何保证双写一致性？ | https://developer.aliyun.com/article/1685469#1",
+    "MySQL 与 Redis 如何保证双写一致性？ - 云宝助手 | https://bbs.huaweicloud.com/blogs/465645#1",
+    "如何保证Mysql和Redis双写一致性 | https://cloud.tencent.cn/developer/article/2721613?policyId=1003#1",
+    "高并发场景下缓存与数据库双写一致性工程落地与避坑实践 - 云宝助手 | https://bbs.huaweicloud.com/blogs/511155#1",
+    "进阶架构演进：缓存与数据库的双写一致性与多级缓存广播 - 云宝助手 | https://bbs.huaweicloud.com/blogs/502726#1"
+  ],
+  "result": "Redis 与 MySQL 的缓存一致性，本质上是在两个独立存储之间做权衡：分布式环境下强一致性代价高，实践中通常追求最终一致性。最常用的是 Cache-Aside（旁路缓存）思路：读请求先查 Redis，未命中再查 MySQL 并回写缓存；写请求先更新 MySQL，再删除 Redis 对应缓存。这里通常“删除缓存”而不是“更新缓存”，是为了避免复杂关联计算造成的无效写入，也降低并发写导致缓存乱序脏数据的风险。该方案适用面广，但删除失败时可用 MQ 重试，并给缓存设置过期时间做兜底。\n\n针对“先更新数据库、再删除缓存”的极端并发窗口，可采用延迟双删：例如读线程在缓存未命中时读到旧值，写线程更新数据库并删除缓存后，读线程又把旧值写回缓存，导致缓存短时间甚至较长时间残留旧数据。延迟双删会在更新数据库并删除缓存后，延迟一段时间再删除一次缓存，以缩小这种竞态窗口；但它不是万能的，仍需过期时间兜底，极端情况下仍可能不一致。\n\n更进一步的工业级方案是基于 Binlog 的异步删除/同步，例如用 Canal 监听 MySQL binlog，在业务代码之外异步删除或更新 Redis 缓存，做到业务无侵入，适合核心业务的一致性增强。实际落地时还应配合 MQ 重试、死信队列告警和合理过期时间，形成最终一致性保障。总体看，没有单一银弹，应按业务一致性要求、读写比例和性能成本选型。\n\n【来源】\n- 《MySQL 与 Redis 如何保证双写一致性？ - MySQL 与 Redis 如何保证双写一致性？》 URL: https://developer.aliyun.com/article/1685469#1\n- 《如何保证Mysql和Redis双写一致性》 URL: https://cloud.tencent.cn/developer/article/2721613?policyId=1003#1\n- 《高并发场景下缓存与数据库双写一致性工程落地与避坑实践 - 云宝助手》 URL: https://bbs.huaweicloud.com/blogs/511155#1\n- 《进阶架构演进：缓存与数据库的双写一致性与多级缓存广播 - 云宝助手》 URL: https://bbs.huaweicloud.com/blogs/502726#1",
+  "artifacts": {
+    "log": "logs\\Redis和MySQL的缓存一致性方案-20261114-185702.log",
+    "evidence": "data\\evidence\\Redis-20261114-185706.md"
+  }
+}

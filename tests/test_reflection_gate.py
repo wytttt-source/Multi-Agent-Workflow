@@ -84,6 +84,19 @@ class ContentGateTest(unittest.TestCase):
         verdict, _, hit = nodes._apply_pass_gate(_state(text), "通过", "LLM 判通过", gate)
         self.assertEqual((verdict, hit), ("通过", ""))
 
+    def test_c3c_pipe_in_title_is_not_fabricated(self):
+        # 实跑案例（P-H / P-R 的 B2，2026-11-14）：来源行是"标题 | URL"，
+        # 而标题本身又含 " | "（"5.3 全文与倒排对照 | SQLite内核与优化 - 灏天文库"）。
+        # 旧代码 s.split(" | ", 1)[1] 把"标题后半段 | URL"整串当作 URL，
+        # 于是答案里逐字引用的真实来源被判成"编造 URL"，一份 649 字、
+        # 对象全覆盖的回答被直接判 failed。改成从最后一个分隔符切之后必须能核验。
+        url = "https://aiknowledge.cn/article/58476-5-3-%E5%85%A8%E6%96%87%E4%B8%8E%E5%80%92%E6%8E%92%E5%AF%B9%E7%85%A7"
+        sources = [f"5.3 全文与倒排对照 | SQLite内核与优化 - 灏天文库 | {url}"]
+        text = LONG + f"\n【来源】5.3 全文与倒排对照 {url}"
+        gate = content_gate(text, sources, EVIDENCE)
+        self.assertTrue(gate["no_fabricated_url"])
+        self.assertEqual(gate["cited_count"], 1)
+
     def test_domain_root_only_is_not_verified(self):
         # 只写域名根不算引用某条来源
         text = LONG + "\n【来源】首页 https://a.com"

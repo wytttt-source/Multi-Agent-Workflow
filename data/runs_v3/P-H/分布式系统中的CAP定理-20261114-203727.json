@@ -1,0 +1,215 @@
+{
+  "topic": "分布式系统中的CAP定理",
+  "group": "P-H",
+  "ts": "2026-11-14T12:37:27.596323+00:00",
+  "elapsed_seconds": 125.06,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "分布式系统中的CAP定理",
+        "query": "分布式系统中的CAP定理 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 4,
+        "evidence_chars": 6926,
+        "sources": 4,
+        "avg_summary": 1760.0,
+        "avg_content": 4838.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 1,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 45.77,
+        "evidence_path": "data\\evidence\\分布式系统中的CAP定理-20261114-203608.md"
+      },
+      {
+        "topic": "分布式系统中的CAP定理",
+        "query": "分布式系统中的CAP定理 可用性 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 4,
+        "evidence_chars": 6510,
+        "sources": 4,
+        "avg_summary": 1048.0,
+        "avg_content": 1822.8,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 1,
+          "total": 5
+        },
+        "cache": "network",
+        "cache_source": "network",
+        "degraded": false,
+        "elapsed_s": 8.34,
+        "evidence_path": "data\\evidence\\分布式系统中的CAP定理-20261114-203624.md",
+        "retry_query": "分布式系统中的CAP定理 可用性 lang:zh",
+        "retry_mode": "missing_term:可用性",
+        "retry_round": 1
+      }
+    ],
+    "raw": 6,
+    "gated": 5,
+    "filtered": 4,
+    "evidence_chars": 6534,
+    "sources": 4,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "network"
+    ],
+    "cache_sources": [
+      "network"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 4,
+        "dropped": 1,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 8.34,
+    "evidence_path": "data\\evidence\\分布式系统中的CAP定理-20261114-203624.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "一致性",
+        "可用性",
+        "分区"
+      ],
+      "hit": [
+        "一致性",
+        "可用性",
+        "分区"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 388,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答直接围绕CAP定理展开：给出定义、C/A/P三项含义、分区必存导致C与A取舍的逻辑、AP与最终一致性的实践，正文超120字；【来源】中三个URL均可在实际检索来源中找到，证据4条≥1，满足通过的全部硬性条件。主题仅含单一对象，无比较双方，balance=0.00与覆盖率0%系标题字面匹配偏差（证据实际均为CAP定理相关资料），不属于偏侧或分解不合理；按'回答是否讲清必答对象'判断，答案已完整覆盖该对象，故判通过。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 4,
+    "result_chars": 771,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 388,
+    "len_full": 771,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail",
+      "https://cloud.kepuchina.cn/newsearch/imgtext"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 2/3 个必答对象：可用性、分区（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": true,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答直接围绕CAP定理展开：给出定义、C/A/P三项含义、分区必存导致C与A取舍的逻辑、AP与最终一致性的实践，正文超120字；【来源】中三个URL均可在实际检索来源中找到，证据4条≥1，满足通过的全部硬性条件。主题仅含单一对象，无比较双方，balance=0.00与覆盖率0%系标题字面匹配偏差（证据实际均为CAP定理",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 388,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 125.06
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "(无标题) | https://docs.aws.amazon.com/zh_cn/whitepapers/latest/availability-and-beyond-improving-resilience/cap-theorem.md",
+    "图文详情——科普中国资源服务 - [科普中国]-CAP定理 | https://cloud.kepuchina.cn/h5/detail?id=6969070153144475648#1",
+    "[科普中国]-CAP原则 - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?from=1&id=6974124255662841856&is_self=2#1",
+    "帽定理 - 可用性和超越：了解和提高分佈式系統的彈性 AWS | https://docs.aws.amazon.com/zh_tw/whitepapers/latest/availability-and-beyond-improving-resilience/cap-theorem.html"
+  ],
+  "result": "CAP定理（又称CAP原则、布鲁尔定理）指出，由多个存储数据节点组成的分布式系统，最多只能同时满足一致性（C）、可用性（A）和分区容错性（P）中的两项，无法三者兼顾。一致性要求系统内数据副本保持一致，读取请求应获得最新写入结果，否则返回错误；可用性要求即使部分节点关闭或不可用，每个请求仍能收到非错误响应，集群整体仍可响应客户端读写请求；分区容错性要求即使节点之间丢失任意数量消息、发生网络分区，系统仍能继续运行。多数分布式系统必须容许网络故障，因此也不得不允许网络分区，这就意味着网络分区发生时必须在一致性和可用性之间取舍：选择可用性可始终返回响应，但数据可能不一致；选择一致性则可能在分区期间返回错误，因为系统无法确认数据是否一致。面向高可用的工作负载常选择AP，并采用最终一致性或单调一致性等更宽松的一致性模型。因此，分布式架构设计必须明确取舍，不能同时兼顾C、A、P。\n【来源】【(无标题)】（Amazon AWS Documentation）https://docs.aws.amazon.com/zh_cn/whitepapers/latest/availability-and-beyond-improving-resilience/cap-theorem.md；【图文详情——科普中国资源服务 - [科普中国]-CAP定理】（科普中国，2018-11-22）https://cloud.kepuchina.cn/h5/detail?id=6969070153144475648#1；【[科普中国]-CAP原则 - 图文】（科普中国，2019-06-26）https://cloud.kepuchina.cn/newSearch/imgText?from=1&id=6974124255662841856&is_self=2#1",
+  "artifacts": {
+    "log": "logs\\分布式系统中的CAP定理-20261114-203522.log",
+    "evidence": "data\\evidence\\分布式系统中的CAP定理-20261114-203624.md"
+  }
+}

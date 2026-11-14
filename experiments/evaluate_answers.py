@@ -335,6 +335,9 @@ def render(rows: list, run_dir: str) -> str:
     uniq = unique_pass(rows)
     lines.append("- 独占合格题数（只有该臂判卷通过的题）："
                  + "，".join(f"{ARM_LABEL.get(a, a)}={uniq.get(a, 0)}" for a in arms))
+    lines.append("- 读法提醒：判卷合格 ≠ 修好了 —— 修到轮次上限（`outcome=failed`）时，"
+                 "最后一轮答案也可能已经合格（那是**误否决**，白跑的成本仍要记在它头上）；"
+                 "两列必须一起看。")
     if unmatched:
         lines.append(f"- 注意：有 **{unmatched}** 份记录没匹配到任务（`--dir` 指向旧记录或题目改名），"
                      "这些记录的必答对象为空，判卷只看了字数/引用/截断。")

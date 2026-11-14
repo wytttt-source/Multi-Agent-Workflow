@@ -182,6 +182,7 @@ zhinengti/
 | experiments/run_matrix.py | 复现 E1-E6（环境变量切组，零改代码） |
 | experiments/repair_matrix.py | 复现四臂对照（`--dry-run` 先看 48 条命令，`--arms/--tasks` 可切片） |
 | experiments/evaluate_answers.py | 独立判卷 + 四张表 → `docs/修复路径对照.md`（`--dir data/runs_v2 --stdout` 可复核旧记录） |
+| experiments/prune_runs.py | 收敛 `data/runs_v3/`：每个 (臂, 题) 只留最新一份（`--dry-run` 先列，`--apply` 移到 `data/runs_v3_superseded/`，剪枝前后汇总表逐字节相同） |
 | experiments/build_v2_table.py | 由 data/runs_v2/ 重新生成上文的汇总表 |
 | experiments/gate_vs_llm.py | 复现判决器对照（--build 重建样本、--mock 离线复算） |
 | experiments/reflection_attribution.py | 由 data/runs_v2/ 生成判定归因表（不调 LLM） |

@@ -206,3 +206,36 @@ def content_gate(result: str, sources: list, evidence: list,
         "truncation_hits": trunc["hits"],
     }
 
+
+def answer_completeness(result: str, required_objects: list,
+                        min_chars: int = None) -> dict:
+    """答案完整性复核（v2.3）：对**最终答案**检查"该覆盖的对象是否都覆盖了"。
+
+    为什么需要：`content_gate` 只看字数/引用/截断，看完不知道"回答是否答完"。
+    补检索重写之后最容易退化成"补上了引用、却只讲了一个对象"，仅靠字数门看不出来。
+    因此这里改用「任务给定的必答对象」做字面覆盖，口径与 content_gate 的正文一致
+    （同一个 `_body_text`），三臂共用同一份判定，避免各臂自己判自己。
+
+    返回 dict：
+    - terms / hit / missing / ratio：必答对象的覆盖情况
+    - body_chars / truncated：与门控同口径
+    - complete：覆盖全 + 未截断 + 正文达到字数下限（可直接当"合格"的硬条件）
+    """
+    from config import PASS_MIN_CHARS
+    limit = PASS_MIN_CHARS if min_chars is None else min_chars
+    body = _body_text(result or "")
+    terms = [t for t in (required_objects or []) if t]
+    hit = [t for t in terms if t in body]
+    missing = [t for t in terms if t not in body]
+    body_chars = _body_chars(result or "")
+    trunc = _looks_truncated(result or "")["truncated"]
+    return {
+        "terms": terms,
+        "hit": hit,
+        "missing": missing,
+        "ratio": round(len(hit) / len(terms), 3) if terms else 1.0,
+        "body_chars": body_chars,
+        "truncated": trunc,
+        "complete": (not missing) and (not trunc) and body_chars >= limit,
+    }
+

@@ -1,0 +1,102 @@
+{
+  "version": "v2.3",
+  "note": "修复路径三臂对照的任务集：每道题都在首轮注入一种“真实世界里会出现的坏形态”，用于机制归因。required_objects 是判卷时的必答对象（answer_completeness 用），requires_citation=false 表示该题允许“可读但未引用”的降级答案。",
+  "tasks": [
+    {
+      "id": "A1", "group": "A", "fault": "检索缺口",
+      "topic": "比较Python和Java的并发性能",
+      "inject": "one_side",
+      "required_objects": ["Python", "Java"],
+      "requires_citation": true,
+      "rationale": "两个对象都必须有证据；单侧证据只能靠“换检索式补另一个对象”修好，定向重拆无效。"
+    },
+    {
+      "id": "A2", "group": "A", "fault": "检索缺口",
+      "topic": "对比Kafka与RabbitMQ在吞吐上的表现",
+      "inject": "one_side",
+      "required_objects": ["Kafka", "RabbitMQ"],
+      "requires_citation": false,
+      "rationale": "同上，但允许无引用降级：用来区分“修复失败”和“修好了但没引用”。"
+    },
+    {
+      "id": "A3", "group": "A", "fault": "检索缺口",
+      "topic": "Redis和MySQL的缓存一致性方案",
+      "inject": "one_side",
+      "required_objects": ["Redis", "MySQL"],
+      "requires_citation": true,
+      "rationale": "工程类主题，单侧证据很常见（只讲 Redis 缓存）。"
+    },
+    {
+      "id": "A4", "group": "A", "fault": "检索缺口",
+      "topic": "比较HTTP和HTTPS的安全机制",
+      "inject": "one_side",
+      "required_objects": ["HTTP", "HTTPS"],
+      "requires_citation": true,
+      "rationale": "两个对象高度相关，容易出现“只讲 HTTPS”的单侧证据。"
+    },
+    {
+      "id": "B1", "group": "B", "fault": "结构缺陷（3 对象）",
+      "topic": "对比React、Vue和Angular的组件通信方式",
+      "inject": "one_side",
+      "required_objects": ["React", "Vue", "Angular"],
+      "requires_citation": true,
+      "rationale": "三对象题：首轮只拿到一个对象的证据，全局重拆比局部重检更容易补齐三方。"
+    },
+    {
+      "id": "B2", "group": "B", "fault": "结构缺陷（3 对象）",
+      "topic": "比较MySQL、PostgreSQL和SQLite的索引实现",
+      "inject": "one_side",
+      "required_objects": ["MySQL", "PostgreSQL", "SQLite"],
+      "requires_citation": true,
+      "rationale": "三对象题，证据偏侧时覆盖率规则会直接判分解不合理（走全局重拆）。"
+    },
+    {
+      "id": "B3", "group": "B", "fault": "结构缺陷（3 对象）",
+      "topic": "对比LSTM、GRU和Transformer的长文本建模能力",
+      "inject": "one_side",
+      "required_objects": ["LSTM", "GRU", "Transformer"],
+      "requires_citation": false,
+      "rationale": "允许无引用：三对象都覆盖即可算合格，检验“只补引用不改内容”会不会被误判合格。"
+    },
+    {
+      "id": "B4", "group": "B", "fault": "结构缺陷（3 对象）",
+      "topic": "比较Docker、Podman和containerd的镜像管理",
+      "inject": "one_side",
+      "required_objects": ["Docker", "Podman", "containerd"],
+      "requires_citation": true,
+      "rationale": "三者职责边界模糊，单侧证据下最容易“讲成 Docker 一家”。"
+    },
+    {
+      "id": "C1", "group": "C", "fault": "内容缺陷（截断）",
+      "topic": "深度学习中注意力机制的原理与作用",
+      "inject": "truncate",
+      "required_objects": ["注意力"],
+      "requires_citation": true,
+      "rationale": "首轮答案停在连接词上 → 确定性截断规则命中，只能靠重新生成修好（换检索式无用）。"
+    },
+    {
+      "id": "C2", "group": "C", "fault": "内容缺陷（过短）",
+      "topic": "分布式系统中的CAP定理",
+      "inject": "short",
+      "required_objects": ["一致性", "可用性", "分区"],
+      "requires_citation": true,
+      "rationale": "首轮正文只有 60 字 → 字数门命中；必答对象也缺失，可用 answer_completeness 独立复核。"
+    },
+    {
+      "id": "C3", "group": "C", "fault": "内容缺陷（无引用）",
+      "topic": "什么是Serverless架构",
+      "inject": "no_cite",
+      "required_objects": ["Serverless"],
+      "requires_citation": true,
+      "rationale": "反例：无引用会被降级救援改判“降级通过”并直接结束，修复路径根本没有机会介入（见案例集）。"
+    },
+    {
+      "id": "C4", "group": "C", "fault": "内容缺陷（截断）",
+      "topic": "解释数据库事务的ACID特性",
+      "inject": "truncate",
+      "required_objects": ["原子性", "一致性", "隔离性", "持久性"],
+      "requires_citation": true,
+      "rationale": "四项缺一不可：截断后不仅不完整，必答对象也会缺项。"
+    }
+  ]
+}

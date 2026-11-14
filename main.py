@@ -4,11 +4,17 @@ import sys
 import time
 
 from langgraph.graph import StateGraph, END
-from config import State, ENABLE_RUN_ARCHIVE, EXP_GROUP
+from config import State, ENABLE_RUN_ARCHIVE, EXP_GROUP, REPAIR_MAX_ROUNDS, RUN_RECORD_DIR
 from agents.nodes import planner_node, executor_node, reflection_node, free_reflection_node
 from utils import reset_llm_calls
 
 # ================= 6. 路由函数 =================
+# v2.3：判定层（nodes._decide_next）已经把"走哪条修复路径"算好并写进 state.repair_path，
+# 路由只做查表。这样三条路径的差异是显式配置（REPAIR_POLICY），而不是靠 error_type 猜。
+_PATH_EDGE = {"free": "free_reflection", "global": "replan_global",
+              "local": "replan_local"}
+
+
 def route_after_reflection(state: State):
     if state["error_type"] in ("通过", "降级通过"):
         return "end"
@@ -18,15 +24,18 @@ def route_after_reflection(state: State):
             return "end"
         print("  -> LLM 系统繁忙，触发【局部】重试")
         return "replan_local"
-    if state["replan_count"] >= 3:
-        print("  -> 达到最大重试次数，强制结束。")
+    if state["replan_count"] >= REPAIR_MAX_ROUNDS:
+        print(f"  -> 达到最大修复轮次（{REPAIR_MAX_ROUNDS}），强制结束。")
         return "end"
+    path = state.get("repair_path") or ""
+    if path in _PATH_EDGE:
+        return _PATH_EDGE[path]
+    # 兼容：没有 repair_path 的旧记录/旧调用（E1 基线直接判通过，不会走到这里）
     if state["error_type"] == "证据不足":
         return "free_reflection"
     if state.get("replan_scope") == "全局":
         return "replan_global"
-    else:
-        return "replan_local"
+    return "replan_local"
 
 # ================= 7. 组装状态图 =================
 workflow = StateGraph(State)
@@ -116,7 +125,7 @@ if __name__ == "__main__":
         # 全链路日志与结构化运行记录：以文本存档替代终端截图
         from run_store import run_log, save_run_record
         t0 = time.perf_counter()
-        print(f"  -> [实验组] {EXP_GROUP}（记录写入 data/runs_v2/{EXP_GROUP}/）")
+        print(f"  -> [实验组] {EXP_GROUP}（记录写入 {RUN_RECORD_DIR}/{EXP_GROUP}/）")
         reset_llm_calls()   # P2-2：llm_calls 按"单次运行"计数
         with run_log(user_topic.strip()) as log_path:
             print(f"\n=== 开始运行工作流，当前主题：{user_topic} ===")

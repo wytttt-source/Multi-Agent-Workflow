@@ -6,7 +6,7 @@ from typing import List
 from config import (State, PASS_MIN_CITED, PASS_MIN_CHARS, RETRY_QUERY_MODE,
                     DISABLE_CONTENT_GATE, ENABLE_COVERAGE_RULE,
                     ENABLE_DEGRADE_RESCUE, ENABLE_REFLECTION, ENABLE_REPEAT_RULE,
-                    ENABLE_TRUNCATION_RULE)
+                    ENABLE_TRUNCATION_RULE, REPAIR_POLICY, INJECT_FAULT)
 from utils import (safe_llm_invoke, LLMInfraError, LLMParseError, content_gate,
                    _body_chars, _body_text, llm_call_count)
 from tools import (search_with_evidence, evidence_coverage,
@@ -40,6 +40,7 @@ def planner_node(state: State):
                     "result": "", "subtasks": subtasks,
                     "replan_count": state.get("replan_count", 0),
                     "replan_scope": "",   # P2-3：显式复位，避免全局标记粘到下一轮
+                    "repair_path": "",    # v2.3：路径标记同样按轮复位
                     "sources": state.get("sources", []),
                     "used_fallback": False, "llm_fail_count": state.get("llm_fail_count", 0),
                 }
@@ -58,6 +59,7 @@ def planner_node(state: State):
                 "result": "", "subtasks": subtasks,
                 "replan_count": state.get("replan_count", 0),
                 "replan_scope": "",
+                "repair_path": "",
                 "sources": state.get("sources", []),
                 "used_fallback": False, "llm_fail_count": state.get("llm_fail_count", 0),
             }
@@ -68,9 +70,70 @@ def planner_node(state: State):
         "result": "", "subtasks": state.get("subtasks", []),
         "replan_count": state.get("replan_count", 0),
         "replan_scope": "",
+        "repair_path": "",
         "sources": state.get("sources", []),
         "used_fallback": False, "llm_fail_count": state.get("llm_fail_count", 0),
     }
+
+# ================= 修复路径实验（v2.3）：受控缺陷注入 + 局部修复换式 =================
+# 这一段的代码只在实验里起作用，默认（INJECT_FAULT=none）行为与 v2.2 完全一致。
+_FAULTS = ("short", "no_cite", "truncate", "one_side")
+
+
+def _active_fault(state: State) -> str:
+    """当前轮生效的注入类型；空字符串表示不注入。
+
+    只作用于首轮（replan_count == 0）：修复轮次必须看到"修过之后"的真实结果，
+    否则注入会把每一轮都打断，实验就退化成"永远修不好"。
+    """
+    fault = (INJECT_FAULT or "none").strip().lower()
+    if fault not in _FAULTS:
+        return ""
+    if int(state.get("replan_count", 0) or 0) > 0:
+        return ""
+    return fault
+
+
+def _inject_fault_content(content: str, state: State) -> tuple:
+    """首轮答案受控缺陷：short（过短）/ no_cite（无引用）/ truncate（截断）。
+
+    注入的是"真实世界里会出现的坏形态"，不是随机字符串：
+    - short    只保留半段正文 → 触发字数门；
+    - no_cite  砍掉【来源】段并明说没列来源 → 触发引用门（会被降级救援接住）；
+    - truncate 停在连接词上 → 触发 v2.2 的确定性截断规则。
+    """
+    fault = _active_fault(state)
+    text = content or ""
+    if fault == "short":
+        return text[: max(PASS_MIN_CHARS // 2, 40)], ["short"]
+    if fault == "no_cite":
+        body = text.split("【来源】", 1)[0].rstrip()
+        return body + "\n\n（本节未列出来源链接）", ["no_cite"]
+    if fault == "truncate":
+        cut = text[: max(PASS_MIN_CHARS + 20, int(len(text) * 0.6))]
+        return cut.rstrip("。！？!?\n ") + "，以及", ["truncate"]
+    return text, []
+
+
+def _retry_query_for(search_topic: str, state: State) -> tuple:
+    """局部修复的换式检索：保证重试 query 与首轮不同。
+
+    为什么必须换：`search_with_evidence` 的缓存键含 query，subtasks 在局部重规划里不变，
+    不换 query 就会命中首轮的同一份缓存 —— 这是"重试了但没带来任何新证据"的根因，
+    也是 E4/E5 里 2/2 空转的机制来源（P0-5 当时只修了自由反思那一侧）。
+    """
+    mode = (RETRY_QUERY_MODE or "missing_term").lower()
+    if mode == "same":
+        return build_query(search_topic), "same"
+    if mode == "drop_lang":
+        return search_topic, "drop_lang"
+    coverage = ((state.get("run_stats") or {}).get("reflection") or {}).get("coverage") or {}
+    missing = [m for m in (coverage.get("missing") or []) if m]
+    term = missing[0] if missing else ""
+    if term and term not in search_topic:
+        return build_query(f"{search_topic} {term}"), f"missing_term:{term}"
+    return build_query(f"{search_topic} 最新进展 官方文档"), "extra_terms"
+
 
 def executor_node(state: State):
     print("【执行节点】开始执行任务...")
@@ -88,37 +151,74 @@ def executor_node(state: State):
             print(f"  -> [执行] 检测到复合主题，第一轮整体检索（清洗后：'{query_topic}'），不自动拆解")
 
     all_contexts, all_sources, all_results, per_query = [], [], [], []
+    retry_round = int(state.get("replan_count", 0) or 0)
+    # 上一轮的 run_stats：v2.3 的 repair.rounds / 检索明细要跨轮累加，
+    # 否则每轮回写 `{"search": ...}` 会把上一次的轨迹一起冲掉。
+    prev_stats = dict(state.get("run_stats") or {})
+    prev_injected = [m for m in (prev_stats.get("injected") or []) if m]
+    # v2.3 受控缺陷：单侧证据（只作用于首轮）。做法是"只检索第一个对象"，
+    # 而不是事后裁剪结果——实跑发现"结果只提到 Python"几乎不存在（对比类文章都会提到两者），
+    # 事后裁剪会把注入变成空操作（P-B0 首轮直接判通过就是这种假阴性）。
+    injected = []
+    if _active_fault(state) == "one_side" and search_topics:
+        terms = evidence_coverage(topic, []).get("terms") or []
+        if len(search_topics) > 1:
+            search_topics = search_topics[:1]
+            injected.append("one_side:first_subtask")
+        elif len(terms) >= 2:
+            search_topics = [terms[0]]
+            injected.append(f"one_side:first_object:{terms[0]}")
+        if injected:
+            print(f"  -> [注入] 单侧证据：首轮只检索 '{search_topics[0]}'")
+
     for st in search_topics:
-        print(f"  -> [执行] 检索：{st}")
-        context, sources, results, stats = search_with_evidence(st)
+        retry_query, retry_mode = "", ""
+        if retry_round > 0:
+            # v2.3：局部修复必须换检索式，否则命中首轮缓存 = 零新证据的空转
+            retry_query, retry_mode = _retry_query_for(st, state)
+            print(f"  -> [执行] 第 {retry_round} 次修复检索，换式：'{retry_query}'（{retry_mode}）")
+        else:
+            print(f"  -> [执行] 检索：{st}")
+        context, sources, results, stats = search_with_evidence(st, query=retry_query)
+        if retry_round > 0:
+            stats = {**stats, "retry_query": retry_query,
+                     "retry_mode": retry_mode, "retry_round": retry_round}
         per_query.append(stats)
         if context:
             all_contexts.append(f"=== 检索：{st} ===\n{context}")
             all_sources.extend(sources)
         all_results.extend(results)
 
+    # 逐查询明细跨轮累计（`repair.cost.searches` 与"到底检索了几次"以它为准），
+    # 但 raw/gated/elapsed 这类聚合量仍按**本轮**统计，保持与 v2 记录同口径
+    round_per_query = list(per_query)
+    prev_search = prev_stats.get("search") or {}
+    all_per_query = list(prev_search.get("per_query") or []) + round_per_query
+
     context = "\n\n".join(all_contexts)
     sources = list(dict.fromkeys(all_sources))
 
     # 量化统计：落盘到 data/runs/*.json，README 与论文表格的数字统一取自这里
     search_stats = {
-        "per_query": per_query,
-        "raw": sum(s.get("raw", 0) for s in per_query),
-        "gated": sum(s.get("gated", 0) for s in per_query),
-        "filtered": sum(s.get("filtered", 0) for s in per_query),
+        "per_query": all_per_query,
+        "raw": sum(s.get("raw", 0) for s in round_per_query),
+        "gated": sum(s.get("gated", 0) for s in round_per_query),
+        "filtered": sum(s.get("filtered", 0) for s in round_per_query),
         "evidence_chars": len(context),
         "sources": len(sources),
-        "providers": sorted({p for s in per_query for p in s.get("providers", [])}),
-        "cache": [s.get("cache") for s in per_query],
-        "cache_sources": [s.get("cache_source", s.get("cache")) for s in per_query],
-        "degraded": any(s.get("degraded") for s in per_query),
+        "providers": sorted({p for s in round_per_query for p in s.get("providers", [])}),
+        "cache": [s.get("cache") for s in round_per_query],
+        "cache_sources": [s.get("cache_source", s.get("cache")) for s in round_per_query],
+        "degraded": any(s.get("degraded") for s in round_per_query),
         # v2.2：过滤是否真的跑了（applied=False 表示 GLM 故障或开关关闭）
-        "llm_filter": [s.get("llm_filter", {}) for s in per_query],
-        "elapsed_s": round(sum(s.get("elapsed_s", 0) for s in per_query), 2),
+        "llm_filter": [s.get("llm_filter", {}) for s in round_per_query],
+        "elapsed_s": round(sum(s.get("elapsed_s", 0) for s in round_per_query), 2),
         "evidence_path": "; ".join(
-            s.get("evidence_path", "") for s in per_query if s.get("evidence_path")),
+            s.get("evidence_path", "") for s in round_per_query if s.get("evidence_path")),
     }
-    run_stats = {"search": search_stats}
+    # 保留上一轮已有的 run_stats：repair.rounds 已按轮累加，这里只替换本轮检索统计
+    run_stats = {**prev_stats, "search": search_stats,
+                 "injected": prev_injected + injected}
 
     if all_results:
         avg_summary = sum(len(r.get("summary") or "") for r in all_results) / len(all_results)
@@ -151,12 +251,20 @@ def executor_node(state: State):
 
     try:
         content = safe_llm_invoke(prompt, use_critic=False)
+        # v2.3 受控缺陷注入（只作用于首轮）：让"修复路径"有确定的样本可比
+        content, content_injected = _inject_fault_content(content, state)
+        if content_injected:
+            print(f"  -> [注入] 首轮受控缺陷：{content_injected}")
         # error_type 置空：清掉上一轮遗留的"系统繁忙"，否则反思节点会误判为执行侧仍故障
         return {"result": content, "sources": sources, "error_type": "",
                 "replan_scope": "",   # P2-3：每轮执行后复位，路由不再读到上一轮的"全局"
+                "repair_path": "",    # v2.3：路径标记同样按轮复位
                 "evidence": all_results or state.get("evidence", []),
-                "run_stats": {**run_stats, "generation": {
-                    "prompt_chars": len(prompt), "result_chars": len(content)}},
+                "run_stats": {**run_stats,
+                              "injected": prev_injected + injected + content_injected,
+                              "generation": {
+                                  "prompt_chars": len(prompt),
+                                  "result_chars": len(content)}},
                 "used_fallback": (context == "")}
     except LLMInfraError as e:
         print(f"  -> [执行] LLM 基础设施故障: {e}")
@@ -177,9 +285,68 @@ def _pass_kind(verdict: str) -> str:
     return "rejected"
 
 
+def _repair_outcome(rounds: list) -> str:
+    """把"首轮 → 终态"压成修复结果四态（论文里修复率/无效重试率的分子分母来源）。
+
+    pass_first_try : 首轮就通过（说明这道题不需要修复）
+    fixed          : 首轮否决，最终严格通过
+    partial        : 首轮否决，最终降级通过（可读但缺资料）
+    degraded_unchanged : 首轮降级，最终仍降级（没变好也没变坏）
+    failed         : 最终仍被否决（含撞上限）
+    """
+    if not rounds:
+        return "unknown"
+    first = _pass_kind(rounds[0].get("verdict") or "")
+    final = _pass_kind(rounds[-1].get("verdict") or "")
+    if first == "strict":
+        return "pass_first_try"
+    if final == "strict":
+        return "fixed"
+    if final == "degraded":
+        return "partial" if first == "rejected" else "degraded_unchanged"
+    return "failed"
+
+
+def _repair_trace(repair: dict, verdict: str, path: str, gate: dict = None,
+                  reason: str = "", decision_source: str = "",
+                  repeat_hit: bool = False, rescued_from: str = "") -> dict:
+    """v2.3：把本轮「错在哪 → 走哪条修复路径 → 这一轮的判定」追加进 run_stats.repair。
+
+    为什么单独建一块：`run_stats.reflection` 只保留**最后一次**判定，跨臂比较时
+    看不出"首轮错在哪、第几轮修好的、走了几条路"。这里按轮追加，成本用累计
+    llm_calls 的差值算（eval 脚本里做差，不在节点里做，避免口径漂移）。
+    """
+    repair = dict(repair or {})
+    rounds = list(repair.get("rounds") or [])
+    rounds.append({
+        "round": len(rounds),
+        "verdict": verdict,
+        "pass_kind": _pass_kind(verdict),
+        "path": path or "",
+        "decision_source": decision_source,
+        "reason": (reason or "")[:160],
+        "repeat_hit": bool(repeat_hit),
+        "rescued_from": rescued_from,
+        "cited_count": (gate or {}).get("cited_count", 0),
+        "body_chars": (gate or {}).get("body_chars", 0),
+        "truncated": bool((gate or {}).get("truncated", False)),
+        "llm_calls": llm_call_count(),
+    })
+    repair.update({
+        "policy": REPAIR_POLICY,
+        "inject_fault": INJECT_FAULT,
+        "rounds": rounds,
+        "first_verdict": rounds[0]["verdict"],
+        "final_verdict": rounds[-1]["verdict"],
+        "outcome": _repair_outcome(rounds),
+    })
+    return repair
+
+
 def _reflection_stats(state: State, coverage, verdict: str, reason: str,
                       gated_by: str, gate: dict = None, repeat_hit: bool = False,
-                      decision_source: str = None, rescue: tuple = None) -> dict:
+                      decision_source: str = None, rescue: tuple = None,
+                      path: str = "") -> dict:
     """把反思节点的量化信号并入 run_stats（state 是覆盖语义，必须带上已有字段）。"""
     run_stats = dict(state.get("run_stats") or {})
     stats = {
@@ -216,6 +383,11 @@ def _reflection_stats(state: State, coverage, verdict: str, reason: str,
         # 三态分布变化必须能逐条追溯，否则等于放宽了判定
         stats["rescued_from"], stats["rescue_rule"] = rescue
     run_stats["reflection"] = stats
+    # v2.3：按轮留痕（policy / 路径 / 判定 / 累计调用），跨臂比较的唯一数据来源
+    run_stats["repair"] = _repair_trace(
+        run_stats.get("repair"), verdict, path, gate=gate, reason=reason,
+        decision_source=stats["decision_source"], repeat_hit=repeat_hit,
+        rescued_from=(rescue[0] if rescue else ""))
     return {"run_stats": run_stats}
 
 
@@ -409,9 +581,11 @@ def reflection_node(state: State):
             print("  -> [反思] 已拆解但子任务覆盖率 < 100%，判分解不合理")
             decision = _decide_next(state, "分解不合理", reason)
             repeat_hit = decision.pop("_repeat_hit", False)
+            path = decision.get("repair_path", "")      # 不 pop：路由要读这个字段
             return {**decision,
                     **_reflection_stats(state, coverage, "分解不合理", reason,
-                                        "coverage_rule", repeat_hit=repeat_hit)}
+                                        "coverage_rule", repeat_hit=repeat_hit,
+                                        path=path)}
 
     elif ENABLE_COVERAGE_RULE and is_composite and evidence_items:
         # 首轮整体检索：走原来的复合主题切分逻辑
@@ -434,9 +608,11 @@ def reflection_node(state: State):
             reason = f"证据覆盖率仅 {coverage['ratio']:.0%}，未覆盖：{'、'.join(coverage['missing'])}"
             decision = _decide_next(state, "分解不合理", reason)
             repeat_hit = decision.pop("_repeat_hit", False)
+            path = decision.get("repair_path", "")
             return {**decision,
                     **_reflection_stats(state, coverage, "分解不合理", reason,
-                                        "coverage_rule", repeat_hit=repeat_hit)}
+                                        "coverage_rule", repeat_hit=repeat_hit,
+                                        path=path)}
     else:
         if not ENABLE_COVERAGE_RULE:
             evidence_stats = (f"证据 {len(evidence_items)} 条"
@@ -493,9 +669,11 @@ def reflection_node(state: State):
     gated_by = "llm" if error_type == llm_error_type else "gate"
     decision = _decide_next(state, error_type, reason)
     repeat_hit = decision.pop("_repeat_hit", False)
+    path = decision.get("repair_path", "")
     return {**decision,
             **_reflection_stats(state, coverage_info, error_type, reason, gated_by,
-                                gate, repeat_hit=repeat_hit, rescue=rescue)}
+                                gate, repeat_hit=repeat_hit, rescue=rescue,
+                                path=path)}
 
 def rule_based_reflection(state: State, reason: str, coverage=None):
     result = state.get("result", "")
@@ -509,9 +687,11 @@ def rule_based_reflection(state: State, reason: str, coverage=None):
         print(f"  -> [规则兜底] 判定: {error_type}, 理由: {reason_full}")
         decision = _decide_next(state, error_type, reason_full)
         repeat_hit = decision.pop("_repeat_hit", False)
+        path = decision.get("repair_path", "")
         return {**decision,
                 **_reflection_stats(state, coverage, error_type, reason_full,
-                                    "rule_fallback", repeat_hit=repeat_hit)}
+                                    "rule_fallback", repeat_hit=repeat_hit,
+                                    path=path)}
 
     # 兜底路径复用同一套确定性门控：没有可核验引用，同样不能记「通过」
     gate = content_gate(result, state.get("sources", []), state.get("evidence", []))
@@ -522,9 +702,10 @@ def rule_based_reflection(state: State, reason: str, coverage=None):
     gated_by = "gate" if gate_hit else "rule_fallback"
     decision = _decide_next(state, error_type, reason_full)
     repeat_hit = decision.pop("_repeat_hit", False)
+    path = decision.get("repair_path", "")
     return {**decision,
             **_reflection_stats(state, coverage, error_type, reason_full, gated_by,
-                                gate, repeat_hit=repeat_hit)}
+                                gate, repeat_hit=repeat_hit, path=path)}
 
 # 错误类型 → 是否走定向（局部/全局）重规划。不在表里的（检索失败/系统繁忙/证据不足）一律走自由反思。
 _REPLAN_TYPES = {
@@ -547,17 +728,43 @@ def _norm_type(error_type: str) -> str:
     return _TYPE_ALIASES.get(et, et)
 
 
-def _decide_next(state: State, error_type: str, reason: str):
-    """判定 → 重规划决策。返回里带一个临时键 `_repeat_hit`，由调用方 pop 后写进 run_stats。
+_PATH_LABEL = {"local": "局部修复", "global": "全局重拆", "free": "自由反思"}
+# 旧口径（中文 scope）→ 新路径枚举；保留中文标签是为了不改既有记录/文档用语
+_SCOPE_PATH = {"局部": "local", "全局": "global"}
 
-    P1-1：重复检测从"只对分解不合理生效"扩到**任意类型**——同一类否决连发 2 次，
-    说明重规划没带来新信息（同一条 query / 同一批证据），继续原地重试只会空转到上限，
-    因此第 2 次起直接转「证据不足」走自由反思（换检索式）。
+
+def _apply_repair_policy(desired: str) -> str:
+    """把「这条错误该走哪条路」映射成「策略允许走哪条路」——三臂对照的唯一切换点。
+
+    fixed ：不允许自由反思，判断不清就退回定向修复（无类型的错 = 局部重试一次），
+            这正是"按类型硬修"的旧做法，用来量化"只按分类修"的代价；
+    free  ：不做定向修复，一律补检索重写，用来量化"不看依据、只换检索式"的代价；
+    hybrid：有确定性依据走定向、判断不清走自由反思（v2.2 默认行为）。
+
+    注意：这里只改"走哪条路"，不改判定标准，所以 R/L/C 二分类指标不受影响。
+    """
+    policy = (REPAIR_POLICY or "hybrid").strip().lower()
+    if policy == "free":
+        return "free"
+    if policy == "fixed":
+        return "global" if desired == "global" else "local"
+    return desired
+
+
+def _decide_next(state: State, error_type: str, reason: str):
+    """判定 → 修复路径决策。
+
+    返回里含两个临时/权威键：
+    - `repair_path`（local/global/free）：写进 state，路由函数**只认它**，不再靠 error_type 猜；
+    - `_repeat_hit`：临时键，由调用方 pop 后写进 run_stats.reflection。
+
+    分两步，是为了让"该走哪条路"（证据判断）与"允许走哪条路"（实验策略）可分离：
+    P1-1 的重复检测仍然只看历史，第 2 次起说明重规划没带来新信息，应转自由反思。
     """
     raw_type = (error_type or "").strip()
     error_type = _norm_type(raw_type)      # 存储 / 匹配同形，见 _TYPE_ALIASES
     if error_type in ("通过", "降级通过"):
-        return {"error_type": error_type, "_repeat_hit": False}
+        return {"error_type": error_type, "repair_path": "", "_repeat_hit": False}
 
     current_count = state.get("replan_count", 0)
     history = state.get("reflection_history", [])
@@ -566,44 +773,47 @@ def _decide_next(state: State, error_type: str, reason: str):
     repeat_times = sum(1 for h in history
                        if isinstance(h, str) and h.startswith(f"[{error_type}]"))
     repeat_hit = repeat_times > 0
+    # `_repeat_hit` 的语义保持 v2.2：指"重复规则真的被触发"，规则关掉时记 False
+    repeat_fired = bool(repeat_hit and ENABLE_REPEAT_RULE)
 
     # 归一发生了（如 检索失败→证据不足）时保留原判，便于论文里追溯裁判措辞
     note = f"原判{raw_type}：" if raw_type != error_type else ""
 
-    if repeat_hit and ENABLE_REPEAT_RULE:
-        print(f"  -> [{error_type}] 已重复出现 {repeat_times} 次，停止同类重规划，"
-              f"转【自由反思】换检索式")
-        return {"error_type": "证据不足", "replan_count": current_count + 1,
-                "reflection_history":
-                    history + [f"[证据不足] {error_type}重复{repeat_times + 1}次"],
-                "_repeat_hit": True}
-
-    # 检索层无证据时硬否决定向重规划
+    # 第一步：这条错误"需要"哪种修复（与 policy 无关的纯证据判断）
     no_evidence = (len(state.get("evidence", [])) == 0) or any(
         hint in (reason or "") for hint in _NO_EVIDENCE_HINTS)
+    if repeat_fired:
+        desired = "free"
+    elif error_type == "分解不合理":
+        desired = "global"
+    else:
+        # 注意：_REPLAN_TYPES 里是中文口径（局部/全局），这里统一成路径枚举后再判策略
+        scope = _SCOPE_PATH.get(_REPLAN_TYPES.get(error_type, ""), "")
+        desired = scope if (scope and not no_evidence) else "free"
 
-    if error_type == "分解不合理":
-        print("  -> 判定为分解不合理，触发【全局】重规划")
-        return {"error_type": error_type, "replan_scope": "全局",
+    # 第二步：策略决定"允许"走哪条（v2.3 三臂对照在这里分叉）
+    path = _apply_repair_policy(desired)
+    if path != desired:
+        print(f"  -> [修复策略] policy={REPAIR_POLICY}：本应走【{_PATH_LABEL[desired]}】，"
+              f"改为【{_PATH_LABEL[path]}】")
+
+    if path == "free":
+        tag = (f"{error_type}重复{repeat_times + 1}次"
+               if repeat_fired else f"{note}{reason}")
+        print(f"  -> 转【自由反思】换检索式（原判 {error_type}）")
+        return {"error_type": "证据不足", "replan_scope": "", "repair_path": "free",
                 "replan_count": current_count + 1,
-                "reflection_history": history + [f"[{error_type}] {note}{reason}"],
-                "_repeat_hit": False}
+                "reflection_history": history + [f"[证据不足] {tag}"],
+                "_repeat_hit": repeat_fired}
 
-    scope = _REPLAN_TYPES.get(error_type)
-
-    if scope and not no_evidence:
-        print(f"  -> 规则信号交叉验证：error_type={error_type}, 历史重复={repeat_hit} "
-              f"=> 触发【{scope}】重规划")
-        return {"error_type": error_type, "replan_scope": scope,
-                "replan_count": current_count + 1,
-                "reflection_history": history + [f"[{error_type}] {note}{reason}"],
-                "_repeat_hit": False}
-
-    print(f"  -> 无定向重规划依据（error_type={error_type}, no_evidence={no_evidence}），"
-          f"回退到【自由反思】")
-    return {"error_type": "证据不足", "replan_count": current_count + 1,
-            "reflection_history": history + [f"[证据不足] {note}{reason}"],
-            "_repeat_hit": False}
+    print(f"  -> 触发【{_PATH_LABEL[path]}】（error_type={error_type}，"
+          f"重复={repeat_hit}，无证据={no_evidence}）")
+    return {"error_type": error_type,
+            "replan_scope": "全局" if path == "global" else "局部",
+            "repair_path": path,
+            "replan_count": current_count + 1,
+            "reflection_history": history + [f"[{error_type}] {note}{reason}"],
+            "_repeat_hit": repeat_fired}
 
 def _build_retry_query(state: State) -> tuple:
     """补检索的查询改写：默认把首轮未覆盖的对象追加进查询。
@@ -682,6 +892,11 @@ def free_reflection_node(state: State):
                 "truncation_hits": gate.get("truncation_hits", []),
             })
         run_stats["reflection"] = prev_refl
+        # v2.3：补检索/重写这一轮也入轨迹，三臂的"路径序列"才完整
+        run_stats["repair"] = _repair_trace(
+            run_stats.get("repair"), verdict, "free", gate=gate,
+            reason=final_reason, decision_source=gated_by,
+            repeat_hit=bool(prev_refl.get("repeat_hit", False)))
         return run_stats
 
     try:

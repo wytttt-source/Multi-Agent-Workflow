@@ -18,8 +18,10 @@ from typing import Any, Dict
 from config import (CRITIC_MODEL, DISABLE_CONTENT_GATE, ENABLE_COVERAGE_RULE,
                     ENABLE_DEGRADE_RESCUE, ENABLE_REFLECTION, ENABLE_REPEAT_RULE,
                     ENABLE_TRUNCATION_RULE, EVIDENCE_TOP_K,
-                    EXP_GROUP, GENERATOR_MODEL, INJECT_LLM_FAIL, PASS_MIN_CHARS,
-                    PASS_MIN_CITATION_RATIO, PASS_MIN_CITED, RETRY_QUERY_MODE,
+                    EXP_GROUP, GENERATOR_MODEL, INJECT_FAULT, INJECT_LLM_FAIL,
+                    LLM_TEMPERATURE, PASS_MIN_CHARS,
+                    PASS_MIN_CITATION_RATIO, PASS_MIN_CITED, REPAIR_MAX_ROUNDS,
+                    REPAIR_POLICY, RETRY_QUERY_MODE,
                     RUN_LOG_DIR, RUN_RECORD_DIR,
                     SEARCH_COUNT, SEARCH_NEED_CONTENT, SEARCH_PROVIDER)
 
@@ -73,11 +75,14 @@ def _header(topic: str) -> str:
         f"- 环境：Python {platform.python_version()} / {platform.system()}",
         f"- 检索：provider={SEARCH_PROVIDER} count={SEARCH_COUNT} "
         f"need_content={SEARCH_NEED_CONTENT}",
-        f"- 模型：generator={GENERATOR_MODEL} critic={CRITIC_MODEL}",
+        f"- 模型：generator={GENERATOR_MODEL} critic={CRITIC_MODEL} temp={LLM_TEMPERATURE}",
         f"- 判定开关：reflection={ENABLE_REFLECTION} coverage_rule={ENABLE_COVERAGE_RULE} "
         f"repeat_rule={ENABLE_REPEAT_RULE} disable_gate={DISABLE_CONTENT_GATE} "
         f"inject_fail={INJECT_LLM_FAIL} truncation={ENABLE_TRUNCATION_RULE} "
         f"rescue={ENABLE_DEGRADE_RESCUE} min_citation_ratio={PASS_MIN_CITATION_RATIO}",
+        # v2.3：修复路径三臂（fixed/free/hybrid）与首轮受控注入，必须随日志落盘才能自证
+        f"- 修复路径：policy={REPAIR_POLICY} inject_fault={INJECT_FAULT} "
+        f"max_rounds={REPAIR_MAX_ROUNDS} retry_query_mode={RETRY_QUERY_MODE}",
         "-" * 64,
         "",
     ])
@@ -116,6 +121,14 @@ def save_run_record(topic: str, state: Dict[str, Any], log_path: str,
     base = os.path.join(_abs(RUN_RECORD_DIR), _slug(EXP_GROUP))
     os.makedirs(base, exist_ok=True)
     stats = state.get("run_stats") or {}
+    # v2.3：修复路径的"总成本"在这里补齐（llm_calls 是全场累计，searches 数轮次）
+    repair = dict(stats.get("repair") or {})
+    if repair:
+        repair["cost"] = {
+            "llm_calls": (stats.get("reflection") or {}).get("llm_calls", 0),
+            "searches": len((stats.get("search") or {}).get("per_query") or []),
+            "elapsed_s": round(elapsed_s, 2),
+        }
     record = {
         "topic": topic,
         "group": EXP_GROUP,
@@ -141,9 +154,17 @@ def save_run_record(topic: str, state: Dict[str, Any], log_path: str,
             "enable_truncation_rule": ENABLE_TRUNCATION_RULE,
             "enable_degrade_rescue": ENABLE_DEGRADE_RESCUE,
             "pass_min_citation_ratio": PASS_MIN_CITATION_RATIO,
+            # v2.3 修复路径三臂：policy 决定"错在哪→走哪条路"，inject_fault 是首轮受控缺陷
+            "repair_policy": REPAIR_POLICY,
+            "inject_fault": INJECT_FAULT,
+            "repair_max_rounds": REPAIR_MAX_ROUNDS,
+            "llm_temperature": LLM_TEMPERATURE,
         },
         "search": stats.get("search", {}),
         "reflection": stats.get("reflection", {}),
+        # v2.3：按轮轨迹（verdict/path/outcome/cost），跨臂对照表的唯一数据来源
+        "repair": repair,
+        "injected": stats.get("injected", []),
         "replan_count": state.get("replan_count", 0),
         "subtasks": state.get("subtasks", []),
         "used_fallback": state.get("used_fallback", False),

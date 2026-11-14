@@ -78,8 +78,23 @@ EVIDENCE_TOP_K = int(os.getenv("EVIDENCE_TOP_K", "3") or 3)
 # 实验组标签：同时决定 data/runs_v2/<组>/ 子目录与 JSON 里的 group 字段
 EXP_GROUP = (os.getenv("EXP_GROUP") or "E3").strip() or "E3"
 
+# ================= 1.35 修复路径实验（v2.3） =================
+# 三条修复路径的三臂对照（设计见 docs/修复路径对比实验-设计.md）：
+#   hybrid = 有确定性依据→定向修复（局部/全局），判断不清→自由反思（默认，等价 v2.2 行为）
+#   fixed  = 只按错误类型做固定映射，不走自由反思（"旧做法"）
+#   free   = 一律补检索+重写，不做定向修复（"纯反思"）
+# 只影响"错在哪 → 走哪条修复路径"，**不改判定标准**，因此二分类指标不受影响。
+REPAIR_POLICY = (os.getenv("REPAIR_POLICY", "hybrid").strip().lower() or "hybrid")
+# 首轮受控缺陷注入（none / short / no_cite / truncate / one_side）：
+# 只作用于 replan_count==0 的第一轮，用于让"修复路径"有样本可比较（机制归因，非外部效度）。
+INJECT_FAULT = (os.getenv("INJECT_FAULT", "none").strip().lower() or "none")
+# 定向修复的轮次上限；自由反思固定只有 1 次机会（由路由保证）
+REPAIR_MAX_ROUNDS = int(os.getenv("REPAIR_MAX_ROUNDS", "3") or 3)
+
 # ================= 1.4 模型名（代码 / 日志 / 论文三处必须一致） =================
 CRITIC_MODEL = os.getenv("CRITIC_MODEL", "glm-5.3-flash")
+# 生成温度：默认 0.1（与 v2.2 一致）；修复路径对照实验设 0，消除抖动对路径选择的影响。
+LLM_TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0.1") or 0.1)
 
 
 api_key = os.getenv("DEEPSEEK_API_KEY")
@@ -90,7 +105,7 @@ llm_generator = ChatOpenAI(
     model=GENERATOR_MODEL,
     openai_api_key=api_key,
     openai_api_base="https://api.deepseek.com",
-    temperature=0.1,
+    temperature=LLM_TEMPERATURE,
     timeout=30,
     max_retries=0,
 )
@@ -99,7 +114,7 @@ llm_critic = ChatOpenAI(
     model=CRITIC_MODEL,
     openai_api_key=glm_api_key,
     openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
-    temperature=0.1,
+    temperature=LLM_TEMPERATURE,
     timeout=60,
     max_retries=0,
 )
@@ -111,6 +126,7 @@ class State(TypedDict):
     result: str
     error_type: str
     replan_scope: str
+    repair_path: NotRequired[str]                # v2.3：本轮选定的修复路径（local/global/free）
     replan_count: int
     reflection_history: List[str]
     sources: List[str]

@@ -88,10 +88,10 @@ replan_count ≤ 3 与独立的 llm_fail_count ≤ 3（执行侧不重复计数�
 
 | 臂 | 环境变量 | 路径规则 |
 | --- | --- | --- |
-| B0 | `ENABLE_REFLECTION=0` | 不判不修（下界） |
-| F | `REPAIR_POLICY=fixed` | 只按错误类型固定映射，**永不**自由反思 |
-| R | `REPAIR_POLICY=free` | 一律补检索 + 重写，不做定向修复 |
-| H | `REPAIR_POLICY=hybrid` | 有确定性依据→定向，判断不清→自由反思（v2.2 默认） |
+| B0 | ENABLE_REFLECTION=0 | 不判不修（下界） |
+| F | REPAIR_POLICY=fixed | 只按错误类型固定映射，**永不**自由反思 |
+| R | REPAIR_POLICY=free | 一律补检索 + 重写，不做定向修复 |
+| H | REPAIR_POLICY=hybrid | 有确定性依据→定向，判断不清→自由反思（v2.2 默认） |
 
 **主表（12 题 × 4 臂 = 48 份，判卷与系统判定完全独立）**：
 
@@ -102,15 +102,15 @@ replan_count ≤ 3 与独立的 llm_fail_count ≤ 3（执行侧不重复计数�
 | R 自由反思 | 100%（12/12） | 0% | 4.3 | 2.0 | 676 | 12 / 0 / 0 | **0%** |
 | H 混合（本文） | 100%（12/12） | 0% | 4.5 | 2.0 | 602 | 12 / 0 / 0 | **0%** |
 
-**按错误类型看（`docs/修复路径对照.md` 表 2，A/B/C 各 4/4/4 题）**：
+**按错误类型看（docs/修复路径对照.md 表 2，A/B/C 各 4/4/4 题）**：
 
 | 错误类型 | F 判卷通过 | R 判卷通过 | H 判卷通过 | F 的主要路径与代价 |
 | --- | --: | --: | --: | --- |
-| A 检索缺口（`one_side`×4） | 4/4 | 4/4 | 4/4 | `local → global`，8.2 次调用 |
-| B 三对象结构缺陷（`one_side`×4） | **2/4** | 4/4 | 4/4 | `local`，7.8 次调用（B1 降级、B4 否决） |
+| A 检索缺口（one_side ×4） | 4/4 | 4/4 | 4/4 | `local → global`，8.2 次调用 |
+| B 三对象结构缺陷（one_side ×4） | **2/4** | 4/4 | 4/4 | `local`，7.8 次调用（B1 降级、B4 否决） |
 | C 内容缺陷（截断 2 + 过短 1 + 无引用 1） | 4/4 | 4/4 | 4/4 | `local`，5.0~6.5 次调用 |
 
-1. **缺对象不再无脑重写**（v2.4 的 E2 分流）：首轮「答案缺 X 且证据里也没有 X」现在判 `证据不足` → 先补检索；
+1. **缺对象不再无脑重写**（v2.4 的 E2 分流）：首轮「答案缺 X 且证据里也没有 X」现在判 **证据不足** → 先补检索；
    只有「证据里有、答案没写」才走重写。于是 F 从 v2.3 的 0%（2/2 撞上限 + 2 次误否决）升到 **83%**。
 2. **自由反思一次到位，代价写在字数与调用上**：R/H 都是 12/12 修好、平均 2.0 次检索、误判 0；
    但 R 平均正文 676 字、H 602 字，F 只有 494 字却要 3.4 次检索、7.2 次调用 —— 定向修复省字不省调用。
@@ -180,9 +180,9 @@ zhinengti/
 | [docs/重规划案例集.md](docs/重规划案例集.md) | 想逐案看"错在哪 → 走了哪条路 → 另外几臂怎么走"（v2.4 已按 48 份记录重写） |
 | [docs/检索层-附录.md](docs/检索层-附录.md) | 想查检索层改造对照、三层过滤链路、exp1-exp7 完整日志与 v1 量化对照 |
 | experiments/run_matrix.py | 复现 E1-E6（环境变量切组，零改代码） |
-| experiments/repair_matrix.py | 复现四臂对照（`--dry-run` 先看 48 条命令，`--arms/--tasks` 可切片） |
-| experiments/evaluate_answers.py | 独立判卷 + 四张表 → `docs/修复路径对照.md`（`--dir data/runs_v2 --stdout` 可复核旧记录） |
-| experiments/prune_runs.py | 收敛 `data/runs_v3/`：每个 (臂, 题) 只留最新一份（`--dry-run` 先列，`--apply` 移到 `data/runs_v3_superseded/`，剪枝前后汇总表逐字节相同） |
+| experiments/repair_matrix.py | 复现四臂对照（--dry-run 先看 48 条命令，--arms/--tasks 可切片） |
+| experiments/evaluate_answers.py | 独立判卷 + 四张表 → docs/修复路径对照.md（`--dir data/runs_v2 --stdout` 可复核旧记录） |
+| experiments/prune_runs.py | 收敛 `data/runs_v3/`：每个 (臂, 题) 只留最新一份（--dry-run 先列，--apply 移到 data/runs_v3_superseded/，剪枝前后汇总表逐字节相同） |
 | experiments/build_v2_table.py | 由 data/runs_v2/ 重新生成上文的汇总表 |
 | experiments/gate_vs_llm.py | 复现判决器对照（--build 重建样本、--mock 离线复算） |
 | experiments/reflection_attribution.py | 由 data/runs_v2/ 生成判定归因表（不调 LLM） |

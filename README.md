@@ -225,7 +225,7 @@ zhinengti/
 | [docs/检索层-附录.md](docs/检索层-附录.md) | 想查检索层改造对照、三层过滤链路、exp1-exp7 完整日志与 v1 量化对照 |
 | experiments/run_matrix.py | 复现 E1-E6（环境变量切组，零改代码） |
 | experiments/repair_matrix.py | 复现四臂对照（v2.5 默认 17 题 × 4 臂 = 68 条；`--dry-run` 先看命令，`--arms`/`--tasks` 可切片） |
-| experiments/evaluate_answers.py | 独立判卷 + 四张表 → `docs/修复路径对照_v2.5.md`（`--dir data/runs_v3` 复核 v2.4 归档，`--stdout` 只打印） |
+| experiments/evaluate_answers.py | 独立判卷 + 四张表 → docs/修复路径对照_v2.5.md（`--dir data/runs_v3` 复核 v2.4 归档，`--stdout` 只打印） |
 | experiments/replay_rules.py | 规则漂移复核：v2.4 记录按 v2.5 规则重放（`--dir data/runs_v3 --expect-flips 10`） |
 | experiments/replay_final_check.py | 第三步评估：终检收严 + 终态救援的只读回放（输出 收严↓0 / 救援↑2，不写 `data/`） |
 | experiments/prune_runs.py | 收敛记录目录：每个 (臂, 题) 只留最新一份（`--dry-run` 先列，`--apply` 移入 `*_superseded/`） |

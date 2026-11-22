@@ -1,6 +1,5 @@
 ﻿
 数据源            E:\thesis\zhinengti1\zhinengti\data\runs_v3
-runs_v3 已经被移走了，现在叫 runs_v3_pre_v25，里面是 v2.4 的 54 份记录
 记录数            53（参与复算 53）
 决策轮            51（复算一致 41 / 翻转 10）
 终态轮            52（通过/降级收尾，path 非决策输出，不参与复算）

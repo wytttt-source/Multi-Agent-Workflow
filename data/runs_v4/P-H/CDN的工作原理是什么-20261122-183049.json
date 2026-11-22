@@ -1,0 +1,179 @@
+{
+  "topic": "CDN的工作原理是什么",
+  "group": "P-H",
+  "ts": "2026-11-22T10:30:49.746024+00:00",
+  "elapsed_seconds": 236.68,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "CDN的工作原理是什么",
+        "query": "CDN的工作原理是什么 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8681,
+        "sources": 5,
+        "avg_summary": 1814.0,
+        "avg_content": 3751.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.67,
+        "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182659.md"
+      }
+    ],
+    "skipped": true,
+    "raw": 0,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 8681,
+    "sources": 5,
+    "providers": [],
+    "cache": [],
+    "cache_sources": [],
+    "degraded": false,
+    "llm_filter": [],
+    "elapsed_s": 0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "CDN"
+      ],
+      "hit": [
+        "CDN"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 1003,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧扣'CDN的工作原理'，完整讲解了缓存服务器分布式部署、DNS解析与CNAME机制、全局负载均衡调度至最近正常节点、分布式存储/负载均衡/重定向/内容管理四大要件及流量管理与内容管理为核心，属实质细节而非仅上位概念，正文远超120字；【来源】所列两个URL均可在实际检索来源清单中核验；证据5条≥1。统计中覆盖率0%与balance=0.00系标题层关键词'CDN的工作'未字面匹配所致，5条证据标题均围绕CDN展开，且规则明确覆盖率/偏侧统计不等于分解不合理，判定以回答是否讲清必答对象为准，本回答已讲清，故通过。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 6,
+    "evidence_count": 5,
+    "result_chars": 1259,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 0.667,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 1003,
+    "len_full": 1259,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/newsearch/imgtext"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "llm",
+        "reason": "回答明显截断，在'系统利用全局负载与'处中断，句子未完成，仅提及缓存服务器部署和负载均衡的开头，未讲清CDN完整工作原理；缺少【来源】标注，来源不可核验/疑似编造；且正文远不足120字，未声明降级。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧扣'CDN的工作原理'，完整讲解了缓存服务器分布式部署、DNS解析与CNAME机制、全局负载均衡调度至最近正常节点、分布式存储/负载均衡/重定向/内容管理四大要件及流量管理与内容管理为核心，属实质细节而非仅上位概念，正文远超120字；【来源】所列两个URL均可在实际检索来源清单中核验；证据5条≥1。统计中覆盖率0",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 1003,
+        "truncated": false,
+        "llm_calls": 6
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 6,
+      "searches": 1,
+      "elapsed_s": 236.68
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "[科普中国]-CDN - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?from=1&id=6969032716749910016&is_self=2#1",
+    "图文详情——科普中国资源服务 - [科普中国]-CDN | https://cloud.kepuchina.cn/h5/detail?id=6969032716749910016#1",
+    "你知道CDN是什么吗？本文带你搞明白CDN - 你知道CDN是什么吗？本文带你搞明白CDN | https://developer.aliyun.com/article/1566310#1",
+    "程序员要搞明白CDN，这篇应该够了 - 纯洁的微笑 | https://cloud.tencent.cn/developer/article/1469674?from=15425#1",
+    "要搞明白CDN，你可以需要看这篇文章-华为开发者话题 | 华为开发者联盟 | https://developer.huawei.com/consumer/cn/forum/topic/0201167301899630057"
+  ],
+  "result": "CDN的全称是Content Delivery Network，即内容分发网络。它构建在网络之上，依靠部署在各地的边缘服务器，并通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，从而降低网络拥塞，提高用户访问响应速度和命中率。其基本原理是广泛采用各种缓存服务器，把这些缓存服务器分布到用户访问相对集中的地区或网络中；当用户访问网站时，利用全局负载技术把用户访问指向距离最近且工作正常的缓存服务器，由缓存服务器直接响应用户请求。其基本思路是尽量避开互联网上可能影响数据传输速度和稳定性的瓶颈和环节，通过在网络各处放置节点服务器，构成现有互联网之上的一层智能虚拟网络，并实时根据网络流量、各节点连接、负载状况以及到用户的距离和响应时间等综合信息，把请求重新导向离用户最近的服务节点。\n\n从访问过程看，用户使用域名访问网站时，先把请求包通过网络传输给服务器，其中首先需要解析出域名所对应的IP地址，这就是DNS域名解析，然后再把HTTP请求包路由到该IP地址所对应的服务器。资料还说明，域名解析分为把一个域名解析为一个IP地址，以及把一个域名解析为另外一个域名两种；后一种关系中的别名称为CNAME，域名解析由DNS系统负责，DNS服务接受外部请求并从请求里提取域名进行解析。CDN在用户访问时通过全局负载调度，把请求导向距离最近且工作正常的缓存服务器；这类缓存服务器也称代理缓存（Surrogate），位于网络边缘，距用户仅有“一跳”，因此可以由它直接响应用户请求，使用户就近取得所需内容。\n\n简单说，CDN是一个经策略性部署的整体系统，包括分布式存储、负载均衡、网络请求的重定向和内容管理4个要件，而内容管理和全局的网络流量管理（Traffic Management）是CDN的核心所在。分布式存储对应内容存储和分发技术，是CDN进行内容存储与分发的基础要件之一；负载均衡通过判断服务器负载等情况，把用户请求分配到合适节点；网络请求的重定向则把用户请求重新导向离用户最近的服务节点；内容管理负责内容层面的组织与管理，是核心要件之一；全局网络流量管理根据网络流量、节点连接、负载状况以及到用户的距离和响应时间等综合信息进行调度，也是核心所在。通过用户就近性和服务器负载的判断，CDN确保内容以高效方式为用户的请求提供服务，目的是解决Internet网络拥挤状况，提高用户访问网站的响应速度。\n\n【来源】\n【[科普中国]-CDN - 图文】（科普中国，2018-11-22）\nURL: https://cloud.kepuchina.cn/newSearch/imgText?from=1&id=6969032716749910016&is_self=2#1\n【你知道CDN是什么吗？本文带你搞明白CDN - 你知道CDN是什么吗？本文带你搞明白CDN】（阿里云开发者社区，2024-07-11）\nURL: https://developer.aliyun.com/article/1566310#1",
+  "artifacts": {
+    "log": "logs\\CDN的工作原理是什么-20261122-182653.log",
+    "evidence": ""
+  }
+}

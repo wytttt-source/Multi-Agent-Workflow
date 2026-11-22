@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """v2.3 修复路径三臂（fixed / free / hybrid）的离线单测。
 
-覆盖六组：
+覆盖七组：
     RepairPolicyTest       —— 策略只改"走哪条路"，不改判定（R1~R4）
+    RepairRuleTest         —— 规则编号只做命名，不改变任何路径选择（N1~N4）
     InjectFaultTest        —— 首轮受控缺陷只作用于第一轮，且形态可被门控识别（F1~F7）
     RepairTraceTest        —— 按轮轨迹与修复结果四态（T1~T2）
     AnswerCompletenessTest —— 补检索重写后的完整性复核（K1~K3）
@@ -74,12 +75,76 @@ class RepairPolicyTest(unittest.TestCase):
         self.assertEqual(decision["error_type"], "证据不足")
         self.assertEqual(decision["replan_scope"], "")
 
-    def test_r4_hybrid_matches_v22_behavior(self):
+    def test_r4_hybrid_rewrites_when_evidence_exists(self):
+        # v2.5：证据已在手 → 定向重写（rewrite）；证据为空仍走自由反思
         with mock.patch.object(nodes, "REPAIR_POLICY", "hybrid"):
-            local = nodes._decide_next(_state(), "内容不合格", "回答过短")
+            rewrite = nodes._decide_next(_state(), "内容不合格", "回答过短")
             free = nodes._decide_next(_state(evidence=[]), "内容不合格", "证据缺失")
-        self.assertEqual((local["repair_path"], local["replan_scope"]), ("local", "局部"))
+        self.assertEqual((rewrite["repair_path"], rewrite["replan_scope"]),
+                         ("rewrite", "局部"))
         self.assertEqual((free["repair_path"], free["error_type"]), ("free", "证据不足"))
+
+
+class RepairRuleTest(unittest.TestCase):
+    """v2.5 第一步：规则编号（R1~R5）只做命名，不得改变任何路径选择（N1~N4）。
+
+    验收依据：experiments/replay_rules.py 用 v2.4 的 48 份记录离线复算，
+    46 个决策轮零翻转；下面这四条锁住"改名"这件事本身。
+    """
+
+    def _decide(self, error_type, reason="回答过短", policy="hybrid", **state_kw):
+        with mock.patch.object(nodes, "REPAIR_POLICY", policy):
+            return nodes._decide_next(_state(**state_kw), error_type, reason)
+
+    def test_n1_rule_table_reproduces_v24_paths(self):
+        # R1/R3/R4 与 v2.4 逐条一致；R2 是第二步唯一改动的分支（local → rewrite，全臂共用）
+        cases = [
+            (("内容不合格", "回答过短"), {}, "hybrid", "rewrite", "R2_answer_gap"),
+            (("内容不合格", "证据 0 条"), {"evidence": []}, "hybrid", "free",
+             "R1_evidence_gap"),
+            (("分解不合理", "只讲了一个对象"), {}, "hybrid", "global", "R3_structure"),
+            (("内容不合格", "回答过短"), {}, "fixed", "rewrite", "R2_answer_gap"),
+            (("分解不合理", "只讲了一个对象"), {}, "fixed", "global", "R3_structure"),
+            (("内容不合格", "回答过短"), {}, "free", "free", "R2_answer_gap"),
+        ]
+        for (etype, reason), kw, policy, want_path, want_rule in cases:
+            with self.subTest(etype=etype, policy=policy, reason=reason):
+                decision = self._decide(etype, reason, policy, **kw)
+                self.assertEqual(decision["repair_path"], want_path)
+                self.assertEqual(decision["_rule"], want_rule)
+
+    def test_n2_repeat_overrides_to_free(self):
+        # 同类错误第 2 次出现：说明上一轮定向修复没带来新信息 → 换检索式（R4）
+        state = _state(reflection_history=["[内容不合格] 上一轮回答过短"])
+        with mock.patch.object(nodes, "REPAIR_POLICY", "hybrid"), \
+                mock.patch.object(nodes, "ENABLE_REPEAT_RULE", True):
+            decision = nodes._decide_next(state, "内容不合格", "回答过短")
+        self.assertEqual((decision["repair_path"], decision["_rule"]),
+                         ("free", "R4_repeat"))
+
+    def test_n3_facts_are_llm_free_and_split_gap(self):
+        # 选路依据必须确定性可复算：_decision_facts 不许调 LLM
+        with mock.patch.object(nodes, "REQUIRED_OBJECTS", ["细胞膜", "细胞核"]), \
+                mock.patch.object(nodes, "safe_llm_invoke",
+                                  side_effect=AssertionError("选路不得调 LLM")):
+            facts = nodes._decision_facts(_state(result="细胞膜控制物质进出。" * 12))
+        self.assertEqual(facts["missing"], ["细胞核"])
+        # 细胞核 在证据摘要里出现过 → 属于"生成漏了"，不是检索缺口（否则会白换检索式）
+        self.assertEqual(facts["evidence_gap"], [])
+        # 缺的对象证据里都有 → 该修答案（R2），不该换检索式（R1）
+        self.assertTrue(facts["evidence_covers_required"])
+
+    def test_n4_rule_reaches_repair_trace(self):
+        stats = nodes._reflection_stats(
+            _state(), None, "内容不合格", "回答过短", "llm",
+            gate=content_gate(LONG, SOURCES, EVIDENCE),
+            path="local", rule="R2_answer_gap")
+        last = stats["run_stats"]["repair"]["rounds"][-1]
+        self.assertEqual(last["rule"], "R2_answer_gap")
+        # 事实与规则同源落盘：缺哪些对象、其中哪些证据里也没有、本轮几条证据
+        self.assertIn("answer_missing", last)
+        self.assertIn("evidence_gap", last)
+        self.assertEqual(last["evidence_count"], len(EVIDENCE))
 
 
 class InjectFaultTest(unittest.TestCase):
@@ -294,8 +359,8 @@ class CoverageVerdictTest(unittest.TestCase):
         # 混合策略：证据不足 → 自由反思（换检索式补证据），不该先白重写一轮
         self.assertEqual(out["run_stats"]["repair"]["rounds"][0]["path"], "free")
 
-    def test_k8_missing_object_present_in_evidence_is_rewritten_locally(self):
-        # 证据里有 Rust，只是答案没写 → 生成缺口：局部重写即可，不必重检索
+    def test_k8_missing_object_present_in_evidence_goes_to_rewrite(self):
+        # 证据里有 Rust，只是答案没写 → 生成缺口：同一份证据重写即可（rewrite），不必重检索
         ev = EVIDENCE + [{"title": "Rust 并发", "url": "https://a.com/2",
                           "summary": "Rust 用所有权避免数据竞争", "content": "正文节选"}]
         state = _state(topic="比较Python和Java的并发性能", evidence=ev,
@@ -307,7 +372,7 @@ class CoverageVerdictTest(unittest.TestCase):
             out = nodes.reflection_node(state)
         self.assertEqual(out["error_type"], "内容不合格")
         self.assertIn("Rust", out["run_stats"]["reflection"]["reason"])
-        self.assertEqual(out["run_stats"]["repair"]["rounds"][0]["path"], "local")
+        self.assertEqual(out["run_stats"]["repair"]["rounds"][0]["path"], "rewrite")
 
     def test_k7_gate_facts_recorded_on_coverage_round(self):
         # 覆盖率轮不调用裁判 LLM，但门控事实仍要落盘：
@@ -345,8 +410,8 @@ class GatePrecedenceTest(unittest.TestCase):
         out = self._run(LONG + "以及")
         self.assertEqual(out["error_type"], "内容不合格")
         self.assertEqual(out["run_stats"]["reflection"]["decision_source"], "gate")
-        # 截断是答案层问题 → 走局部重写，不该花代价重拆主题
-        self.assertEqual(out["run_stats"]["repair"]["rounds"][0]["path"], "local")
+        # 截断是答案层问题 → 用已有证据重写，不该花代价重拆主题、也不该再检索一次
+        self.assertEqual(out["run_stats"]["repair"]["rounds"][0]["path"], "rewrite")
 
     def test_g2_pure_decomposition_verdict_is_kept(self):
         # 没有硬事实时不得抢裁判的话：分解不合理仍然路由到全局重拆

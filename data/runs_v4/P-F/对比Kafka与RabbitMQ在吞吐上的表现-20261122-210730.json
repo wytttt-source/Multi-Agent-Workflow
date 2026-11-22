@@ -1,0 +1,297 @@
+{
+  "topic": "对比Kafka与RabbitMQ在吞吐上的表现",
+  "group": "P-F",
+  "ts": "2026-11-22T13:07:30.165673+00:00",
+  "elapsed_seconds": 265.73,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Kafka",
+        "query": "Kafka",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10645,
+        "sources": 6,
+        "avg_summary": 3558.8,
+        "avg_content": 14692.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.99,
+        "evidence_path": "data\\evidence\\Kafka-20261122-210311.md"
+      },
+      {
+        "topic": "Kafka与RabbitMQ在吞吐上的表现",
+        "query": "Kafka与RabbitMQ在吞吐上的表现 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Kafka与RabbitMQ在吞吐上的表现 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "Kafka吞吐表现",
+        "query": "Kafka吞吐表现 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Kafka吞吐表现 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "RabbitMQ吞吐表现",
+        "query": "RabbitMQ吞吐表现 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 2,
+        "filtered": 2,
+        "evidence_chars": 2930,
+        "sources": 2,
+        "avg_summary": 996.5,
+        "avg_content": 2421.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 2,
+          "dropped": 0,
+          "total": 2
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 4.57,
+        "evidence_path": "data\\evidence\\RabbitMQ吞吐表现-20261122-210409.md",
+        "retry_query": "RabbitMQ吞吐表现 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "skipped": false,
+    "raw": 12,
+    "gated": 2,
+    "filtered": 2,
+    "evidence_chars": 2954,
+    "sources": 2,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk",
+      "disk"
+    ],
+    "cache_sources": [
+      "disk",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": true,
+        "kept": 2,
+        "dropped": 0,
+        "total": 2
+      }
+    ],
+    "elapsed_s": 4.57,
+    "evidence_path": "data\\evidence\\RabbitMQ吞吐表现-20261122-210409.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Kafka",
+        "RabbitMQ"
+      ],
+      "hit": [
+        "Kafka",
+        "RabbitMQ"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 467,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+    "gated_by": "rule_fallback",
+    "decision_source": "rule_fallback",
+    "repeat_hit": false,
+    "llm_calls": 8,
+    "evidence_count": 2,
+    "result_chars": 652,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 467,
+    "len_full": 652,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：RabbitMQ（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "RabbitMQ"
+        ],
+        "evidence_gap": [
+          "RabbitMQ"
+        ],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 168,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "证据仅覆盖单一对象：6条证据全部指向Kafka，RabbitMQ为0条（balance=0.00<0.5，覆盖率50%），未覆盖清单同时出现在证据侧与答案侧（回答也承认无RabbitMQ吞吐资料可核验）。该比较主题需两侧对象均有独立证据支撑，应拆解子任务并补充检索RabbitMQ官方文档/基准后分别作答，而非由Kafk",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R3_structure",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 520,
+        "truncated": false,
+        "llm_calls": 4
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "rule_fallback",
+        "reason": "规则兜底：反思节点LLM不可用: LLM 服务持续不可用: Request timed out.",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 2,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 467,
+        "truncated": false,
+        "llm_calls": 8
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 8,
+      "searches": 4,
+      "elapsed_s": 265.73
+    }
+  },
+  "injected": [
+    "one_side:first_object:Kafka"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "Kafka吞吐表现",
+    "RabbitMQ吞吐表现"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "RabbitMQ 4.1 性能改进 | https://rabbitmq.cn/blog/2025/04/08/4.1-performance-improvements",
+    "RabbitMQ 4.1.0 is released | https://rabbitmq.cn/blog/2025/04/15/rabbitmq-4.1.0-is-released"
+  ],
+  "result": "围绕“Kafka与RabbitMQ在吞吐上的表现”这一主题，本次可核验资料集中在RabbitMQ 4.1的吞吐相关改进。RabbitMQ 4.1将仲裁队列的日志读取操作卸载至通道（会话、连接）执行，官方说明这可提高消费者吞吐量、降低发布者对队列向消费者交付速率的干扰，并改善每个仲裁队列的CPU核心利用率；同时，TCP连接的内存使用率更低和/或吞吐量更高，消费长仲裁队列的性能也有大幅提升，仲裁队列内存使用更低且更稳定。上述事实表明，RabbitMQ的吞吐表现与队列类型、连接方式、消费积压程度、版本配置及并行度密切相关，不能脱离工作负载用单一数字概括。对于Kafka侧，所给资料没有提供其独立吞吐数据或与RabbitMQ同口径的基准结果，因此本摘要不能编造Kafka的吞吐高低，也不能据RabbitMQ单侧资料外推二者排名；严谨的对比应分别核验Kafka与RabbitMQ的版本、消息大小、持久化/确认、分区或队列、批量与消费者并行度等条件。本文仅报告RabbitMQ侧可核验事实，并将Kafka对比结论留待双侧证据补齐后再作判断。\n【来源】[1] RabbitMQ 4.1 性能改进，https://rabbitmq.cn/blog/2025/04/08/4.1-performance-improvements；[2] RabbitMQ 4.1.0 is released，https://rabbitmq.cn/blog/2025/04/15/rabbitmq-4.1.0-is-released",
+  "artifacts": {
+    "log": "logs\\对比Kafka与RabbitMQ在吞吐上的表现-20261122-210304.log",
+    "evidence": "data\\evidence\\RabbitMQ吞吐表现-20261122-210409.md"
+  }
+}

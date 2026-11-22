@@ -1,0 +1,203 @@
+{
+  "topic": "比较Docker、Podman和containerd的镜像管理",
+  "group": "P-H",
+  "ts": "2026-11-22T08:25:17.663149+00:00",
+  "elapsed_seconds": 126.65,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Docker",
+        "query": "Docker",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10329,
+        "sources": 6,
+        "avg_summary": 2212.2,
+        "avg_content": 7571.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 4.72,
+        "evidence_path": "data\\evidence\\Docker-20261122-162315.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10347,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 4.72,
+    "evidence_path": "data\\evidence\\Docker-20261122-162315.md",
+    "retry_query": "比较Docker、Podman和containerd的镜像管理 Podman lang:zh",
+    "retry_mode": "missing_term:Podman"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Docker",
+        "Podman",
+        "containerd"
+      ],
+      "hit": [
+        "Docker"
+      ],
+      "missing": [
+        "Podman",
+        "containerd"
+      ],
+      "ratio": 0.333,
+      "body_chars": 176,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：Podman、containerd（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 2,
+    "result_chars": 702,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 702,
+    "len_full": 911,
+    "cited_loose": [
+      "https://cloud.tencent.cn/developer/article/2246200"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Podman、containerd（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "Podman",
+          "containerd"
+        ],
+        "evidence_gap": [
+          "Podman",
+          "containerd"
+        ],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 176,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 702,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 126.65
+    }
+  },
+  "injected": [
+    "one_side:first_object:Docker"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "docker containerd podman 对比 | https://cloud.tencent.cn/developer/article/2246200?policyId=1003",
+    "怎么通过理解 OCI 标准 Runtime 规范评估从 Docker 转向 Podman 或 Containerd 的架构迁移成本 - 怎么通过理解 OCI 标准 Runtime 规范评估从 Docker 转向 Podman 或 Containerd 的架构迁移成本 | https://www.php.cn/faq/2720749.html#1"
+  ],
+  "result": "在镜像管理上，Docker更像一个完整的容器平台：它由客户端、守护进程和 REST API 组成，用户通过 Docker 客户端和 API 执行操作，而 Docker 守护进程负责管理容器、镜像和存储卷，并在需要时下载、启动容器。因此，Docker 的镜像管理能力较完整，但调用链中通常绕不开 dockerd；评估迁移时，需要关注是否依赖 Docker 特有实现逻辑。\n\ncontainerd则更偏底层运行时环境，它通过 API 管理容器和镜像，功能集中在容器与镜像管理本身，不提供用户界面或其他附加功能，并通过类似 gRPC 的 API 与其他工具和库集成。就镜像管理而言，containerd更适合作为被上层平台调用的基础组件；在符合 OCI 镜像规范时，可用 `ctr images pull` 等方式拉取运行标准镜像，但日常交互和管理体验不如完整平台。\n\nPodman以命令行工具形态使用标准容器运行时（如 runc），不需要守护进程来运行，也不需要特权访问；它提供类似 Docker 的命令行接口，同时在命令行上给予更多灵活性和控制。对镜像管理来说，若镜像由 `docker build`、`buildah`、`podman build` 等标准工具生成并推送到符合 OCI 的 registry，通常可用 `podman pull` 直接拉取运行；但若依赖 Docker Desktop 的 BuildKit 特有语法，则需额外评估兼容性。总体看，Docker偏平台化镜像管理，containerd偏底层API管理，Podman偏无守护进程的CLI管理，OCI 标准是判断镜像可迁移性的关键契约。\n\n【来源】\n- docker containerd podman 对比：https://cloud.tencent.cn/developer/article/2246200?policyId=1003\n- 怎么通过理解 OCI 标准 Runtime 规范评估从 Docker 转向 Podman 或 Containerd 的架构迁移成本：https://www.php.cn/faq/2720749.html#1",
+  "artifacts": {
+    "log": "logs\\比较Docker_Podman和containe-20261122-162311.log",
+    "evidence": "data\\evidence\\Docker-20261122-162315.md"
+  }
+}

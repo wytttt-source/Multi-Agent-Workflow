@@ -90,6 +90,11 @@ REPAIR_POLICY = (os.getenv("REPAIR_POLICY", "hybrid").strip().lower() or "hybrid
 INJECT_FAULT = (os.getenv("INJECT_FAULT", "none").strip().lower() or "none")
 # 定向修复的轮次上限；自由反思固定只有 1 次机会（由路由保证）
 REPAIR_MAX_ROUNDS = int(os.getenv("REPAIR_MAX_ROUNDS", "3") or 3)
+# v2.5 第二步：R2（缺的对象证据里已经有 / 过短 / 截断 / 缺引用）从"局部重检索"
+# 改成"用**已有证据**整篇重写"（rewrite）。依据是 facts.evidence_gap 为空 ——
+# 再检索也变不出新东西，缺的是"写"。关掉即回到 v2.4 行为（R2 → local），
+# 用于消融"改答案"这一步到底值不值（rewrite 与 local 的检索次数差 1 次）。
+ENABLE_REWRITE_PATH = _flag("ENABLE_REWRITE_PATH", True)
 # v2.4 实验用「必答对象」（逗号分隔，如 "Python,Java"）：由 experiments/repair_matrix.py
 # 从任务集的 required_objects 注入，与判卷脚本同源。
 # 为什么要单独给一份：覆盖率终判如果靠"子任务/主题串逐字出现在证据里"，这些串几乎不可能
@@ -134,7 +139,7 @@ class State(TypedDict):
     result: str
     error_type: str
     replan_scope: str
-    repair_path: NotRequired[str]                # v2.3：本轮选定的修复路径（local/global/free）
+    repair_path: NotRequired[str]                # v2.3：本轮选定的修复路径（local/global/free；v2.5 加 rewrite）
     replan_count: int
     reflection_history: List[str]
     sources: List[str]

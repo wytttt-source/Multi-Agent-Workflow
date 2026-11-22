@@ -1,0 +1,299 @@
+{
+  "topic": "比较HTTP和HTTPS的安全机制",
+  "group": "P-F",
+  "ts": "2026-11-22T07:44:23.258296+00:00",
+  "elapsed_seconds": 154.39,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "HTTP",
+        "query": "HTTP",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10153,
+        "sources": 6,
+        "avg_summary": 1723.5,
+        "avg_content": 153401.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 7.7,
+        "evidence_path": "data\\evidence\\HTTP-20261122-154156.md"
+      },
+      {
+        "topic": "HTTP和HTTPS的安全机制",
+        "query": "HTTP和HTTPS的安全机制 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "HTTP和HTTPS的安全机制 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "HTTP安全机制",
+        "query": "HTTP安全机制 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "HTTP安全机制 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "HTTPS安全机制",
+        "query": "HTTPS安全机制 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 2,
+        "filtered": 2,
+        "evidence_chars": 3488,
+        "sources": 2,
+        "avg_summary": 1452.0,
+        "avg_content": 1881.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 2,
+          "dropped": 0,
+          "total": 2
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 18.77,
+        "evidence_path": "data\\evidence\\HTTPS安全机制-20261122-154325.md",
+        "retry_query": "HTTPS安全机制 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "skipped": false,
+    "raw": 12,
+    "gated": 2,
+    "filtered": 2,
+    "evidence_chars": 3509,
+    "sources": 2,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk",
+      "disk"
+    ],
+    "cache_sources": [
+      "disk",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": true,
+        "kept": 2,
+        "dropped": 0,
+        "total": 2
+      }
+    ],
+    "elapsed_s": 18.77,
+    "evidence_path": "data\\evidence\\HTTPS安全机制-20261122-154325.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "hit": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 476,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答开篇即直接比较两必答对象：HTTP明文传输、缺少服务器身份密码学认证与消息完整性保护；HTTPS通过TLS+PKI证书体系实现身份验证、加密协商与完整性校验，并进一步展开证书生命周期、吊销与续期、透明日志及后量子迁移等HTTPS特有安全机制，结尾明确HTTP本身不提供这些保障，HTTP与HTTPS两侧均有实质展开而非仅讲上位概念。硬性条件全部满足：证据2条≥1，【来源】所列两个URL均在实际检索来源清单中，正文字数远超120字。检索统计显示覆盖率0%仅说明检索资料在标题层面不均衡，按规则以回答是否讲清必答对象为准，回答已覆盖全部对象，故判通过。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 8,
+    "evidence_count": 2,
+    "result_chars": 690,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 476,
+    "len_full": 690,
+    "cited_loose": [
+      "https://www.pixelstech.net/feed/detail/77071.html"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：HTTPS（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "HTTPS"
+        ],
+        "evidence_gap": [
+          "HTTPS"
+        ],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 161,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "证据仅覆盖单一比较对象：'HTTPS的安全'证据为0条，balance=0.00<0.5，偏侧严重（HTTP 5条 vs HTTPS 0条），所有检索来源均为HTTP相关资料，缺少HTTPS/TLS安全机制的独立资料。虽然回答正文较好且【来源】URL可核验、字数达标，但按复合主题完整性检查，证据只覆盖HTTP一方，需拆",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R3_structure",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 299,
+        "truncated": false,
+        "llm_calls": 4
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答开篇即直接比较两必答对象：HTTP明文传输、缺少服务器身份密码学认证与消息完整性保护；HTTPS通过TLS+PKI证书体系实现身份验证、加密协商与完整性校验，并进一步展开证书生命周期、吊销与续期、透明日志及后量子迁移等HTTPS特有安全机制，结尾明确HTTP本身不提供这些保障，HTTP与HTTPS两侧均有实质展开而",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 2,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 476,
+        "truncated": false,
+        "llm_calls": 8
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 8,
+      "searches": 4,
+      "elapsed_s": 154.39
+    }
+  },
+  "injected": [
+    "one_side:first_object:HTTP"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "HTTP安全机制",
+    "HTTPS安全机制"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "即将推出的功能 | https://github.com/letsencrypt/website/blob/736bf97e99c0238082e9a5c43d460af79d03873f/content/zh-cn/upcoming-features.md",
+    "培育稳健高效的量子安全HTTPS | https://www.pixelstech.net/feed/detail/77071.html?lang=chinese"
+  ],
+  "result": "HTTP 与 HTTPS 的核心差异在于：HTTP 通常以明文传输，缺少对服务器身份的密码学认证和消息完整性保护；HTTPS 则在 HTTP 之下引入 TLS 与 PKI 证书体系，通过证书验证身份、协商加密并校验完整性，从而降低窃听、篡改和冒充风险。Let's Encrypt 的资料显示，HTTPS 证书管理正朝更短生命周期演进：证书有效期计划先缩至64天、再缩至45天，域名验证结果复用时限先缩至10天、再缩至7小时；同时默认证书不再包含 TLS 客户端身份验证 EKU，OCSP 网址被移除而改用 CRL 发布点，ACME 客户端可通过 ARI 获取续期建议，ACME 证书配置和静态证书透明化日志也已上线。Chrome 提出的量子安全 HTTPS 方案则用 Merkle 树证书（MTC）以紧凑的包含证明替代繁重签名链，使后量子算法可在不造成巨大带宽开销的情况下部署，并让证书透明度成为签发默认属性。可见，HTTPS 的安全不仅依赖 TLS 加密，还依赖证书生命周期、吊销与续期、透明日志及后量子迁移等机制，而 HTTP 本身不提供这些保障。\n【来源】《即将推出的功能》https://github.com/letsencrypt/website/blob/736bf97e99c0238082e9a5c43d460af79d03873f/content/zh-cn/upcoming-features.md；《培育稳健高效的量子安全HTTPS》https://www.pixelstech.net/feed/detail/77071.html?lang=chinese",
+  "artifacts": {
+    "log": "logs\\比较HTTP和HTTPS的安全机制-20261122-154148.log",
+    "evidence": "data\\evidence\\HTTPS安全机制-20261122-154325.md"
+  }
+}

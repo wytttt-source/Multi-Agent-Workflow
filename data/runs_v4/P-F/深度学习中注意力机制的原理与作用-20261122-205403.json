@@ -1,0 +1,178 @@
+{
+  "topic": "深度学习中注意力机制的原理与作用",
+  "group": "P-F",
+  "ts": "2026-11-22T12:54:03.526534+00:00",
+  "elapsed_seconds": 508.55,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "深度学习中注意力机制的原理与作用",
+        "query": "深度学习中注意力机制的原理与作用 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 3,
+        "evidence_chars": 5241,
+        "sources": 3,
+        "avg_summary": 1515.7,
+        "avg_content": 4095.7,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 3,
+          "dropped": 3,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 114.72,
+        "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261122-204729.md"
+      }
+    ],
+    "skipped": true,
+    "raw": 0,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 5241,
+    "sources": 3,
+    "providers": [],
+    "cache": [],
+    "cache_sources": [],
+    "degraded": false,
+    "llm_filter": [],
+    "elapsed_s": 0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "注意力"
+      ],
+      "hit": [
+        "注意力"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 1192,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "证据3条且【来源】中URL均在实际检索来源清单内可核验，正文字数远超120字；回答同时实质覆盖两个必答对象：原理（RNN逐词处理局限、认知科学起源、QKV机制、自注意力、多头注意力、位置编码）与作用（信息超载下的资源分配、解决并行化与长程依赖、大模型核心引擎、预训练迁移），且来源语义上同时涉及机制原理与其作用（如'大模型的核心魔法'、蛋白质建模中的应用）。覆盖率0%与balance=0.00系标题字面匹配失败（两个对象均未命中，无真实偏侧），按规则应以回答是否讲清每个必答对象为准，本回答已全部讲清，故判通过。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 3,
+    "result_chars": 1604,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 1192,
+    "len_full": 1604,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail",
+      "https://cloud.kepuchina.cn/newsearch/imgtext"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "gate",
+        "reason": "确定性内容事实：回答截断",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 3,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "证据3条且【来源】中URL均在实际检索来源清单内可核验，正文字数远超120字；回答同时实质覆盖两个必答对象：原理（RNN逐词处理局限、认知科学起源、QKV机制、自注意力、多头注意力、位置编码）与作用（信息超载下的资源分配、解决并行化与长程依赖、大模型核心引擎、预训练迁移），且来源语义上同时涉及机制原理与其作用（如'大模",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 3,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 1192,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 1,
+      "elapsed_s": 508.55
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "AI技术原理与大模型：注意力机制-大模型的核心“魔法” | https://cloud.kepuchina.cn/h5/detail?id=7520261333849837568",
+    "[科普中国]-注意力机制 - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1",
+    "基于深度学习的蛋白质建模与设计 - 注意力机制网络[32-33] (Attention neural network) 最早由图像数据建模而引入，随后在自然语言处理中发展壮大 | https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2"
+  ],
+  "result": "注意力机制要解决的是早期循环神经网络（RNN）的“逐词处理”难题。RNN像人读句子一样一个词一个词地看，并把对前文的“记忆”压缩后传给下一步；这就像请人做同声传译，却不许记笔记、不许回看前文，前面所有内容都得塞进脑子里，词越多负担越重，句子一长，前面的信息就可能被“挤丢”。对中文这种高度依赖上下文的语言，“他”到底指谁，AI因为没有回头看的能力，常会一头雾水。于是问题变成：怎样让机器既能处理很长的文本，又能随时“回头查看”任何一处细节？2017年谷歌论文《Attention Is All You Need》给出的革命性答案就是注意力机制。\n\n注意力机制的思想很贴近人类阅读和视觉：它源于对人类视觉的研究，在认知科学中，人由于信息处理瓶颈，会选择性地关注所有信息的一部分，而忽略其他可见信息；视网膜不同部位敏锐度不同，中央凹最敏锐，所以人阅读时通常只有少量要被读取的词会被关注和处理。其核心可以概括为“从关注全部到关注重点”：决定需要关注输入的哪部分，并把有限的信息处理资源分配给重要部分。资料用“图书馆里的检索员”作比喻：读到“他把书还给了她”，视线会跳回前文找到“他”和“她”是谁，这就是检索行为。具体实现中，模型为文本中的每个词生成查询（Query）、键（Key）、值（Value）三组数字向量，通过QKV的一系列运算，对某一个查询向量得到它与序列中其他元素的相关性大小。注意力机制因此能让神经网络专注于其输入或特征子集，选择特定输入，并可应用于任意形状的输入；在计算能力有限时，它是解决信息超载的一种资源分配方案。注意力还可分为聚焦式注意力和基于显著性的注意力：前者有预定目的、依赖任务、主动而有意识；后者由外界刺激驱动，不需要主动干预，也和任务无关，显著信息可通过“赢者通吃”或门控机制把注意力转向该对象。\n\n在深度学习序列建模中，自注意力机制把每个序列元素表示为查询、键、值向量，对某一个查询向量计算它与序列中其他所有元素的相关性，对每个查询向量重复运算，就获得整个序列的长程相关性表示；每个元素的运算独立且相同，从而解决了RNN无法并行化的问题，同时也能学习序列信息中的长程依赖。多头注意力机制则对每个序列元素引入多套QKV向量，从不同角度对序列相关性进行建模，这与CNN多个卷积核并行运算相似。不过，Attention机制本身不天然包含序列顺序信息，相同字符的序列打乱顺序后其Attention层输出可能完全相同，因此需要在序列输入前加入位置信息，把位置信息与序列元素信息相加，这个过程叫位置编码。作用上，注意力机制是当今几乎所有大语言模型的核心引擎，被称为大模型的“魔法”，能帮助模型在长文本中抓住关键；基于Attention的机制还常用于构建大型数据的预训练网络，通过大量以Attention为核心的网络模块叠加，在海量序列信息中抽取泛化特征，供下游任务迁移学习。\n\n【来源】\n【AI技术原理与大模型：注意力机制-大模型的核心“魔法”】（科普中国，2026-11-11）\nURL: https://cloud.kepuchina.cn/h5/detail?id=7520261333849837568\n【[科普中国]-注意力机制 - 图文】（科普中国，2018-11-22）\nURL: https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1\n【基于深度学习的蛋白质建模与设计 - 注意力机制网络[32-33] (Attention neural network) 最早由图像数据建模而引入，随后在自然语言处理中发展壮大】（微生物学报，2021-11-24）\nURL: https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2",
+  "artifacts": {
+    "log": "logs\\深度学习中注意力机制的原理与作用-20261122-204534.log",
+    "evidence": ""
+  }
+}

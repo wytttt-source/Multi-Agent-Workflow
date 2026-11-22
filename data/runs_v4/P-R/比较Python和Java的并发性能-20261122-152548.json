@@ -1,0 +1,205 @@
+{
+  "topic": "比较Python和Java的并发性能",
+  "group": "P-R",
+  "ts": "2026-11-22T07:25:48.695482+00:00",
+  "elapsed_seconds": 218.44,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Python",
+        "query": "Python",
+        "raw": 6,
+        "gated": 4,
+        "filtered": 4,
+        "evidence_chars": 6859,
+        "sources": 4,
+        "avg_summary": 1885.0,
+        "avg_content": 5406.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 0,
+          "total": 4
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 2.31,
+        "evidence_path": "data\\evidence\\Python-20261122-152212.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 4,
+    "filtered": 4,
+    "evidence_chars": 6877,
+    "sources": 4,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 4,
+        "dropped": 0,
+        "total": 4
+      }
+    ],
+    "elapsed_s": 2.31,
+    "evidence_path": "data\\evidence\\Python-20261122-152212.md",
+    "retry_query": "比较Python和Java的并发性能 Java lang:zh",
+    "retry_mode": "missing_term:Java"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Python",
+        "Java"
+      ],
+      "hit": [
+        "Python"
+      ],
+      "missing": [
+        "Java"
+      ],
+      "ratio": 0.5,
+      "body_chars": 175,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：Java（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 6,
+    "result_chars": 591,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 6,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 591,
+    "len_full": 1168,
+    "cited_loose": [
+      "https://cloud.tencent.com.cn/developer/article/2576608",
+      "https://cloud.tencent.com.cn/developer/article/2590095",
+      "https://cloud.tencent.com.cn/developer/ask/sof/102688183"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Java（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "Java"
+        ],
+        "evidence_gap": [
+          "Java"
+        ],
+        "evidence_count": 4,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 175,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 6,
+        "body_chars": 591,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 218.44
+    }
+  },
+  "injected": [
+    "one_side:first_object:Python"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "十五天Python系统学习教程第十一天 - 紫风 | https://cloud.tencent.com.cn/developer/article/2576608?frompage=seopage#1",
+    "Java和go语言 ，python三种不同的语言网络性能差别有多大？是不是推荐新的服务用go语言？ | https://developer.aliyun.com/ask/622499",
+    "Go、Rust、Kotlin、Python 与 Java 从性能到生态，全面解读五大主流编程语言 | https://cloud.tencent.com.cn/developer/article/2590095?policyId=1003#1",
+    "问Python与Java --您会选择哪一种来进行并发编程?为什么？EN | https://cloud.tencent.com.cn/developer/ask/sof/102688183?from=16139",
+    "java和python哪个适合后端 - java和python哪个适合后端 | https://worktile.com/kb/ask/95212.html#1",
+    "Python12与Java性能对比：技术选型的关键考量 - Python12与Java性能对比：技术选型的关键考量 | https://developer.baidu.com/article/detail.html?id=3807601#1"
+  ],
+  "result": "Python 的并发性能要分场景看：多线程受 GIL（全局解释器锁）限制，CPU 密集型任务很难靠多线程实现真正并行，因此 Python 线程更适合 I/O 等待较多的任务；asyncio 协程采用单线程事件循环，较为轻量，适合高并发网络 I/O；若要加速计算密集型任务，通常用 multiprocessing 多进程绕开 GIL。整体看，Python 启动快、内存占用相对小、开发效率高，但在高并发和性能敏感场景中可能稍逊，异步 I/O 和多进程可改善表现。\n\nJava 的并发性能优势在于成熟的多线程体系：OS 线程、ExecutorService、线程池、CompletableFuture 等适合构建高并发后端和大规模并发处理；JVM 的 JIT 优化使 CPU 密集型任务执行效率通常更强。但 Java 传统线程较“重”，创建成本和上下文切换开销较高，启动时间与内存占用也可能高于 Python；虚拟线程（Loom）则试图降低线程成本。网络服务方面，Java NIO、Netty 等能支撑高性能并发。\n\n总体选型上，若是 CPU 密集、低延迟、大规模并发后端，Java 往往更合适；若是 I/O 密集、快速原型、脚本或与数据/AI 生态结合，Python 可用 asyncio 与多进程组合取得不错效果。两者并发性能并非简单“谁绝对更快”，而要看任务类型、优化程度和系统规模。\n\n【来源】\n- 十五天Python系统学习教程第十一天，https://cloud.tencent.com.cn/developer/article/2576608?frompage=seopage#1\n- Java和go语言 ，python三种不同的语言网络性能差别有多大？是不是推荐新的服务用go语言？，https://developer.aliyun.com/ask/622499\n- Go、Rust、Kotlin、Python 与 Java 从性能到生态，全面解读五大主流编程语言，https://cloud.tencent.com.cn/developer/article/2590095?policyId=1003#1\n- java和python哪个适合后端，https://worktile.com/kb/ask/95212.html#1\n- Python12与Java性能对比：技术选型的关键考量，https://developer.baidu.com/article/detail.html?id=3807601#1\n- 问Python与Java --您会选择哪一种来进行并发编程?为什么？EN，https://cloud.tencent.com.cn/developer/ask/sof/102688183?from=16139",
+  "artifacts": {
+    "log": "logs\\比较Python和Java的并发性能-20261122-152210.log",
+    "evidence": "data\\evidence\\Python-20261122-152212.md"
+  }
+}

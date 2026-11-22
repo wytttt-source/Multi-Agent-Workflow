@@ -1,0 +1,146 @@
+{
+  "topic": "解释HTTP/2的多路复用机制",
+  "group": "P-B0",
+  "ts": "2026-11-22T09:40:59.143513+00:00",
+  "elapsed_seconds": 39.74,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释HTTP/2的多路复用机制",
+        "query": "解释HTTP/2的多路复用机制 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 4,
+        "evidence_chars": 6988,
+        "sources": 4,
+        "avg_summary": 1593.2,
+        "avg_content": 4232.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 1,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 34.99,
+        "evidence_path": "data\\evidence\\解释HTTP_2的多路复用机制-20261122-174054.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 4,
+    "evidence_chars": 7015,
+    "sources": 4,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 4,
+        "dropped": 1,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 34.99,
+    "evidence_path": "data\\evidence\\解释HTTP_2的多路复用机制-20261122-174054.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 4,
+    "result_chars": 332,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 4,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 39.74
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "IIS 上的 HTTP/2 - 跳至主要内容 跳到 Ask Learn 聊天体验 | https://learn.microsoft.com/zh-cn/iis/get-started/whats-new-in-iis-10/http2-on-iis#1",
+    "http/2.0“多路复用”实现原理 //转载 - xosg | https://cloud.tencent.cn/developer/article/1551667?policyId=1004#1",
+    "详解：HTTP协议的演进与特性 - 多路复用允许同时通过单一的 HTTP/2 连接发起多重的请求-响应消息 | https://cloud.tencent.com.cn/developer/article/2084194?policyId=1003#3",
+    "http2中多路复用的示例分析 - http2中多路复用的示例分析 | https://m.yisu.com/zixun/588494.html#1"
+  ],
+  "result": "HTTP/2多路复用是在单一TCP连接上同时承载多个请求—响应消息。HTTP/2把通信基本单位缩小为帧，每个帧标记所属流，流由多个帧组成并对应一个请求或响应；多个流可并行、帧可乱序发送，接收端按流标识符重组。这样无需为每个请求新建连接或等待前一请求完成，可避免HTTP/1.1队头，以及\n\n【来源】《详解：HTTP协议的演进与特性 - 多路复用允许同时通过单一的 HTTP/2 连接发起多重的请求-响应消息》 https://cloud.tencent.com.cn/developer/article/2084194?policyId=1003#3；《http2中多路复用的示例分析》 https://m.yisu.com/zixun/588494.html#1",
+  "artifacts": {
+    "log": "logs\\解释HTTP_2的多路复用机制-20261122-174019.log",
+    "evidence": "data\\evidence\\解释HTTP_2的多路复用机制-20261122-174054.md"
+  }
+}

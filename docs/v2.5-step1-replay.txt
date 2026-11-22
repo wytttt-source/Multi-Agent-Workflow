@@ -1,0 +1,18 @@
+﻿
+数据源            E:\thesis\zhinengti1\zhinengti\data\runs_v3
+runs_v3 已经被移走了，现在叫 runs_v3_pre_v25，里面是 v2.4 的 54 份记录
+记录数            48（参与复算 48）
+决策轮            46（复算一致 46 / 翻转 0）
+终态轮            47（通过/降级收尾，path 非决策输出，不参与复算）
+达上限未执行      1（末轮 rejected：决策已写出、无后续执行，仍属 _decide_next 输出）
+规则分布          R1_evidence_gap=21  R2_answer_gap=15  R3_structure=8  R4_repeat=2  R5_infra=0
+证据数不可复算    9（按"有证据"处理）
+
+规则 × 臂分布：
+  臂             R1      R2      R3      R4      R5
+  P-B0           0       0       0       0       0
+  P-F            7       5       8       2       0
+  P-H            7       5       0       0       0
+  P-R            7       5       0       0       0
+
+结论：零翻转 —— 规则命名未改变任何历史路径，第一步可安全合入。

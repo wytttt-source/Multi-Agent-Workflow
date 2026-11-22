@@ -1,0 +1,197 @@
+{
+  "topic": "深度学习中注意力机制的原理与作用",
+  "group": "P-R",
+  "ts": "2026-11-22T08:45:56.782493+00:00",
+  "elapsed_seconds": 454.24,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "深度学习中注意力机制的原理与作用",
+        "query": "深度学习中注意力机制的原理与作用 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10607,
+        "sources": 6,
+        "avg_summary": 1621.7,
+        "avg_content": 5790.7,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 180.49,
+        "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261122-164123.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10635,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 180.49,
+    "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261122-164123.md",
+    "retry_query": "深度学习中注意力机制的原理与作用 补充资料 最新进展 lang:zh",
+    "retry_mode": "missing_term:fallback"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "注意力"
+      ],
+      "hit": [
+        "注意力"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 143,
+      "truncated": true,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答疑似截断（结尾停在连接词(以及)），完整性不达标",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 5,
+    "result_chars": 576,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 5,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 576,
+    "len_full": 1135,
+    "cited_loose": [
+      "http://dianda.cqvip.com/qikan/article/detail",
+      "http://mp.weixin.qq.com/s",
+      "https://www.cqvip.com/doc/journal/7203401538"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "gate",
+        "reason": "回答疑似截断（结尾停在连接词(以及)），完整性不达标",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 5,
+        "body_chars": 576,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 454.24
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "【文章推送】机器视觉注意力机制研究综述 | http://mp.weixin.qq.com/s?__biz=MzAwODEwNDc5NQ==&mid=2648795453&idx=2&sn=1416210c6e433d7323199d0fe54959ea",
+    "注意力机制与雷达图像智能处理：进展与展望 | http://journal.nudt.edu.cn/gfkjdxxb/article/pdf/20260303#1#6#1",
+    "图像分类任务中的注意力机制研究综述 - 期刊文献+ | http://dianda.cqvip.com/Qikan/Article/Detail?id=7201645477#1",
+    "大模型时代下的注意力机制优化综述-文献详情-维普官网 | https://www.cqvip.com/doc/journal/7203401538?sign=f8a1b444cec74199a0693f016369ecb83773dc505e31eaf755a01c516fd7e64e&expireTime=1795273481089&resourceId=7203401538&type=1",
+    "深度学习注意力机制新章节解析 | https://cloud.tencent.cn/developer/article/2581091"
+  ],
+  "result": "深度学习中的注意力机制，核心是让模型在处理大量信息时学会“看重点”。一般地，注意力函数把查询（Q）与一组键（K）、值（V）映射为输出：先用Q与K的兼容性计算每个值的权重，再对V做加权求和；Transformer中常用的缩放点积注意力就是典型形式。多头注意力则把Q、K、V分别做多组可学习的线性投影，并行执行注意函数，再把各组输出拼接并投影，使模型能从不同表示子空间捕捉相关信息。其作用是在较少人工规则下动态分配计算资源，突出重要信息、抑制无关干扰。\n\n以Transformer为代表，自注意力与多头注意力使模型能够建模序列或图像中远距离元素之间的关系，模型容量较大；但资料也指出，Transformer缺少卷积网络那样的正确归纳偏置，泛化能力可能较差。为结合优势，CoAtNets采用有原则地垂直堆叠卷积层和注意力层，提高了泛化能力、容量和效率；在大模型时代，多头潜在注意力等改进还用于缓解传统Transformer的计算与训练压力。\n\n以卷积神经网络（CNN）为对照，CNN具有更强的归纳偏置，在数据受限等情况下可能更稳。注意力机制常以即插即用模块嵌入CNN等网络，在图像分类、雷达图像智能处理等任务中帮助模型聚焦关键区域、屏蔽无关干扰，从而降低处理复杂度并提升性能。需要说明，注意力并不是“万能加强”，其可解释性、高效设计和多模态融合仍是后续研究方向。\n\n【来源】\n- 【文章推送】机器视觉注意力机制研究综述：http://mp.weixin.qq.com/s?__biz=MzAwODEwNDc5NQ==&mid=2648795453&idx=2&sn=1416210c6e433d7323199d0fe54959ea\n- 注意力机制与雷达图像智能处理：进展与展望：http://journal.nudt.edu.cn/gfkjdxxb/article/pdf/20260303#1#6#1\n- 图像分类任务中的注意力机制研究综述：http://dianda.cqvip.com/Qikan/Article/Detail?id=7201645477#1\n- 大模型时代下的注意力机制优化综述：https://www.cqvip.com/doc/journal/7203401538?sign=f8a1b444cec74199a0693f016369ecb83773dc505e31eaf755a01c516fd7e64e&expireTime=1795273481089&resourceId=7203401538&type=1\n- 深度学习注意力机制新章节解析：https://cloud.tencent.cn/developer/article/2581091",
+  "artifacts": {
+    "log": "logs\\深度学习中注意力机制的原理与作用-20261122-163822.log",
+    "evidence": "data\\evidence\\深度学习中注意力机制的原理与作用-20261122-164123.md"
+  }
+}

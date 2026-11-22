@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""v2.4 修复路径三臂对照执行器（12 任务 × 4 臂 = 48 次运行）。
+"""v2.4 修复路径四臂对照执行器（17 任务 × 4 臂 = 68 次运行）。
 
 用法：
-    python experiments/repair_matrix.py --dry-run                # 只打印将执行的 48 条命令
+    python experiments/repair_matrix.py --dry-run                # 只打印将执行的 68 条命令
     python experiments/repair_matrix.py --arms H                 # 只跑 hybrid 臂（预跑筛题）
-    python experiments/repair_matrix.py --tasks A1,B2,C1         # 只跑指定任务
+    python experiments/repair_matrix.py --tasks D1,D2,D3         # 只跑指定任务（v2.5 的 D 组专测 rewrite）
     python experiments/repair_matrix.py --arms F,R --skip-existing
     python experiments/repair_matrix.py --timeout 1200
 
@@ -19,9 +19,9 @@
     REQUIRED_OBJECTS tasks_repair.json 的 required_objects —— 判定与判卷共用的必答对象，
                      覆盖率终判因此看"答案有没有讲到"，而不是"子任务串能不能在证据里逐字命中"
 
-结果写入 data/runs_v3/P-<臂>/（**不写 v2 的 data/runs_v2/**，两者判定口径不同不可混表），
-汇总表用 `python experiments/evaluate_answers.py` 生成 docs/修复路径对照.md。
-v2.4 重跑前把旧记录移到 data/runs_v3_pre_v24/（口径变了，同表不可混）。
+结果写入 data/runs_v4/P-<臂>/（v2.5 起的新口径目录；**不写 v2 的 data/runs_v2/**，
+v2.4 及更早的 48 份记录已归档到 data/runs_v3_pre_v25/，判定口径变了不可混表），
+汇总表用 `python experiments/evaluate_answers.py --dir data/runs_v4 --out docs/修复路径对照_v2.5.md` 生成。
 """
 import argparse
 import glob
@@ -32,12 +32,12 @@ import sys
 import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RUN_DIR = os.path.join(ROOT, "data", "runs_v3")
+RUN_DIR = os.path.join(ROOT, "data", "runs_v4")
 TASKS_PATH = os.path.join(ROOT, "experiments", "tasks_repair.json")
 
-# 基线环境：v2.3 的新记录一律进 data/runs_v3；温度归零，避免抖动影响"路径选择"这一被解释变量
+# 基线环境：v2.5 的新记录一律进 data/runs_v4；温度归零，避免抖动影响"路径选择"这一被解释变量
 BASE_ENV = {
-    "RUN_RECORD_DIR": os.path.join("data", "runs_v3"),
+    "RUN_RECORD_DIR": os.path.join("data", "runs_v4"),
     "LLM_TEMPERATURE": "0",
     "REPAIR_MAX_ROUNDS": "3",
 }
@@ -131,10 +131,10 @@ def _select(ids: str, tasks: list) -> list:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description="v2.4 修复路径四臂对照（12 任务 × 4 臂）")
+    parser = argparse.ArgumentParser(description="v2.4 修复路径四臂对照（17 任务 × 4 臂）")
     parser.add_argument("--arms", default=",".join(ARMS),
                         help="逗号分隔，默认 B0,F,R,H")
-    parser.add_argument("--tasks", default="", help="逗号分隔任务编号，如 A1,B2；留空=全部 12 条")
+    parser.add_argument("--tasks", default="", help="逗号分隔任务编号，如 A1,B2,D3；留空=全部 17 条")
     parser.add_argument("--timeout", type=int, default=1200, help="单次运行超时（秒）")
     parser.add_argument("--dry-run", action="store_true", help="只打印将执行的命令")
     parser.add_argument("--skip-existing", action="store_true",

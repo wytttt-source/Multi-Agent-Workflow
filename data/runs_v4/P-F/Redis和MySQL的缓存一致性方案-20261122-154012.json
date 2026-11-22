@@ -1,0 +1,296 @@
+{
+  "topic": "Redis和MySQL的缓存一致性方案",
+  "group": "P-F",
+  "ts": "2026-11-22T07:40:12.261575+00:00",
+  "elapsed_seconds": 132.11,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Redis",
+        "query": "Redis",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8634,
+        "sources": 5,
+        "avg_summary": 2748.4,
+        "avg_content": 6688.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 3.83,
+        "evidence_path": "data\\evidence\\Redis-20261122-153804.md"
+      },
+      {
+        "topic": "Redis和MySQL的缓存一致性方案",
+        "query": "Redis和MySQL的缓存一致性方案 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Redis和MySQL的缓存一致性方案 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "Redis缓存一致性方案",
+        "query": "Redis缓存一致性方案 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Redis缓存一致性方案 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "MySQL缓存一致性方案",
+        "query": "MySQL缓存一致性方案 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 1,
+        "filtered": 1,
+        "evidence_chars": 1820,
+        "sources": 1,
+        "avg_summary": 1721.0,
+        "avg_content": 5101.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 1,
+          "dropped": 0,
+          "total": 1
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 3.02,
+        "evidence_path": "data\\evidence\\MySQL缓存一致性方案-20261122-153932.md",
+        "retry_query": "MySQL缓存一致性方案 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "skipped": false,
+    "raw": 12,
+    "gated": 1,
+    "filtered": 1,
+    "evidence_chars": 1844,
+    "sources": 1,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk",
+      "disk"
+    ],
+    "cache_sources": [
+      "disk",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": true,
+        "kept": 1,
+        "dropped": 0,
+        "total": 1
+      }
+    ],
+    "elapsed_s": 3.02,
+    "evidence_path": "data\\evidence\\MySQL缓存一致性方案-20261122-153932.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Redis",
+        "MySQL"
+      ],
+      "hit": [
+        "Redis",
+        "MySQL"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 383,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧扣主题：先梳理Cache Aside、延迟双删、Canal订阅binlog+MQ等Redis与MySQL间的经典缓存一致性方案，再给出PolarDB+Tair原生架构方案，对Redis侧与MySQL侧均有实质展开；正文远超120字，含【来源】且URL与实际检索来源一致，证据1条≥1，硬性否决条件均未触发；覆盖率0%仅反映检索不均衡，回答本身已讲清各必答对象，可判通过。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 8,
+    "evidence_count": 1,
+    "result_chars": 503,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 1,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 383,
+    "len_full": 503,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：MySQL（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "MySQL"
+        ],
+        "evidence_gap": [
+          "MySQL"
+        ],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 224,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "复合主题'Redis和MySQL的缓存一致性方案'的5条证据全部仅涉及Redis（版本发布/运维文档），MySQL缓存一致性方案证据为0条，balance=0.00<0.5，证据只覆盖单一对象。回答虽如实声明证据边界且来源可核验，但按复合主题完整性检查规则，需拆解后分别检索MySQL官方文档及Redis缓存一致性资料再",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R3_structure",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 5,
+        "body_chars": 406,
+        "truncated": false,
+        "llm_calls": 4
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题：先梳理Cache Aside、延迟双删、Canal订阅binlog+MQ等Redis与MySQL间的经典缓存一致性方案，再给出PolarDB+Tair原生架构方案，对Redis侧与MySQL侧均有实质展开；正文远超120字，含【来源】且URL与实际检索来源一致，证据1条≥1，硬性否决条件均未触发；覆盖率0",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 1,
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 383,
+        "truncated": false,
+        "llm_calls": 8
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 8,
+      "searches": 4,
+      "elapsed_s": 132.11
+    }
+  },
+  "injected": [
+    "one_side:first_object:Redis"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "Redis缓存一致性方案",
+    "MySQL缓存一致性方案"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "超越 Cache Aside：PolarDB MySQL 版如何用原生架构终结缓存一致性难题——阿里云瑶池数据与缓存一站式方案解析 - 超越 Cache Aside：PolarDB MySQL 版如何用原生架构终结缓存一致性难题——阿里云瑶池数据与缓存一站式方案解析 | https://developer.aliyun.com/article/1775094#1"
+  ],
+  "result": "Redis是内存KV存储，MySQL是磁盘关系库，二者没有共享的事务机制，因此常见方案如Cache Aside、延迟双删、Canal订阅binlog加消息队列，本质上都是“事后对账”，组件越加越多，数据不一致窗口仍难彻底关闭。据参考资料，阿里云瑶池PolarDB MySQL版采用“数据与缓存一站式”思路：让兼容Redis协议的Tair直接作为PolarDB集群只读节点，与数据库共享同一份事务日志和同一个数据库代理，基于全局一致性（高性能模式）提供强一致读；主节点到只读节点走异步物理复制，官方口径延迟一般在毫秒级；缓存访问具有接近Redis的性能，并免去Canal、消息队列等同步组件的购买与运维成本。该方案把缓存收敛回数据库集群内部，由内核与代理保证一致性和性能，四档一致性级别逐级可调，一条HINT即可强制读主，适合受缓存一致性问题长期困扰的MySQL业务。\n\n【来源】《超越 Cache Aside：PolarDB MySQL 版如何用原生架构终结缓存一致性难题——阿里云瑶池数据与缓存一站式方案解析》 https://developer.aliyun.com/article/1775094#1",
+  "artifacts": {
+    "log": "logs\\Redis和MySQL的缓存一致性方案-20261122-153800.log",
+    "evidence": "data\\evidence\\MySQL缓存一致性方案-20261122-153932.md"
+  }
+}

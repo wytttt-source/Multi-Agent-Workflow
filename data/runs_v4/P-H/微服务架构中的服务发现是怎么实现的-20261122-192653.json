@@ -1,0 +1,177 @@
+{
+  "topic": "微服务架构中的服务发现是怎么实现的",
+  "group": "P-H",
+  "ts": "2026-11-22T11:26:53.416860+00:00",
+  "elapsed_seconds": 281.65,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "微服务架构中的服务发现是怎么实现的",
+        "query": "微服务架构中的服务发现是怎么实现的 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 9107,
+        "sources": 5,
+        "avg_summary": 1687.2,
+        "avg_content": 8180.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 53.79,
+        "evidence_path": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-192305.md"
+      }
+    ],
+    "skipped": true,
+    "raw": 0,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 9107,
+    "sources": 5,
+    "providers": [],
+    "cache": [],
+    "cache_sources": [],
+    "degraded": false,
+    "llm_filter": [],
+    "elapsed_s": 0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "服务发现"
+      ],
+      "hit": [
+        "服务发现"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 805,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧扣主题'微服务架构中的服务发现是怎么实现的'，从提供者注册（含心跳、元数据、上下线感知）、消费者拉取/订阅地址列表、注册中心协调机制（含不同框架数据组织差异、Client-Based 模式、Nacos/Zookeeper/Consul/Etcd/K8s）以及网关（APISIX）侧的动态发现四个层面实质展开，细节充分，不属于上位概念泛谈。硬性条件全部满足：证据 5 条（≥1）、回答含【来源】且所列 3 个 URL 均能在实际检索来源清单中找到、正文字数远超 120 字。覆盖率 0% 与 balance=0.00 系单一对象下精确短语匹配失败的统计假象（主题词'服务发现'实际出现在多数证据标题中），且本题仅一个必答对象、不存在弱侧，回答已实质覆盖该对象，不构成偏侧或分解不合理。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 6,
+    "evidence_count": 5,
+    "result_chars": 1446,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 805,
+    "len_full": 1446,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "llm",
+        "reason": "回答正文仅约55字，远低于120字要求；句子在'并通过心跳'处中断，内容不完整，仅提及提供者注册环节，未说明消费者如何订阅/拉取服务列表、本地缓存、剔除故障实例等关键实现机制；且回答中缺少【来源】标注，来源不可核验/疑似编造。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": false,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'微服务架构中的服务发现是怎么实现的'，从提供者注册（含心跳、元数据、上下线感知）、消费者拉取/订阅地址列表、注册中心协调机制（含不同框架数据组织差异、Client-Based 模式、Nacos/Zookeeper/Consul/Etcd/K8s）以及网关（APISIX）侧的动态发现四个层面实质展开，细节充",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 805,
+        "truncated": false,
+        "llm_calls": 6
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 6,
+      "searches": 1,
+      "elapsed_s": 281.65
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md - dubbo-website - blob: e8fcfd57f5c601b55c1abafc6e53733936f5f0d8 [file] [view] | https://apache.googlesource.com/dubbo-website/+show/5bffcb329a62beb2884a3965b69d07913bc9e63a/content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md#1",
+    "Diff - 5355c21f1600de3dabab364d041f5be3570a939d^! - dubbo-website - 定义好服务之后，服务端（Provider）需要提供服务的具体实现，并将其声明为 Dubbo 服务，而站在服务消费方（Consumer）的视角，通过调用 Dubbo 框架提供的 API 可以获得一个服务代理（stub）对象，然后就可以像使用本地服务一样对服务... | https://apache.googlesource.com/dubbo-website/+/5355c21f1600de3dabab364d041f5be3570a939d%5e%21/content/zh/docs3-building/docs#3",
+    "一种用于微服务的服务注册和服务发现的方法 - 图6为实施例二中将D节点加入序号为3的服务路由表后B、C、D三个节点的服务列表和服务路由表对比图 | https://patents.google.com/patent/CN110677347B/zh#2",
+    "docs/zh/latest/discovery.md - apisix - blob: 6271334ff84b37601487c20a7eac9d7111b48027 [file] [log] [blame] [view] | https://apache.googlesource.com/apisix/+show/1dc78626f4fc2edbce0885c425920be31e73919f/docs/zh/latest/discovery.md#1",
+    "一种动态服务发现的代理方法及装置 - Ribbon Routing Filter路由过滤器12通过Ribbon装置将网关请求转发至服务实例 | https://patents.google.com/patent/CN114125051A/zh#2"
+  ],
+  "result": "可以这样理解：微服务中的服务发现，核心是让提供者、消费者和注册中心三方协作，把“服务地址变了”这件事自动同步给调用方。\n\n服务提供者（Provider）负责把自身信息注册到注册中心。Dubbo 中，提供者启动后会向注册中心注册自身地址；注册中心保存的不只是地址（IP+Port），还可以传递微服务 Metadata，如实例序列化类型、实例方法列表、方法级定制化配置等。APISIX 的资料也说明，服务启动时会上报服务名、IP、端口等信息，并通过心跳与注册中心保持通信；如果注册中心与服务长时间无法通信，就会注销该实例，服务下线时也会删除注册中心里的实例信息。这样，提供者实例的上下线就能被注册中心感知。\n\n服务消费者（Consumer）不需要固定记住后端机器的 IP，而是通过注册中心动态获得提供方地址列表。Dubbo 的说明是，消费方通过拉取或订阅注册中心特定节点，动态感知提供方地址列表的变化，因此微服务之间可以在无需感知对端部署位置与 IP 地址的情况下通信。Dubbo 提供的是 Client-Based 的服务发现机制，既可以配合 Nacos、Zookeeper、Consul、Etcd 等独立注册中心使用，也可以把服务的组织与注册交给 Kubernetes 这类底层容器平台。消费者拿到动态地址列表后，才能把请求发往当前可用的提供方实例。\n\n注册中心（Registry）的核心作用是协调提供方与消费方的地址：提供者把地址注册进来，消费者从特定节点拉取或订阅地址变化。不同微服务框架实现服务发现的主要区别，就体现在注册中心数据的组织方式上——地址如何组织、以什么粒度组织、除地址外还同步哪些数据。除了 RPC 调用方直接消费注册中心数据，网关也会从注册中心准实时获取服务实例信息；例如 APISIX 在用户通过网关请求服务时，会从注册中心获取的实例列表中选择一个进行代理，从而完成动态服务发现下的请求转发。\n\n【来源】\n- Dubbo3 应用级服务发现\nhttps://apache.googlesource.com/dubbo-website/+show/5bffcb329a62beb2884a3965b69d07913bc9e63a/content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md#1\n- Diff - 5355c21f1600de3dabab364d041f5be3570a939d^! - dubbo-website - 定义好服务之后，服务端（Provider）需要提供服务的具体实现，并将其声明为 Dubbo 服务，而站在服务消费方（Consumer）的视角，通过调用 Dubbo 框架提供的 API 可以获得一个服务代理（stub）对象，然后就可以像使用本地服务一样对服务...\nhttps://apache.googlesource.com/dubbo-website/+/5355c21f1600de3dabab364d041f5be3570a939d%5e%21/content/zh/docs3-building/docs#3\n- 集成服务发现注册中心\nhttps://apache.googlesource.com/apisix/+show/1dc78626f4fc2edbce0885c425920be31e73919f/docs/zh/latest/discovery.md#1",
+  "artifacts": {
+    "log": "logs\\微服务架构中的服务发现是怎么实现的-20261122-192211.log",
+    "evidence": ""
+  }
+}

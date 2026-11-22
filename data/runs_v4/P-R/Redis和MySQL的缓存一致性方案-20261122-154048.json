@@ -1,0 +1,202 @@
+{
+  "topic": "Redis和MySQL的缓存一致性方案",
+  "group": "P-R",
+  "ts": "2026-11-22T07:40:48.659978+00:00",
+  "elapsed_seconds": 32.02,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Redis",
+        "query": "Redis",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8634,
+        "sources": 5,
+        "avg_summary": 2748.4,
+        "avg_content": 6688.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 3.08,
+        "evidence_path": "data\\evidence\\Redis-20261122-154019.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8651,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 3.08,
+    "evidence_path": "data\\evidence\\Redis-20261122-154019.md",
+    "retry_query": "Redis和MySQL的缓存一致性方案 MySQL lang:zh",
+    "retry_mode": "missing_term:MySQL"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Redis",
+        "MySQL"
+      ],
+      "hit": [
+        "Redis"
+      ],
+      "missing": [
+        "MySQL"
+      ],
+      "ratio": 0.5,
+      "body_chars": 194,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：MySQL（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 5,
+    "result_chars": 649,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 649,
+    "len_full": 1014,
+    "cited_loose": [
+      "https://cloud.tencent.cn/developer/article/2721613"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：MySQL（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "MySQL"
+        ],
+        "evidence_gap": [
+          "MySQL"
+        ],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 194,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 649,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 32.02
+    }
+  },
+  "injected": [
+    "one_side:first_object:Redis"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "MySQL 与 Redis 如何保证双写一致性？ - MySQL 与 Redis 如何保证双写一致性？ | https://developer.aliyun.com/article/1685469#1",
+    "MySQL 与 Redis 如何保证双写一致性？ - 云宝助手 | https://bbs.huaweicloud.com/blogs/465645#1",
+    "如何保证Mysql和Redis双写一致性 | https://cloud.tencent.cn/developer/article/2721613?policyId=1003#1",
+    "高并发场景下缓存与数据库双写一致性工程落地与避坑实践 - 云宝助手 | https://bbs.huaweicloud.com/blogs/511155#1",
+    "进阶架构演进：缓存与数据库的双写一致性与多级缓存广播 - 云宝助手 | https://bbs.huaweicloud.com/blogs/502726#1"
+  ],
+  "result": "在 Redis 与 MySQL 组成的缓存体系中，首先要接受一个现实：分布式环境下追求强一致代价很高，工程上更常见的是最终一致性。最经典的方案是 Cache-Aside（旁路缓存）：读请求先查 Redis，未命中再查 MySQL 并回写缓存；写请求先更新 MySQL，再删除 Redis 中对应缓存。这里通常选择“删缓存”而不是“更新缓存”，因为更新缓存可能带来无意义的计算浪费，也容易在并发写时发生旧值覆盖。该方案简单、适用面广，但仍要配合缓存过期时间兜底，并在删除失败时通过消息队列重试，降低短暂不一致的窗口。\n\n针对“先更新数据库、再删除缓存”在极端并发下的竞态，延迟双删是一种常见增强思路：线程更新数据库并删除缓存后，延迟一段时间再次删除缓存，以尽量清掉并发读请求在此期间回填的旧值。它适合读多写少、允许短暂不一致的业务，但不能理解为绝对强一致；延迟时间要结合业务读耗时评估，同时仍需过期时间和失败重试兜底。相比更复杂的加锁双写，延迟双删对性能更友好，但实现时要防止重试风暴和误删。\n\n更工业化的方案是用 Canal 等组件监听 MySQL binlog，异步删除或更新 Redis 缓存，使缓存同步与业务代码解耦，减少“更新库后删缓存失败”的风险。它更适合核心业务和对一致性要求较高的场景，但链路更长，需要处理消息幂等、顺序、重试和监控告警。实际选型应综合一致性要求、并发量、改造成本：普通业务可用先更库再删缓存加过期兜底，并发冲突明显时叠加延迟双删，核心链路再考虑 binlog 异步同步。\n\n【来源】\n- 【MySQL 与 Redis 如何保证双写一致性？ - MySQL 与 Redis 如何保证双写一致性？】 https://developer.aliyun.com/article/1685469#1\n- 【如何保证Mysql和Redis双写一致性】 https://cloud.tencent.cn/developer/article/2721613?policyId=1003#1\n- 【高并发场景下缓存与数据库双写一致性工程落地与避坑实践 - 云宝助手】 https://bbs.huaweicloud.com/blogs/511155#1\n- 【进阶架构演进：缓存与数据库的双写一致性与多级缓存广播 - 云宝助手】 https://bbs.huaweicloud.com/blogs/502726#1",
+  "artifacts": {
+    "log": "logs\\Redis和MySQL的缓存一致性方案-20261122-154016.log",
+    "evidence": "data\\evidence\\Redis-20261122-154019.md"
+  }
+}

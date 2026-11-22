@@ -1,0 +1,152 @@
+{
+  "topic": "对比Kafka与RabbitMQ在吞吐上的表现",
+  "group": "P-B0",
+  "ts": "2026-11-22T07:29:56.114840+00:00",
+  "elapsed_seconds": 21.14,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Kafka",
+        "query": "Kafka",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10645,
+        "sources": 6,
+        "avg_summary": 3558.8,
+        "avg_content": 14692.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 10.68,
+        "evidence_path": "data\\evidence\\Kafka-20261122-152945.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10662,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 10.68,
+    "evidence_path": "data\\evidence\\Kafka-20261122-152945.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 6,
+    "result_chars": 856,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [
+          "RabbitMQ"
+        ],
+        "evidence_gap": [
+          "RabbitMQ"
+        ],
+        "evidence_count": 6,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 21.14
+    }
+  },
+  "injected": [
+    "one_side:first_object:Kafka"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Introduction | https://kafka.apache.org/0102/getting-started/introduction/#kafka-as-a-messaging-system",
+    "(无标题) | https://svn.apache.org/repos/asf/kafka/site/08/api.html",
+    "ODP Install Kafka 4 | Acceldata Documentation | https://documentation.acceldata.io/docs/acceldata/odp/odp-3-3-6-5-1/documentation/install-kafka-4",
+    "kafka - kafka | https://pkg.go.dev/github.com/faustbrian/go-kafka@v1.1.1#ClientSecurity#1",
+    "+ 转载请标明出处 | https://github.com/coderbruis/javasourcecodelearning/blob/a2982104cdf834803555825fc7cb0aadc4434afa/note/kafka/kafka%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E6%80%BB%E7%BB%93.md",
+    "【Kafka核心】架构模型：Producer、Broker、Consumer、Consumer Group、Topic、Partition、Replica | https://developer.aliyun.com/article/1732165#1"
+  ],
+  "result": "Kafka的高吞吐主要来自分区化架构与批量化写入：Topic可划分为多个Partition并分布在不同Broker，实现水平扩展，分区数决定同组消费者的最大并行度；生产者支持批量投递，消息追加写入，消费仅更新位移而不删除数据。因此其性能对数据量不敏感，长期存储不影响吞吐，消费者也可低成本频繁上下线。KRaft架构进一步简化元数据管理并改善扩展性与性能。总体看，Kafka通过分区并行、批量化和追加写获得可线性扩展的吞吐能力。\n\n【来源】【Introduction】https://kafka.apache.org/0102/getting-started/introduction/#kafka-as-a-messaging-system；【【Kafka核心】架构模型：Producer、Broker、Consumer、Consumer Group、Topic、Partition、Replica】https://developer.aliyun.com/article/1732165#1；【+ 转载请标明出处】https://github.com/coderbruis/javasourcecodelearning/blob/a2982104cdf834803555825fc7cb0aadc4434afa/note/kafka/kafka%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E6%80%BB%E7%BB%93.md；【ODP Install Kafka 4 | Acceldata Documentation】https://documentation.acceldata.io/docs/acceldata/odp/odp-3-3-6-5-1/documentation/install-kafka-4",
+  "artifacts": {
+    "log": "logs\\对比Kafka与RabbitMQ在吞吐上的表现-20261122-152934.log",
+    "evidence": "data\\evidence\\Kafka-20261122-152945.md"
+  }
+}

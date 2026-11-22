@@ -1,0 +1,195 @@
+{
+  "topic": "什么是Serverless架构",
+  "group": "P-R",
+  "ts": "2026-11-22T09:26:01.172988+00:00",
+  "elapsed_seconds": 120.63,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "no_cite",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "什么是Serverless架构",
+        "query": "什么是Serverless架构 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 11045,
+        "sources": 6,
+        "avg_summary": 1951.7,
+        "avg_content": 5224.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 19.85,
+        "evidence_path": "data\\evidence\\什么是Serverless架构-20261122-172420.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 11072,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 19.85,
+    "evidence_path": "data\\evidence\\什么是Serverless架构-20261122-172420.md",
+    "retry_query": "什么是Serverless架构 补充资料 最新进展 lang:zh",
+    "retry_mode": "missing_term:fallback"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Serverless"
+      ],
+      "hit": [
+        "Serverless"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 174,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答中【来源】缺失，明确声明未列出来源链接，URL无法在来源清单中核验，来源不可核验/疑似编造。虽然正文约160字、内容贴合主题且证据有6条，但不满足通过的硬性条件②，故不判通过。",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 5,
+    "result_chars": 606,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 606,
+    "len_full": 933,
+    "cited_loose": [
+      "https://www.toutiao.com/article/7622836693489517107"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "no_cite",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "llm",
+        "reason": "回答中【来源】缺失，明确声明未列出来源链接，URL无法在来源清单中核验，来源不可核验/疑似编造。虽然正文约160字、内容贴合主题且证据有6条，但不满足通过的硬性条件②，故不判通过。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 174,
+        "truncated": false,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 606,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 120.63
+    }
+  },
+  "injected": [
+    "no_cite"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "中国信通院牵头的服务器无感知（Serverless）ITU国际标准顺利结项 - 今日头条 | https://www.toutiao.com/article/7622836693489517107/?upstream_biz=toutiao_pc&wid=1783778512054",
+    "Serverless架构：从函数计算到全栈无服务器的系统性解析 | https://bbs.huaweicloud.com/blogs/494543#1",
+    "Serverless 架构模式深度解析-阿里云开发者社区 - Serverless 架构模式深度解析 | https://developer.aliyun.com/article/1691857#1",
+    "Serverless的起源、发展与落地实践（附发展趋势、技术架构与产业链拆解） - 三个皮匠报告—— 严选型全行业研究报告分享下载平台，您的专属行业智库 | https://www.sgpjbg.com/info/bb74d19c7a50ead6cdd4d8227bf8e891.html#1",
+    "无服务器计算技术发展分析报告 - 当前位置： 首页> 科易专栏> > 正文 | https://www.1633.com/article/304823.html#1"
+  ],
+  "result": "Serverless（无服务器架构）并不是“没有服务器”，而是把服务器运维、容量规划与基础设施管理职责转移给云平台，开发者只需聚焦业务逻辑。按资料中CNCF的概括，它通常具备三个特征：开发者无需感知底层服务器，云厂商负责基础设施全生命周期管理；应用以事件为触发源运行，资源随请求量自动扩缩容，甚至缩容至零；计费基于实际消耗的计算资源，空闲时不产生成本。函数即服务（FaaS）是Serverless最典型的服务模式，但Serverless已从早期FaaS单点突破，演进为涵盖计算、存储、消息、数据库的全栈无服务器体系。\n\n与传统的单体架构相比，传统架构往往需要自研或采购服务器并承担全量运维，资源扩容多为手动、资源相对固定，计费按服务器资源付费，开发者还要兼顾全栈开发与运维；Serverless则由云厂商托管、实现零运维，具备毫秒级弹性并缩容至零，按执行时长和调用次数付费，让开发者更聚焦纯业务逻辑，但也存在冷启动等问题。\n\n与微服务架构相比，微服务通常采用容器化部署、仍需部分运维，自动扩缩容要配置阈值，按容器或实例数付费，开发者除业务逻辑外还要关注服务治理；Serverless把基础设施管理进一步交给云平台，资源可自动弹性伸缩甚至缩容至零，按实际执行计费，应用通常无状态并依赖BaaS服务管理状态。不过，冷启动延迟、供应商锁定和可观测性等结构性约束，意味着“混合架构”仍将是企业中长期的主流选择，而非全面替代。\n\n【来源】\n- 中国信通院牵头的服务器无感知（Serverless）ITU国际标准顺利结项 - 今日头条：https://www.toutiao.com/article/7622836693489517107/?upstream_biz=toutiao_pc&wid=1783778512054\n- Serverless架构：从函数计算到全栈无服务器的系统性解析：https://bbs.huaweicloud.com/blogs/494543#1\n- Serverless 架构模式深度解析-阿里云开发者社区 - Serverless 架构模式深度解析：https://developer.aliyun.com/article/1691857#1",
+  "artifacts": {
+    "log": "logs\\什么是Serverless架构-20261122-172400.log",
+    "evidence": "data\\evidence\\什么是Serverless架构-20261122-172420.md"
+  }
+}

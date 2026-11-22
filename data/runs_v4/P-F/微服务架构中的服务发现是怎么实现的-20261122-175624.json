@@ -1,0 +1,177 @@
+{
+  "topic": "微服务架构中的服务发现是怎么实现的",
+  "group": "P-F",
+  "ts": "2026-11-22T09:56:24.466428+00:00",
+  "elapsed_seconds": 226.28,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "微服务架构中的服务发现是怎么实现的",
+        "query": "微服务架构中的服务发现是怎么实现的 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 9107,
+        "sources": 5,
+        "avg_summary": 1687.2,
+        "avg_content": 8180.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 51.28,
+        "evidence_path": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-175329.md"
+      }
+    ],
+    "skipped": true,
+    "raw": 0,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 9107,
+    "sources": 5,
+    "providers": [],
+    "cache": [],
+    "cache_sources": [],
+    "degraded": false,
+    "llm_filter": [],
+    "elapsed_s": 0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "服务发现"
+      ],
+      "hit": [
+        "服务发现"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 1203,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答直接围绕'微服务架构中的服务发现是怎么实现的'展开，讲清了提供者/消费者/注册中心三角色协作机制（注册、订阅拉取、心跳注销），并给出多类具体实现（Dubbo Client-Based 发现、Eureka/Zookeeper/Nacos/Consul/Etcd、Kubernetes 平台化、APISIX 网关代理、两项专利方案），内容详实非上位概念，字数远超120字；证据5条≥1，【来源】齐全且5个URL均可在实际检索来源中核验。balance=0.00 与覆盖率0%系关键词字面匹配未命中所致（主题为单对象问题，证据实际均高度相关），回答已完整覆盖唯一必答对象，不构成偏侧或分解不合理。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 5,
+    "result_chars": 2321,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 5,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 1203,
+    "len_full": 2321,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "llm",
+        "reason": "回答在句中被截断（结尾'…保持通信；长'明显不完整），仅描述了提供者注册与心跳，未讲清消费者订阅/发现等完整实现机制；正文仅约55字，低于120字要求且未声明降级；同时缺少【来源】标注，来源不可核验。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": false,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答直接围绕'微服务架构中的服务发现是怎么实现的'展开，讲清了提供者/消费者/注册中心三角色协作机制（注册、订阅拉取、心跳注销），并给出多类具体实现（Dubbo Client-Based 发现、Eureka/Zookeeper/Nacos/Consul/Etcd、Kubernetes 平台化、APISIX 网关代理、两",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 5,
+        "body_chars": 1203,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 1,
+      "elapsed_s": 226.28
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md - dubbo-website - blob: e8fcfd57f5c601b55c1abafc6e53733936f5f0d8 [file] [view] | https://apache.googlesource.com/dubbo-website/+show/5bffcb329a62beb2884a3965b69d07913bc9e63a/content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md#1",
+    "Diff - 5355c21f1600de3dabab364d041f5be3570a939d^! - dubbo-website - 定义好服务之后，服务端（Provider）需要提供服务的具体实现，并将其声明为 Dubbo 服务，而站在服务消费方（Consumer）的视角，通过调用 Dubbo 框架提供的 API 可以获得一个服务代理（stub）对象，然后就可以像使用本地服务一样对服务... | https://apache.googlesource.com/dubbo-website/+/5355c21f1600de3dabab364d041f5be3570a939d%5e%21/content/zh/docs3-building/docs#3",
+    "一种用于微服务的服务注册和服务发现的方法 - 图6为实施例二中将D节点加入序号为3的服务路由表后B、C、D三个节点的服务列表和服务路由表对比图 | https://patents.google.com/patent/CN110677347B/zh#2",
+    "docs/zh/latest/discovery.md - apisix - blob: 6271334ff84b37601487c20a7eac9d7111b48027 [file] [log] [blame] [view] | https://apache.googlesource.com/apisix/+show/1dc78626f4fc2edbce0885c425920be31e73919f/docs/zh/latest/discovery.md#1",
+    "一种动态服务发现的代理方法及装置 - Ribbon Routing Filter路由过滤器12通过Ribbon装置将网关请求转发至服务实例 | https://patents.google.com/patent/CN114125051A/zh#2"
+  ],
+  "result": "微服务中的服务发现，核心是让提供者、消费者和注册中心三个角色协作：提供者启动后把自身地址注册到注册中心，消费者通过拉取或订阅注册中心特定节点，动态感知提供方地址列表变化，从而在无需感知对端部署位置与 IP 地址的情况下完成通信。传统 DNS 通过域名解析出地址列表，再由代理组件把流量分发到不同后端机器；微服务框架如 SpringCloud、Dubbo 则抽象出更丰富的动态地址发现能力。Dubbo 提供的是 Client-Based 的服务发现机制，既可以借助 Nacos、Zookeeper、Consul、Etcd 等独立注册中心，也可以把服务组织与注册交给 Kubernetes 这类底层容器平台；Dubbo 还引入配置中心、元数据中心，以扩展服务测试、元数据管理、流量管控、动态行为调整等治理边界。\n\n具体到注册中心与平台：Eureka 是 SpringCloud 中常用的注册中心，Dubbo 资料也把它列为注册中心实现之一，专利方案中还通过 Eureka 注册中心得到服务实例的动态 IP 地址。Zookeeper 是 Dubbo 中常用的注册中心，它不只传递地址（IP + Port），还可传递实例序列化类型、实例方法列表、方法级定制化配置等 Metadata。Nacos 同样是 Dubbo 中常用的注册中心，也承担地址与 Metadata 的传递。Consul 被 Dubbo 列为可独立使用的注册中心组件，也被 APISIX 列为常见注册中心。Etcd 同样被 Dubbo 列为可独立使用的注册中心组件，并被 APISIX 列为常见注册中心。Kubernetes 则代表另一种方式：把服务的组织与注册交给底层容器平台，被理解为更云原生的使用方式。\n\n从网关和代理实现看，APISIX 要求服务启动时把服务名、IP、端口等信息上报到注册中心，服务与注册中心通过心跳等机制通信，长时间无法通信就注销实例，服务下线时删除注册中心里的实例信息；网关会准实时地从注册中心获取服务实例信息，用户请求经过网关时，网关从注册中心获取的实例列表中选择一个进行代理。专利 CN110677347B 则用节点 ID、服务 ID、服务列表和服务路由表组织发现过程：节点 ID 和基于服务信息生成的服务 ID 用于标识节点与服务，服务列表维护与本节点提供或消费相关的服务信息，服务查询节点发送查询服务 ID 报文寻找目标节点，图 6 还对比了 D 节点加入序号为 3 的服务路由表后 B、C、D 三个节点的服务列表和服务路由表。专利 CN114125051A 的代理方法则基于被代理服务域名与服务名称的映射关系取得服务名称，通过 Eureka 注册中心得到服务实例的动态 IP 地址，实现动态服务发现，并由 Ribbon Routing Filter 通过 Ribbon 装置把网关请求转发至服务实例，实现负载均衡。\n\n【来源】\n- content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md - dubbo-website - blob: e8fcfd57f5c601b55c1abafc6e53733936f5f0d8 [file] [view]：https://apache.googlesource.com/dubbo-website/+show/5bffcb329a62beb2884a3965b69d07913bc9e63a/content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md#1\n- Diff - 5355c21f1600de3dabab364d041f5be3570a939d^! - dubbo-website - 定义好服务之后，服务端（Provider）需要提供服务的具体实现，并将其声明为 Dubbo 服务，而站在服务消费方（Consumer）的视角，通过调用 Dubbo 框架提供的 API 可以获得一个服务代理（stub）对象，然后就可以像使用本地服务一样对服务...：https://apache.googlesource.com/dubbo-website/+/5355c21f1600de3dabab364d041f5be3570a939d%5e%21/content/zh/docs3-building/docs#3\n- docs/zh/latest/discovery.md - apisix - blob: 6271334ff84b37601487c20a7eac9d7111b48027 [file] [log] [blame] [view]：https://apache.googlesource.com/apisix/+show/1dc78626f4fc2edbce0885c425920be31e73919f/docs/zh/latest/discovery.md#1\n- 一种用于微服务的服务注册和服务发现的方法 - 图6为实施例二中将D节点加入序号为3的服务路由表后B、C、D三个节点的服务列表和服务路由表对比图：https://patents.google.com/patent/CN110677347B/zh#2\n- 一种动态服务发现的代理方法及装置 - Ribbon Routing Filter路由过滤器12通过Ribbon装置将网关请求转发至服务实例：https://patents.google.com/patent/CN114125051A/zh#2",
+  "artifacts": {
+    "log": "logs\\微服务架构中的服务发现是怎么实现的-20261122-175238.log",
+    "evidence": ""
+  }
+}

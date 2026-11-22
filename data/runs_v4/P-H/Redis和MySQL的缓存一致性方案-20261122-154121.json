@@ -1,0 +1,202 @@
+{
+  "topic": "Redis和MySQL的缓存一致性方案",
+  "group": "P-H",
+  "ts": "2026-11-22T07:41:21.952856+00:00",
+  "elapsed_seconds": 28.6,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Redis",
+        "query": "Redis",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8634,
+        "sources": 5,
+        "avg_summary": 2748.4,
+        "avg_content": 6688.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 1.68,
+        "evidence_path": "data\\evidence\\Redis-20261122-154055.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8651,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 1.68,
+    "evidence_path": "data\\evidence\\Redis-20261122-154055.md",
+    "retry_query": "Redis和MySQL的缓存一致性方案 MySQL lang:zh",
+    "retry_mode": "missing_term:MySQL"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Redis",
+        "MySQL"
+      ],
+      "hit": [
+        "Redis"
+      ],
+      "missing": [
+        "MySQL"
+      ],
+      "ratio": 0.5,
+      "body_chars": 289,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：MySQL（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 5,
+    "result_chars": 497,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 497,
+    "len_full": 854,
+    "cited_loose": [
+      "https://cloud.tencent.cn/developer/article/2721613"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：MySQL（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "MySQL"
+        ],
+        "evidence_gap": [
+          "MySQL"
+        ],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 289,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 497,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 28.6
+    }
+  },
+  "injected": [
+    "one_side:first_object:Redis"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "MySQL 与 Redis 如何保证双写一致性？ - MySQL 与 Redis 如何保证双写一致性？ | https://developer.aliyun.com/article/1685469#1",
+    "MySQL 与 Redis 如何保证双写一致性？ - 云宝助手 | https://bbs.huaweicloud.com/blogs/465645#1",
+    "如何保证Mysql和Redis双写一致性 | https://cloud.tencent.cn/developer/article/2721613?policyId=1003#1",
+    "高并发场景下缓存与数据库双写一致性工程落地与避坑实践 - 云宝助手 | https://bbs.huaweicloud.com/blogs/511155#1",
+    "进阶架构演进：缓存与数据库的双写一致性与多级缓存广播 - 云宝助手 | https://bbs.huaweicloud.com/blogs/502726#1"
+  ],
+  "result": "Redis和MySQL的缓存一致性方案，核心是在两个独立存储之间尽量做到最终一致，而不是一味追求强一致。最常用的是Cache-Aside旁路缓存模式：读请求先查Redis，未命中再查MySQL并回写缓存；写请求先更新MySQL，再删除Redis中对应缓存，而不是直接更新缓存，以减少复杂计算和无效写入。该方案简单通用，适合大多数业务，但删除缓存失败或并发读写交错时，仍可能出现短暂不一致。\n\n针对“先更新数据库再删缓存”在极端并发下的旧值回写窗口，延迟双删是常见增强方案：更新数据库前后分别删除缓存，并在延迟一段时间后再次删除，以覆盖并发读把旧数据重新写回缓存的可能。延迟时间需要结合业务读写耗时合理设置，通常还会给缓存配置过期时间作为兜底，适合对一致性要求更高、但仍能接受最终一致的场景。\n\n更工业化的方案是使用Canal监听MySQL的binlog，异步触发缓存更新或删除，使业务代码不必直接承担双写逻辑，降低耦合并提升一致性保障能力。它适合核心业务或双写一致性要求较高的系统，但架构更复杂，需要处理同步延迟、消息可靠性和幂等等问题。总体而言，方案选型应结合一致性要求、并发量和系统复杂度权衡。\n\n【来源】\n- MySQL 与 Redis 如何保证双写一致性？ - MySQL 与 Redis 如何保证双写一致性？：https://developer.aliyun.com/article/1685469#1\n- 如何保证Mysql和Redis双写一致性：https://cloud.tencent.cn/developer/article/2721613?policyId=1003#1\n- 高并发场景下缓存与数据库双写一致性工程落地与避坑实践 - 云宝助手：https://bbs.huaweicloud.com/blogs/511155#1\n- 进阶架构演进：缓存与数据库的双写一致性与多级缓存广播 - 云宝助手：https://bbs.huaweicloud.com/blogs/502726#1",
+  "artifacts": {
+    "log": "logs\\Redis和MySQL的缓存一致性方案-20261122-154053.log",
+    "evidence": "data\\evidence\\Redis-20261122-154055.md"
+  }
+}

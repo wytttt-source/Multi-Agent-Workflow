@@ -1,0 +1,202 @@
+{
+  "topic": "比较HTTP和HTTPS的安全机制",
+  "group": "P-H",
+  "ts": "2026-11-22T07:45:55.421624+00:00",
+  "elapsed_seconds": 42.35,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "HTTP",
+        "query": "HTTP",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10153,
+        "sources": 6,
+        "avg_summary": 1723.5,
+        "avg_content": 153401.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 8.18,
+        "evidence_path": "data\\evidence\\HTTP-20261122-154521.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10169,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 8.18,
+    "evidence_path": "data\\evidence\\HTTP-20261122-154521.md",
+    "retry_query": "比较HTTP和HTTPS的安全机制 HTTPS lang:zh",
+    "retry_mode": "missing_term:HTTPS"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "hit": [
+        "HTTP"
+      ],
+      "missing": [
+        "HTTPS"
+      ],
+      "ratio": 0.5,
+      "body_chars": 188,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：HTTPS（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 593,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 593,
+    "len_full": 1076,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail",
+      "https://www-kepuchina-cn-443.webvpn.imac.edu.cn/article/articleinfo"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：HTTPS（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "HTTPS"
+        ],
+        "evidence_gap": [
+          "HTTPS"
+        ],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 188,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 593,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 42.35
+    }
+  },
+  "injected": [
+    "one_side:first_object:HTTP"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "图文详情——科普中国资源服务 | https://cloud.kepuchina.cn/h5/detail?id=7294157615342628864#1",
+    "HTTPS协议为什么安全？ - 版权归原作者所有，如有侵权，请联系我们 | https://www-kepuchina-cn-443.webvpn.imac.edu.cn/article/articleinfo?business_type=100&classify=0&ar_id=409275#1",
+    "多维度对比HTTP与HTTPS的安全性能及连接方式差异-开发者社区-阿里云 - HTTP和HTTPS的区别有哪些？ | https://developer.aliyun.com/article/1628000#1",
+    "HTTP 与 HTTPS — 传输协议之间的区别 — AWS - HTTP 与 HTTPS 之间有何区别？ | https://aws.amazon.com/cn/compare/the-difference-between-https-and-http/#1"
+  ],
+  "result": "HTTP是互联网应用中常见的请求/响应协议，默认通过TCP 80端口通信，但它对安全的设计较少：数据以纯文本形式发送和接收，攻击者可通过网络嗅探读取登录过程、手机号码、身份证号码、信用卡号等敏感信息；同时，HTTP对传输内容是否被篡改不作确认，主要只依靠报文头部中的长度信息做有限校验，因此难以保证数据的保密性、完整性和身份校验安全性。\n\nHTTPS可理解为“HTTP over SSL/TLS”，是在HTTP与TCP之间加入SSL/TLS加密/身份验证层的安全通信方式，默认使用443端口。使用HTTPS时，客户端与服务端先通过SSL/TLS握手协商建立安全信道，服务器出示由独立证书颁发机构（CA）签发的SSL/TLS证书，浏览器验证服务器身份，并利用公钥协商会话密钥；之后在安全信道上对HTTP业务报文进行加密传输。这样可提供数据加密、身份认证和检测篡改能力，从而防止窃听、欺骗和中间人攻击。\n\n比较来看，HTTP的安全机制基本缺位，数据明文传输且缺少可靠的身份认证与完整性保护；HTTPS则通过证书、非对称密钥、加密算法和SSL/TLS握手补上了保密性、完整性和身份校验。HTTPS并非一个全新的应用层协议，而是通过SSL/TLS提供安全连接的HTTP通信。对于交易支付、个人信息传输和公共无线局域网等场景，应优先使用HTTPS；一般性、性能要求较高的场景则可在安全与性能之间权衡。\n\n【来源】\n- 【图文详情——科普中国资源服务】 https://cloud.kepuchina.cn/h5/detail?id=7294157615342628864#1\n- 【HTTPS协议为什么安全？ - 版权归原作者所有，如有侵权，请联系我们】 https://www-kepuchina-cn-443.webvpn.imac.edu.cn/article/articleinfo?business_type=100&classify=0&ar_id=409275#1\n- 【多维度对比HTTP与HTTPS的安全性能及连接方式差异-开发者社区-阿里云 - HTTP和HTTPS的区别有哪些？】 https://developer.aliyun.com/article/1628000#1\n- 【HTTP 与 HTTPS — 传输协议之间的区别 — AWS - HTTP 与 HTTPS 之间有何区别？】 https://aws.amazon.com/cn/compare/the-difference-between-https-and-http/#1",
+  "artifacts": {
+    "log": "logs\\比较HTTP和HTTPS的安全机制-20261122-154513.log",
+    "evidence": "data\\evidence\\HTTP-20261122-154521.md"
+  }
+}

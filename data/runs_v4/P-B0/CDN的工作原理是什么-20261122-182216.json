@@ -1,0 +1,147 @@
+{
+  "topic": "CDN的工作原理是什么",
+  "group": "P-B0",
+  "ts": "2026-11-22T10:22:16.889057+00:00",
+  "elapsed_seconds": 9.96,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "CDN的工作原理是什么",
+        "query": "CDN的工作原理是什么 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8681,
+        "sources": 5,
+        "avg_summary": 1814.0,
+        "avg_content": 3751.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 4.05,
+        "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182211.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8704,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 4.05,
+    "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182211.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 60,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 9.96
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "[科普中国]-CDN - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?from=1&id=6969032716749910016&is_self=2#1",
+    "图文详情——科普中国资源服务 - [科普中国]-CDN | https://cloud.kepuchina.cn/h5/detail?id=6969032716749910016#1",
+    "你知道CDN是什么吗？本文带你搞明白CDN - 你知道CDN是什么吗？本文带你搞明白CDN | https://developer.aliyun.com/article/1566310#1",
+    "程序员要搞明白CDN，这篇应该够了 - 纯洁的微笑 | https://cloud.tencent.cn/developer/article/1469674?from=15425#1",
+    "要搞明白CDN，你可以需要看这篇文章-华为开发者话题 | 华为开发者联盟 | https://developer.huawei.com/consumer/cn/forum/topic/0201167301899630057"
+  ],
+  "result": "CDN（内容分发网络）的工作原理是：将缓存服务器广泛部署在用户访问集中的地区或网络中，通过全局负载均衡与调度，把用户请求",
+  "artifacts": {
+    "log": "logs\\CDN的工作原理是什么-20261122-182206.log",
+    "evidence": "data\\evidence\\CDN的工作原理是什么-20261122-182211.md"
+  }
+}

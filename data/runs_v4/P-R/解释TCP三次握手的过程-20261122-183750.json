@@ -1,0 +1,194 @@
+{
+  "topic": "解释TCP三次握手的过程",
+  "group": "P-R",
+  "ts": "2026-11-22T10:37:50.223229+00:00",
+  "elapsed_seconds": 221.76,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释TCP三次握手的过程",
+        "query": "解释TCP三次握手的过程 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10204,
+        "sources": 6,
+        "avg_summary": 870.3,
+        "avg_content": 2697.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 5.78,
+        "evidence_path": "data\\evidence\\解释TCP三次握手的过程-20261122-183414.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10228,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 5.78,
+    "evidence_path": "data\\evidence\\解释TCP三次握手的过程-20261122-183414.md",
+    "retry_query": "解释TCP三次握手的过程 补充资料 最新进展 lang:zh",
+    "retry_mode": "missing_term:fallback"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "三次握手"
+      ],
+      "hit": [
+        "三次握手"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 143,
+      "truncated": true,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "降级通过",
+    "reason": "回答疑似截断（结尾停在连接词(以及)），完整性不达标",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 0,
+    "result_chars": 487,
+    "pass_kind": "degraded",
+    "has_source_line": false,
+    "cited_count": 0,
+    "citation_ratio": 0.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 487,
+    "len_full": 490,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索仍失败，降级收尾"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "gate",
+        "reason": "回答疑似截断（结尾停在连接词(以及)），完整性不达标",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "降级通过",
+        "pass_kind": "degraded",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索仍失败，降级收尾",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 487,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "降级通过",
+    "outcome": "partial",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 221.76
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": true,
+  "sources": [
+    "(无标题) | https://raw.githubusercontent.com/iarjian/web-interview/refs/heads/master/docs/http/handshakes_waves.md",
+    "TCP 三次握手和四次挥手 | https://cloud.tencent.cn/developer/article/1426647?policyId=1004",
+    "一文搞懂TCP的三次握手和四次挥手 - 不脱发的程序猿 | https://cloud.tencent.cn/developer/article/1776068?from=15425#1",
+    "TCP/IP协议全解析 三次握手与四次挥手 | https://net.zhiding.cn/network_security_zone/2015/1109/3067104.shtml",
+    "跟着动画学习TCP三次握手和四次挥手 | https://cloud.tencent.cn/developer/article/1185181#1",
+    "跟着动画学习TCP三次握手和四次挥手，及全部面试题 - 跟着动画学习TCP三次握手和四次挥手，及全部面试题 | https://developer.aliyun.com/article/1450165#slide-2#1"
+  ],
+  "result": "TCP三次握手是客户端与服务器在传输数据前建立可靠连接的过程，核心是通过交换带有序号和控制标志的报文，让双方确认“我能发、你能收，你也能发、我能收”，并同步初始序号。它发生在连接建立阶段，并不等同于加密或身份认证；即使握手成功，也只说明双方在TCP层面建立了连接状态。\n\n过程通常分三步：客户端先发送SYN报文，带上自己的初始序号x，表示请求建立连接；服务器收到后回复SYN+ACK报文，其中SYN表示同意建立并带上自己的初始序号y，ACK确认收到客户端的x（确认号为x+1）；客户端再发送ACK报文，确认收到服务器的y（确认号为y+1）。至此，双方都确认了对方的发送与接收能力，也同步了序号，连接进入已建立状态，后续可传输数据。\n\n之所以需要三次而不是两次，是因为仅有前两次时，服务器还不能确定客户端是否收到了自己的SYN+ACK，也可能受到网络中迟到的旧连接请求影响。第三次ACK让服务器确认客户端已收到并认可本次连接，从而避免把过期请求误当成新连接，也使双方对连接状态达成一致。三次握手是TCP可靠传输的基础环节之一。\n\n【声明】未获取到外部检索证据，内容基于模型内部知识。",
+  "artifacts": {
+    "log": "logs\\解释TCP三次握手的过程-20261122-183408.log",
+    "evidence": "data\\evidence\\解释TCP三次握手的过程-20261122-183414.md"
+  }
+}

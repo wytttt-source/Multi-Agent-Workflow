@@ -1,0 +1,148 @@
+{
+  "topic": "解释TCP三次握手的过程",
+  "group": "P-B0",
+  "ts": "2026-11-22T10:31:04.967298+00:00",
+  "elapsed_seconds": 10.88,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释TCP三次握手的过程",
+        "query": "解释TCP三次握手的过程 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10204,
+        "sources": 6,
+        "avg_summary": 870.3,
+        "avg_content": 2697.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 4.14,
+        "evidence_path": "data\\evidence\\解释TCP三次握手的过程-20261122-183058.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10228,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 4.14,
+    "evidence_path": "data\\evidence\\解释TCP三次握手的过程-20261122-183058.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 6,
+    "result_chars": 366,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 10.88
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "(无标题) | https://raw.githubusercontent.com/iarjian/web-interview/refs/heads/master/docs/http/handshakes_waves.md",
+    "TCP 三次握手和四次挥手 | https://cloud.tencent.cn/developer/article/1426647?policyId=1004",
+    "一文搞懂TCP的三次握手和四次挥手 - 不脱发的程序猿 | https://cloud.tencent.cn/developer/article/1776068?from=15425#1",
+    "TCP/IP协议全解析 三次握手与四次挥手 | https://net.zhiding.cn/network_security_zone/2015/1109/3067104.shtml",
+    "跟着动画学习TCP三次握手和四次挥手 | https://cloud.tencent.cn/developer/article/1185181#1",
+    "跟着动画学习TCP三次握手和四次挥手，及全部面试题 - 跟着动画学习TCP三次握手和四次挥手，及全部面试题 | https://developer.aliyun.com/article/1450165#slide-2#1"
+  ],
+  "result": "TCP三次握手是建立连接时客户端和服务器共发送3个包，以确认双方收发能力并交换初始序列号。第一次，客户端发送SYN报文及ISN(c)，进入SYN_SENT；第二次，服务器回复SYN+ACK，确认号为ISN(c)+1，并携带自己的ISN(s)，进入SYN_RCVD；第三次，客户端发，以及\n\n【来源】（无标题）（GitHub）https://raw.githubusercontent.com/iarjian/web-interview/refs/heads/master/docs/http/handshakes_waves.md；TCP 三次握手和四次挥手（tencent.cn，2019-05-14）https://cloud.tencent.cn/developer/article/1426647?policyId=1004",
+  "artifacts": {
+    "log": "logs\\解释TCP三次握手的过程-20261122-183054.log",
+    "evidence": "data\\evidence\\解释TCP三次握手的过程-20261122-183058.md"
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "topic": "CDN的工作原理是什么",
+  "group": "P-R",
+  "ts": "2026-11-22T10:26:48.799993+00:00",
+  "elapsed_seconds": 67.62,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "CDN的工作原理是什么",
+        "query": "CDN的工作原理是什么 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8681,
+        "sources": 5,
+        "avg_summary": 1814.0,
+        "avg_content": 3751.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 7.81,
+        "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182549.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8704,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 7.81,
+    "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182549.md",
+    "retry_query": "CDN的工作原理是什么 补充资料 最新进展 lang:zh",
+    "retry_mode": "missing_term:fallback"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "CDN"
+      ],
+      "hit": [
+        "CDN"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 60,
+      "truncated": true,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答在句中被截断（止于'通过全局负载均衡和'），工作原理未讲完整；正文不足120字且未声明降级；缺少【来源】标注，来源不可核验/疑似编造。",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 5,
+    "result_chars": 432,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 432,
+    "len_full": 760,
+    "cited_loose": [
+      "https://wapbaike.baidu.com/item/%e5%86%85%e5%ae%b9%e5%88%86%e5%8f%91%e7%bd%91%e7%bb%9c/4034265"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "llm",
+        "reason": "回答在句中被截断（止于'通过全局负载均衡和'），工作原理未讲完整；正文不足120字且未声明降级；缺少【来源】标注，来源不可核验/疑似编造。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 432,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 67.62
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "内容分发网络（互联网技术）_百度百科 - 搜词条 | https://wapbaike.baidu.com/item/%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C/4034265?fromtitle=CDN%E6%8A%80%E6%9C%AF&fromid=2277971#1",
+    "CDN 与静态资源加速核心机制：从回源到边缘计算 - 冒泡提示 | https://bbs.huaweicloud.com/blogs/509063#1",
+    "内容分发网络_百度百科 | https://wapbaike.baidu.com/item/CDN/420951?fr=aladdin&ms=1&rid=11182522942653459303&rt=true&bk_tashuoStyle=topLeft&bk_share=shoubai&bk_sharefr=lemma&from=singlemessage&isappinstalled=0",
+    "内容分发网络 - 内容分发网络 | https://baike.baidu.com/item/%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C/4034265?fromtitle=CDN&fromid=420951&bst=1793032676.b2e09f6d8a24f696#1",
+    "理解CDN：快速内容交付的支柱 | https://trtc.tencentcloud.com/zh/learning/what-is-cdn"
+  ],
+  "result": "CDN（内容分发网络）本质上是一张分布在各地、靠近用户的边缘服务器网络。它先通过智能DNS解析和全局调度层（GSLB）把用户请求导向“最优节点”：调度会参考用户来源、实时网络质量、节点负载以及内容是否可用等因素，让请求不必都挤到中心源站，从而缩短传输距离、降低延迟。\n\n具体到一次访问，用户先完成DNS解析，域名通常通过CNAME指向CDN调度域名，GSLB再返回合适的节点。请求到达边缘节点后，节点先查本地缓存：若已缓存该内容（命中），就直接返回并附缓存头；若未命中，就按缓存层级向上游查找，仍没有才回源到源站，并把内容拉取回来缓存。多层缓存还能把大量并发未命中请求收敛成少量回源请求，降低源站压力。\n\n因此，CDN的“工作原理”可以概括为：用智能调度选近节点，用缓存副本就近交付，用分层回源控制成本和风险；同时结合HTTP/2、压缩、负载均衡以及DDoS防御等机制优化传输与安全。近年CDN还在与边缘计算、AI缓存策略融合，使节点具备更强的实时处理和动态调度能力。\n\n【来源】\n- 内容分发网络（互联网技术）_百度百科 - 搜词条：https://wapbaike.baidu.com/item/%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C/4034265?fromtitle=CDN%E6%8A%80%E6%9C%AF&fromid=2277971#1\n- CDN 与静态资源加速核心机制：从回源到边缘计算 - 冒泡提示：https://bbs.huaweicloud.com/blogs/509063#1\n- 理解CDN：快速内容交付的支柱：https://trtc.tencentcloud.com/zh/learning/what-is-cdn",
+  "artifacts": {
+    "log": "logs\\CDN的工作原理是什么-20261122-182541.log",
+    "evidence": "data\\evidence\\CDN的工作原理是什么-20261122-182549.md"
+  }
+}

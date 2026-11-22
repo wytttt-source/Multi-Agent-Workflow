@@ -12,7 +12,10 @@ from utils import reset_llm_calls
 # v2.3：判定层（nodes._decide_next）已经把"走哪条修复路径"算好并写进 state.repair_path，
 # 路由只做查表。这样三条路径的差异是显式配置（REPAIR_POLICY），而不是靠 error_type 猜。
 _PATH_EDGE = {"free": "free_reflection", "global": "replan_global",
-              "local": "replan_local"}
+              "local": "replan_local",
+              # v2.5：rewrite 不是新节点，而是在 executor 里"跳过检索、用已有证据重写"，
+              # 所以直接回 executor 走一轮（executor 读 repair_path 决定要不要检索）
+              "rewrite": "executor"}
 
 
 def route_after_reflection(state: State):
@@ -56,6 +59,8 @@ workflow.add_conditional_edges(
         "free_reflection": "free_reflection",
         "replan_global": "planner",
         "replan_local": "executor",
+        # rewrite 直接回 executor：同一个节点，靠 state.repair_path 区分是否检索
+        "executor": "executor",
     },
 )
 

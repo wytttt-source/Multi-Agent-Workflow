@@ -1,0 +1,178 @@
+{
+  "topic": "解释HTTP/2的多路复用机制",
+  "group": "P-F",
+  "ts": "2026-11-22T09:44:41.439527+00:00",
+  "elapsed_seconds": 217.92,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释HTTP/2的多路复用机制",
+        "query": "解释HTTP/2的多路复用机制 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 3,
+        "evidence_chars": 5214,
+        "sources": 3,
+        "avg_summary": 1815.7,
+        "avg_content": 4337.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 3,
+          "dropped": 2,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 29.36,
+        "evidence_path": "data\\evidence\\解释HTTP_2的多路复用机制-20261122-174132.md"
+      }
+    ],
+    "skipped": true,
+    "raw": 0,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 5214,
+    "sources": 3,
+    "providers": [],
+    "cache": [],
+    "cache_sources": [],
+    "degraded": false,
+    "llm_filter": [],
+    "elapsed_s": 0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "多路复用"
+      ],
+      "hit": [
+        "多路复用"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 689,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧扣主题，系统讲解了HTTP/2多路复用：对比HTTP/1.1串行与队头阻塞，解释帧与流的概念、流ID奇偶规则、乱序发送及按流标识重组、RST_STREAM取消机制，内容完整且有细节，非上位概念；硬性条件均满足：证据3条≥1、【来源】URL均可在实际检索来源中核验、正文字数远超120。覆盖率0%与balance=0.00仅因主题短语与证据标题字面匹配偏差所致，三篇证据标题均实质对应HTTP/2多路复用，且回答已讲清唯一必答对象，不构成分解不合理。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 3,
+    "result_chars": 1005,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 689,
+    "len_full": 1005,
+    "cited_loose": [
+      "https://cloud.tencent.cn/developer/article/1551667",
+      "https://cloud.tencent.com.cn/developer/article/2084194"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "llm",
+        "reason": "回答正文在结尾被截断（'……易受队头阻塞，多路，以及'句子未完成），对 HTTP/1.1 串行与队头阻塞的对比、多路复用如何解决该问题的说明均缺失，内容不完整，需局部补写。主题'解释HTTP/2的多路复用机制'为单一概念，无需拆解；balance=0.00 与覆盖率 0% 系证据标题措辞（http/2.0、http2）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 3,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题，系统讲解了HTTP/2多路复用：对比HTTP/1.1串行与队头阻塞，解释帧与流的概念、流ID奇偶规则、乱序发送及按流标识重组、RST_STREAM取消机制，内容完整且有细节，非上位概念；硬性条件均满足：证据3条≥1、【来源】URL均可在实际检索来源中核验、正文字数远超120。覆盖率0%与balance=0",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 3,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 689,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 1,
+      "elapsed_s": 217.92
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "http/2.0“多路复用”实现原理 //转载 - xosg | https://cloud.tencent.cn/developer/article/1551667?policyId=1004#1",
+    "详解：HTTP协议的演进与特性 - 多路复用允许同时通过单一的 HTTP/2 连接发起多重的请求-响应消息 | https://cloud.tencent.com.cn/developer/article/2084194?policyId=1003#3",
+    "http2中多路复用的示例分析 - http2中多路复用的示例分析 | https://m.yisu.com/zixun/588494.html#1"
+  ],
+  "result": "HTTP/2的多路复用，是在一个HTTP连接上让多路“HTTP消息”同时工作。相比之下，HTTP/1.1的消息是“管道串行化”的：只有等一个消息完成之后，才能进行下一条消息。它基于文本分隔来解析，服务端要不断读入字节直到遇到分隔符，一次只能处理一个请求或响应。浏览器在同一时间对同一域名下的请求还有数量限制，超过限制的请求会被阻塞，这也是一些站点使用多个静态资源CDN域名的原因之一；而打开多个TCP连接虽能缓解问题，又会带来资源竞争、TCP握手开销和服务器压力增大等问题。若响应1延迟，后续请求2即使资源已就绪也会被阻塞，这就是队头阻塞。\n\nHTTP/2则把HTTP协议通信的基本单位缩小为一个个帧，并引入帧和流两个重要概念。帧是最小的数据单位，每个帧会标识出该帧属于哪个流；流是多个帧组成的数据流，一个流可以承载消息。每个数据流都有独一无二的编号，数据包发送时必须标记数据流ID，用来区分它属于哪个数据流；客户端发出的数据流ID一律为奇数，服务器发出的为偶数。因为数据包不按顺序发送，同一个连接里连续的数据包可能属于不同回应，所以对端收到后再根据每个帧首部的流标识符重新组装。\n\n所谓多路复用，即在一个TCP连接中存在多个流，可以同时发送多个请求，并行地在同一个TCP连接上双向交换消息，而不必依赖建立多个TCP连接。客户端可以把帧乱序发送，到对端后再按流标识符重组，从而避免HTTP旧版本的队头阻塞问题，极大提高传输性能。数据流发送到一半时，客户端和服务器都可以发送RST_STREAM帧取消这个数据流，同时保留连接；而HTTP/1.1取消数据流的唯一方法就是关闭TCP连接。\n\n【来源】\n- 【http/2.0“多路复用”实现原理 //转载 - xosg】 https://cloud.tencent.cn/developer/article/1551667?policyId=1004#1\n- 【详解：HTTP协议的演进与特性 - 多路复用允许同时通过单一的 HTTP/2 连接发起多重的请求-响应消息】 https://cloud.tencent.com.cn/developer/article/2084194?policyId=1003#3\n- 【http2中多路复用的示例分析 - http2中多路复用的示例分析】 https://m.yisu.com/zixun/588494.html#1",
+  "artifacts": {
+    "log": "logs\\解释HTTP_2的多路复用机制-20261122-174103.log",
+    "evidence": ""
+  }
+}

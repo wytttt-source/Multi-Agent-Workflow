@@ -1,0 +1,201 @@
+{
+  "topic": "分布式系统中的CAP定理",
+  "group": "P-R",
+  "ts": "2026-11-22T09:07:33.799584+00:00",
+  "elapsed_seconds": 185.24,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "分布式系统中的CAP定理",
+        "query": "分布式系统中的CAP定理 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 4,
+        "evidence_chars": 6926,
+        "sources": 4,
+        "avg_summary": 1760.0,
+        "avg_content": 4838.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 1,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 30.39,
+        "evidence_path": "data\\evidence\\分布式系统中的CAP定理-20261122-170458.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 4,
+    "evidence_chars": 6950,
+    "sources": 4,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 4,
+        "dropped": 1,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 30.39,
+    "evidence_path": "data\\evidence\\分布式系统中的CAP定理-20261122-170458.md",
+    "retry_query": "分布式系统中的CAP定理 分区 lang:zh",
+    "retry_mode": "missing_term:分区"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "一致性",
+        "可用性",
+        "分区"
+      ],
+      "hit": [
+        "一致性",
+        "可用性"
+      ],
+      "missing": [
+        "分区"
+      ],
+      "ratio": 0.667,
+      "body_chars": 60,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案未覆盖 1/3 个必答对象：分区（证据里已有这些对象，属生成缺口，局部重写即可）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 602,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 602,
+    "len_full": 986,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 1/3 个必答对象：分区（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [
+          "分区"
+        ],
+        "evidence_gap": [],
+        "evidence_count": 4,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 602,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 185.24
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "图文详情——科普中国资源服务 - [科普中国]-CAP原则 | https://cloud.kepuchina.cn/h5/detail?id=6974124255662841856#1",
+    "[科普中国]-CAP原则 - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?from=1&id=6974124255662841856&is_self=2#1",
+    "第九章：一致性与共识 - > CAP 有时以这种面目出现：一致性，可用性和分区容错性：三者只能择其二 | https://raw.githubusercontent.com/awdoiudh/Designing-Data-Intensive-Applications-2nd-Edition/refs/heads/main/ch9.md#3",
+    "分布式理论：CAP是三选二吗？ - 分布式理论：CAP是三选二吗？ | https://developer.aliyun.com/article/634709#comment#1"
+  ],
+  "result": "CAP定理是分布式系统设计中的重要原则，讨论一致性（C）、可用性（A）和分区容忍性（P）之间的取舍。其中，一致性（C）指分布式系统中的所有数据备份在同一时刻是否具有同样的值，也可以理解为所有节点访问同一份最新数据副本。科普中国资料把它概括为：CAP三个要素最多只能同时实现两点，不可能三者兼顾。因此，设计分布式系统时必须根据业务需求做出取舍，而不能理想化地认为三者都能同时满足。\n\n可用性（A）指在集群中一部分节点故障后，集群整体是否还能响应客户端的读写请求，尤其强调对数据更新具备高可用性。需要说明的是，CAP并不是简单、机械的“三选二”：网络正常工作的时候，系统可以提供一致性（线性一致性）和整体可用性；真正发生网络故障时，才必须在线性一致性和整体可用性之间做出选择。也就是说，CAP更准确的表述是“在分区时要么选择一致，要么选择可用”。\n\n分区容忍性（P）指系统在通信时限内无法达成数据一致性时，就意味着发生了分区，必须就当前操作在一致性与可用性之间做出选择。网络丢包、节点宕机、部分机器不连通等都可能符合分区情形，因此P在分布式系统中通常是必须项，而不是可选项。CAP的正式定义范围其实较窄，只考虑线性一致性和网络分区，且其中的“可用性”有特殊含义，并不完全等同于日常所说的“高可用”。因此，理解CAP的关键不是背“三选二”，而是认识到：网络分区无法完全避免，发生分区时必须在一致性和可用性之间权衡。\n\n【来源】\n- 【图文详情——科普中国资源服务 - [科普中国]-CAP原则】 URL: https://cloud.kepuchina.cn/h5/detail?id=6974124255662841856#1\n- 【第九章：一致性与共识 - > CAP 有时以这种面目出现：一致性，可用性和分区容错性：三者只能择其二】 URL: https://raw.githubusercontent.com/awdoiudh/Designing-Data-Intensive-Applications-2nd-Edition/refs/heads/main/ch9.md#3\n- 【分布式理论：CAP是三选二吗？ - 分布式理论：CAP是三选二吗？】 URL: https://developer.aliyun.com/article/634709#comment#1",
+  "artifacts": {
+    "log": "logs\\分布式系统中的CAP定理-20261122-170428.log",
+    "evidence": "data\\evidence\\分布式系统中的CAP定理-20261122-170458.md"
+  }
+}

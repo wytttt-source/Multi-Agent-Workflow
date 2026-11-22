@@ -1,0 +1,151 @@
+{
+  "topic": "Redis和MySQL的缓存一致性方案",
+  "group": "P-B0",
+  "ts": "2026-11-22T07:37:55.915770+00:00",
+  "elapsed_seconds": 7.73,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Redis",
+        "query": "Redis",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8634,
+        "sources": 5,
+        "avg_summary": 2748.4,
+        "avg_content": 6688.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 2.76,
+        "evidence_path": "data\\evidence\\Redis-20261122-153750.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8651,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 2.76,
+    "evidence_path": "data\\evidence\\Redis-20261122-153750.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 552,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [
+          "MySQL"
+        ],
+        "evidence_gap": [
+          "MySQL"
+        ],
+        "evidence_count": 5,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 7.73
+    }
+  },
+  "injected": [
+    "one_side:first_object:Redis"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Redis Software | https://redis.io/docs/latest/operate/rs/",
+    "(无标题) | https://redis.antirez.com/commands/content/operate/oss_and_stack/stack-with-enterprise/release-notes/redisce/redisos-8.4-release-notes.md",
+    "(无标题) | https://redis.antirez.com/commands/content/operate/oss_and_stack/stack-with-enterprise/release-notes/redisce/redisos-8.6-release-notes.md",
+    "Redis 8.10 | https://redis.io/docs/latest/develop/whats-new/8-10/",
+    "(无标题) | https://redis.io/blog/redis-7-generally-available.md"
+  ],
+  "result": "缓存一致性方案在缓存侧高度依赖原子操作与可靠运维。Redis 开源版 8.4 引入了 `DIGEST`、`DELEX` 以及 `SET` 扩展，为字符串键提供原子的比较并设置、比较并删除能力；`MSETEX` 可以原子地设置多个字符串键并更新它们的过期时间，有助于在写入路径上减少竞态。8.10 版本进一步带来紧凑哈希编码、基于多部分 AOF 的节点级备份与恢复等改进。企业级 Redis Software 则提供线性扩展、高可用、备份与恢复以及可预测的性能，为一致性策略的稳定运行提供支撑。\n\n【来源】\n- Redis Open Source 8.4 release notes：https://redis.antirez.com/commands/content/operate/oss_and_stack/stack-with-enterprise/release-notes/redisce/redisos-8.4-release-notes.md\n- Redis 8.10：https://redis.io/docs/latest/develop/whats-new/8-10/\n- Redis Software：https://redis.io/docs/latest/operate/rs/",
+  "artifacts": {
+    "log": "logs\\Redis和MySQL的缓存一致性方案-20261122-153748.log",
+    "evidence": "data\\evidence\\Redis-20261122-153750.md"
+  }
+}

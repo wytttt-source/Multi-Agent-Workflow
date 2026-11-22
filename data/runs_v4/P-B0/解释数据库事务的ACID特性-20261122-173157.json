@@ -1,0 +1,147 @@
+{
+  "topic": "解释数据库事务的ACID特性",
+  "group": "P-B0",
+  "ts": "2026-11-22T09:31:57.656651+00:00",
+  "elapsed_seconds": 19.13,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8613,
+        "sources": 5,
+        "avg_summary": 1464.8,
+        "avg_content": 5671.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 12.63,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261122-173151.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 8639,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 1,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 12.63,
+    "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261122-173151.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 329,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 19.13
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "谈谈数据库的ACID - 谈谈数据库的ACID | https://developer.aliyun.com/article/258340#1",
+    "数据库关于事务的详解分析（全）包含面试常问的细节 - 数据库关于事务的详解分析（全）包含面试常问的细节 | https://developer.aliyun.com/article/1104752#slide-1#1",
+    "谈谈ACID - 谈谈ACID | https://developer.aliyun.com/article/1392801#slide-2#1",
+    "干货 | 认识数据库 - 腾讯NEXT学位 | https://cloud.tencent.cn/developer/article/1427954?policyId=1003#1",
+    "(无标题) | https://raw.githubusercontent.com/noughtq/notebook/master/docs/sys/db/13.md#2"
+  ],
+  "result": "数据库事务是一组不可分割的数据库操作序列，通常要么全部执行，要么全部不执行。ACID是事务的四个关键特性：原子性指事务中的操作要么全部成功，要么全部回滚；一致性指事务前后数据库保持完整、一致状态；隔离性指并发事务之间相互隔离、互不干扰；持久性指事务一旦提交，其修改便永久保存在数据，以及\n\n【来源】《谈谈数据库的ACID - 谈谈数据库的ACID》 https://developer.aliyun.com/article/258340#1；《数据库关于事务的详解分析（全）包含面试常问的细节 - 数据库关于事务的详解分析（全）包含面试常问的细节》 https://developer.aliyun.com/article/1104752#slide-1#1",
+  "artifacts": {
+    "log": "logs\\解释数据库事务的ACID特性-20261122-173138.log",
+    "evidence": "data\\evidence\\解释数据库事务的ACID特性-20261122-173151.md"
+  }
+}

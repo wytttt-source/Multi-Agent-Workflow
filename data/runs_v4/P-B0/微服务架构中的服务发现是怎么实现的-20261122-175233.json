@@ -1,0 +1,147 @@
+{
+  "topic": "微服务架构中的服务发现是怎么实现的",
+  "group": "P-B0",
+  "ts": "2026-11-22T09:52:33.820047+00:00",
+  "elapsed_seconds": 42.08,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "微服务架构中的服务发现是怎么实现的",
+        "query": "微服务架构中的服务发现是怎么实现的 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 9107,
+        "sources": 5,
+        "avg_summary": 1687.2,
+        "avg_content": 8180.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 36.72,
+        "evidence_path": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-175228.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 9136,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 1,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 36.72,
+    "evidence_path": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-175228.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 5,
+    "result_chars": 60,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 42.08
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md - dubbo-website - blob: e8fcfd57f5c601b55c1abafc6e53733936f5f0d8 [file] [view] | https://apache.googlesource.com/dubbo-website/+show/5bffcb329a62beb2884a3965b69d07913bc9e63a/content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md#1",
+    "Diff - 5355c21f1600de3dabab364d041f5be3570a939d^! - dubbo-website - 定义好服务之后，服务端（Provider）需要提供服务的具体实现，并将其声明为 Dubbo 服务，而站在服务消费方（Consumer）的视角，通过调用 Dubbo 框架提供的 API 可以获得一个服务代理（stub）对象，然后就可以像使用本地服务一样对服务... | https://apache.googlesource.com/dubbo-website/+/5355c21f1600de3dabab364d041f5be3570a939d%5e%21/content/zh/docs3-building/docs#3",
+    "一种用于微服务的服务注册和服务发现的方法 - 图6为实施例二中将D节点加入序号为3的服务路由表后B、C、D三个节点的服务列表和服务路由表对比图 | https://patents.google.com/patent/CN110677347B/zh#2",
+    "docs/zh/latest/discovery.md - apisix - blob: 6271334ff84b37601487c20a7eac9d7111b48027 [file] [log] [blame] [view] | https://apache.googlesource.com/apisix/+show/1dc78626f4fc2edbce0885c425920be31e73919f/docs/zh/latest/discovery.md#1",
+    "一种动态服务发现的代理方法及装置 - Ribbon Routing Filter路由过滤器12通过Ribbon装置将网关请求转发至服务实例 | https://patents.google.com/patent/CN114125051A/zh#2"
+  ],
+  "result": "微服务服务发现通常引入注册中心协调服务提供者与消费者：提供者启动时向注册中心注册服务名、IP、端口及元数据；消费者通过拉",
+  "artifacts": {
+    "log": "logs\\微服务架构中的服务发现是怎么实现的-20261122-175151.log",
+    "evidence": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-175228.md"
+  }
+}

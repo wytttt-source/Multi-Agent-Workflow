@@ -1,0 +1,274 @@
+{
+  "topic": "对比LSTM、GRU和Transformer的长文本建模能力",
+  "group": "P-F",
+  "ts": "2026-11-22T11:31:52.013989+00:00",
+  "elapsed_seconds": 220.46,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "LSTM",
+        "query": "LSTM",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8834,
+        "sources": 5,
+        "avg_summary": 3026.6,
+        "avg_content": 10774.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 2.96,
+        "evidence_path": "data\\evidence\\LSTM-20261122-192814.md"
+      },
+      {
+        "topic": "LSTM和GRU的长文本建模能力",
+        "query": "LSTM和GRU的长文本建模能力 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "LSTM和GRU的长文本建模能力 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "Transformer的长文本建模能力",
+        "query": "Transformer的长文本建模能力 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 2,
+        "filtered": 2,
+        "evidence_chars": 3564,
+        "sources": 2,
+        "avg_summary": 1757.5,
+        "avg_content": 4434.5,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 2,
+          "dropped": 0,
+          "total": 2
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 10.8,
+        "evidence_path": "data\\evidence\\Transformer的长文本建模能力-20261122-193111.md",
+        "retry_query": "Transformer的长文本建模能力 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "skipped": false,
+    "raw": 12,
+    "gated": 2,
+    "filtered": 2,
+    "evidence_chars": 3595,
+    "sources": 2,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk",
+      "disk"
+    ],
+    "cache_sources": [
+      "disk",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": true,
+        "kept": 2,
+        "dropped": 0,
+        "total": 2
+      }
+    ],
+    "elapsed_s": 10.8,
+    "evidence_path": "data\\evidence\\Transformer的长文本建模能力-20261122-193111.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "LSTM",
+        "GRU",
+        "Transformer"
+      ],
+      "hit": [
+        "LSTM",
+        "GRU",
+        "Transformer"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 551,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答直接围绕'对比LSTM、GRU和Transformer的长文本建模能力'展开，分别实质覆盖了两个必答对象：LSTM/GRU的门控结构与隐状态容量瓶颈（含历史状态缩放下界的理论视角）、Transformer的自注意力机制与长度外推技术（ALIBI），并给出三者的对比结论，非仅讲上位概念。硬性规则全部满足：证据2条≥1，【来源】中两个URL均可在实际检索来源清单中核验到，正文字数远超120字。检索统计中覆盖率0%仅说明检索资料在标题层面的不均衡，回答本身已讲清全部必答对象，故可通过。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 9,
+    "evidence_count": 2,
+    "result_chars": 766,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 551,
+    "len_full": 766,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 2/3 个必答对象：GRU、Transformer（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [
+          "GRU",
+          "Transformer"
+        ],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 182,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "证据只覆盖 LSTM 和 GRU 两个对象，未覆盖 'Transformer的长文本建模能力'（覆盖率67%，balance=0.00<0.5，偏侧严重）。回答中 Transformer 部分仅从 ACM 情感分析资料中的 attention 线索间接推断，缺乏关于 Transformer 长文本建模的直接证据支持，属",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R3_structure",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 870,
+        "truncated": false,
+        "llm_calls": 5
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答直接围绕'对比LSTM、GRU和Transformer的长文本建模能力'展开，分别实质覆盖了两个必答对象：LSTM/GRU的门控结构与隐状态容量瓶颈（含历史状态缩放下界的理论视角）、Transformer的自注意力机制与长度外推技术（ALIBI），并给出三者的对比结论，非仅讲上位概念。硬性规则全部满足：证据2条≥1",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 2,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 551,
+        "truncated": false,
+        "llm_calls": 9
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 9,
+      "searches": 3,
+      "elapsed_s": 220.46
+    }
+  },
+  "injected": [
+    "one_side:first_object:LSTM"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "LSTM和GRU的长文本建模能力",
+    "Transformer的长文本建模能力"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "\\(\\mathbf{L}^{2}\\mathbf{M}\\) : 长上下文语言建模的互信息缩放法则 | https://hjfy.top/arxiv/2503.04725#1#8#1",
+    "(无标题) | https://raw.githubusercontent.com/RosMarinas/Cognitive-knowledge-network/89b9106c13747e8e51f645d18aed7b9b0ec99431/wiki/methods/alibi.md"
+  ],
+  "result": "围绕长文本建模，LSTM、GRU与Transformer的差异可从“历史状态如何保存过去信息”和“token间依赖如何被建模”来理解。LSTM与GRU都属于门控循环网络：它们依靠隐状态沿序列逐步传递信息，长文本能力受历史状态容量、信息保留与衰减的约束。L²M提出的长上下文语言建模条件指出，负责存储过去信息的历史状态潜变量需要满足必要的缩放下界，才能有效建模长上下文；这为评估LSTM、GRU这类以隐状态为核心的长文本建模方式提供了理论视角。GRU与LSTM同属门控循环结构，门控组织不同，但长程依赖的关键仍在于隐状态能否充分保留远距离信息。Transformer则通过自注意力直接建立token间联系，L²M用二分互信息刻画不同于传统两点互信息的多token交互，并在Transformer上验证了缩放法则的预测，说明其对长序列依赖有更完整的表征潜力。不过，Transformer处理超出训练长度的文本仍需长度外推；ALIBI在Attention softmax前按相对距离减去线性偏置，增强局部注意力归纳偏置，支持短训长测。总体看，LSTM/GRU有顺序状态压缩与归纳偏置，但受历史状态瓶颈；Transformer显式交互更强，却依赖长上下文缩放与外推技术，三者长文本能力不能脱离这些条件简单比较。\n【来源】L²M：长上下文语言建模的互信息缩放法则 https://hjfy.top/arxiv/2503.04725#1#8#1；(无标题)（GitHub） https://raw.githubusercontent.com/RosMarinas/Cognitive-knowledge-network/89b9106c13747e8e51f645d18aed7b9b0ec99431/wiki/methods/alibi.md",
+  "artifacts": {
+    "log": "logs\\对比LSTM_GRU和Transformer的长-20261122-192811.log",
+    "evidence": "data\\evidence\\Transformer的长文本建模能力-20261122-193111.md"
+  }
+}

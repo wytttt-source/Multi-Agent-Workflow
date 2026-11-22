@@ -1,0 +1,216 @@
+{
+  "topic": "CDN的工作原理是什么",
+  "group": "P-F",
+  "ts": "2026-11-22T10:25:36.721409+00:00",
+  "elapsed_seconds": 195.37,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "CDN的工作原理是什么",
+        "query": "CDN的工作原理是什么 lang:zh",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8681,
+        "sources": 5,
+        "avg_summary": 1814.0,
+        "avg_content": 3751.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 2.9,
+        "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182224.md"
+      },
+      {
+        "topic": "CDN的工作原理是什么",
+        "query": "CDN的工作原理是什么 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 2,
+        "filtered": 1,
+        "evidence_chars": 1696,
+        "sources": 1,
+        "avg_summary": 1860.0,
+        "avg_content": 4123.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 1,
+          "dropped": 1,
+          "total": 2
+        },
+        "cache": "network",
+        "cache_source": "network",
+        "degraded": false,
+        "elapsed_s": 78.84,
+        "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182447.md",
+        "retry_query": "CDN的工作原理是什么 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 2,
+    "filtered": 1,
+    "evidence_chars": 1719,
+    "sources": 1,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "network"
+    ],
+    "cache_sources": [
+      "network"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 1,
+        "dropped": 1,
+        "total": 2
+      }
+    ],
+    "elapsed_s": 78.84,
+    "evidence_path": "data\\evidence\\CDN的工作原理是什么-20261122-182447.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "CDN"
+      ],
+      "hit": [
+        "CDN"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 322,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答直接围绕'CDN的工作原理'展开，完整讲清了DNS解析→CNAME→GSLB调度→就近节点→缓存命中直接返回/未命中回源缓存的机制，主题贴合、细节充分，正文字数远超120字；证据1条（≥1），【来源】URL在'实际检索来源'清单中可核验。覆盖率0%及balance=0.00仅反映检索标题层面未命中，且本主题为单一对象问题、不存在比较弱侧，回答已完整覆盖唯一必答对象'CDN的工作'，故不构成分解不合格或偏题。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 6,
+    "evidence_count": 1,
+    "result_chars": 405,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 1,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 322,
+    "len_full": 405,
+    "cited_loose": [
+      "https://intl.cloud.tencent.com/zh/search"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "llm",
+        "reason": "回答在'系统通过全局负载'处被截断，未完整讲清CDN工作原理（缺少负载均衡调度、就近返回缓存、缓存未命中回源等关键环节）；正文约60字，低于120字且未声明降级；且缺少【来源】标注，来源不可核验。检索到5条CDN专题证据、资料充分，属于回答自身内容缺陷而非检索失败或分解问题。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": false,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答直接围绕'CDN的工作原理'展开，完整讲清了DNS解析→CNAME→GSLB调度→就近节点→缓存命中直接返回/未命中回源缓存的机制，主题贴合、细节充分，正文字数远超120字；证据1条（≥1），【来源】URL在'实际检索来源'清单中可核验。覆盖率0%及balance=0.00仅反映检索标题层面未命中，且本主题为单一对",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 1,
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 322,
+        "truncated": false,
+        "llm_calls": 6
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 6,
+      "searches": 2,
+      "elapsed_s": 195.37
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Tencent Cloud | https://intl.cloud.tencent.com/zh/search/?wd=CDN&type=all"
+  ],
+  "result": "CDN（内容分发网络）是在现有互联网上增加的一层网络架构，由遍布全球的高性能加速节点构成。其工作原理是：用户访问业务域名时，先向Local DNS发起解析请求；若该域名已配置CNAME，解析请求会被发送至腾讯DNS（GSLB）调度体系，由其为请求分配最佳节点IP。用户随后向该节点IP发起资源访问请求。若节点已按缓存策略缓存该资源，则直接快速返回数据；若未缓存，节点会向业务源站请求资源，并结合用户自定义的缓存策略将资源缓存至节点后再返回给用户。通过这种“全局负载调度—就近节点响应—缓存命中直接返回—未命中回源并缓存”的机制，CDN可降低用户访问延迟、提升可用性，并缓解源站因物理距离远、跨运营商转发、带宽和处理能力有限带来的响应变慢等问题。\n\n【来源】Tencent Cloud（腾讯官网）：https://intl.cloud.tencent.com/zh/search/?wd=CDN&type=all",
+  "artifacts": {
+    "log": "logs\\CDN的工作原理是什么-20261122-182221.log",
+    "evidence": "data\\evidence\\CDN的工作原理是什么-20261122-182447.md"
+  }
+}

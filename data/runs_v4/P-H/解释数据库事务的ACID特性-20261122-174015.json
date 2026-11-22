@@ -1,0 +1,187 @@
+{
+  "topic": "解释数据库事务的ACID特性",
+  "group": "P-H",
+  "ts": "2026-11-22T09:40:15.095875+00:00",
+  "elapsed_seconds": 77.29,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8613,
+        "sources": 5,
+        "avg_summary": 1464.8,
+        "avg_content": 5671.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 12.21,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261122-173910.md"
+      }
+    ],
+    "skipped": true,
+    "raw": 0,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 8613,
+    "sources": 5,
+    "providers": [],
+    "cache": [],
+    "cache_sources": [],
+    "degraded": false,
+    "llm_filter": [],
+    "elapsed_s": 0,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "hit": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 779,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧扣主题'解释数据库事务的ACID特性'，逐项解释原子性、一致性、隔离性、持久性，含定义、转账示例及MySQL实现机制（undolog、redolog/binlog、MVCC），内容完整详实，非上位概念偏题；证据5条≥1，【来源】清单5条URL均在实际检索来源中可核验；正文字数远超120字，满足全部通过条件。检索统计中覆盖率0%、balance=0.00仅为标题字面匹配偏差（单主题无比较弱侧），不构成分解不合理或检索失败。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 5,
+    "result_chars": 1247,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 5,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 779,
+    "len_full": 1247,
+    "cited_loose": [
+      "https://cloud.tencent.cn/developer/article/1427954"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 1/4 个必答对象：持久性（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [
+          "持久性"
+        ],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧扣主题'解释数据库事务的ACID特性'，逐项解释原子性、一致性、隔离性、持久性，含定义、转账示例及MySQL实现机制（undolog、redolog/binlog、MVCC），内容完整详实，非上位概念偏题；证据5条≥1，【来源】清单5条URL均在实际检索来源中可核验；正文字数远超120字，满足全部通过条件。检索统",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 5,
+        "body_chars": 779,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 1,
+      "elapsed_s": 77.29
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "谈谈数据库的ACID - 谈谈数据库的ACID | https://developer.aliyun.com/article/258340#1",
+    "数据库关于事务的详解分析（全）包含面试常问的细节 - 数据库关于事务的详解分析（全）包含面试常问的细节 | https://developer.aliyun.com/article/1104752#slide-1#1",
+    "谈谈ACID - 谈谈ACID | https://developer.aliyun.com/article/1392801#slide-2#1",
+    "干货 | 认识数据库 - 腾讯NEXT学位 | https://cloud.tencent.cn/developer/article/1427954?policyId=1003#1",
+    "(无标题) | https://raw.githubusercontent.com/noughtq/notebook/master/docs/sys/db/13.md#2"
+  ],
+  "result": "事务是访问和更新数据库的程序执行单元，可能包含一个或多个 SQL 语句，这些语句要么都执行，要么都不执行；ACID 则是可靠数据库管理系统中事务应具有的四个特性：原子性、一致性、隔离性和持久性。下面逐项说明。\n\n- 原子性：事务是一个不可分割的工作单位，事务中的操作要么都发生，要么都不发生。比如 A 给 B 转账 100 元，事务中先执行扣款、再执行加款；如果出错就回滚，否则提交。资料还指出，事务中任何一条 SQL 执行失败，已经执行成功的语句也必须撤销，状态回退到执行事务之前；MySQL 中原子性通过 undolog 来实现。  \n- 一致性：事务应确保数据库状态从一个一致状态转变为另一个一致状态，事务前后的数据完整性要保证一致。例如银行转账开始有 1000 块钱，转账结束后总金额仍应保持一致；一致状态也意味着数据库中的数据应满足完整性约束。资料提到，MySQL 通过原子性、持久性和隔离性最终实现（或者说定义）数据一致性，而事务一致性也需要应用程序负责。\n\n- 隔离性：多个用户并发访问数据库时，数据库为每一个用户开启的事务不能被其他事务的操作数据所干扰，多个并发事务之间要相互隔离；一个事务的执行不应影响其他事务的执行，所有事务都好像在独立运行。资料还列出未提交读、已提交读、可重复读、可序列化等隔离级别来处理脏读、不可重复读和幻读等读一致性问题；隔离越严格，并发副作用越小，但代价也越大。MySQL 通过读写锁加 MVCC 实现隔离性。  \n- 持久性：事务一旦提交则不可逆，被持久化到数据库中；已被提交的事务对数据库的修改应该永久保存在数据库中。资料说明，要保证持久性，由事务实现的更新以及关于更新的信息要被写到硬盘上，使数据库在遇到故障重启后能够重构更新，并由数据库的恢复系统负责维护；MySQL 通过 binlog、redolog 来实现持久性。\n\n【来源】  \n1. 【谈谈数据库的ACID - 谈谈数据库的ACID】，https://developer.aliyun.com/article/258340#1  \n2. 【数据库关于事务的详解分析（全）包含面试常问的细节 - 数据库关于事务的详解分析（全）包含面试常问的细节】，https://developer.aliyun.com/article/1104752#slide-1#1  \n3. 【谈谈ACID - 谈谈ACID】，https://developer.aliyun.com/article/1392801#slide-2#1  \n4. 【干货 | 认识数据库 - 腾讯NEXT学位】，https://cloud.tencent.cn/developer/article/1427954?policyId=1003#1  \n5. 【(无标题)】，https://raw.githubusercontent.com/noughtq/notebook/master/docs/sys/db/13.md#2",
+  "artifacts": {
+    "log": "logs\\解释数据库事务的ACID特性-20261122-173857.log",
+    "evidence": ""
+  }
+}

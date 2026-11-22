@@ -1,0 +1,203 @@
+{
+  "topic": "对比LSTM、GRU和Transformer的长文本建模能力",
+  "group": "P-R",
+  "ts": "2026-11-22T08:08:45.850441+00:00",
+  "elapsed_seconds": 100.06,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "LSTM",
+        "query": "LSTM",
+        "raw": 6,
+        "gated": 5,
+        "filtered": 5,
+        "evidence_chars": 8834,
+        "sources": 5,
+        "avg_summary": 3026.6,
+        "avg_content": 10774.4,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 0,
+          "total": 5
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 9.56,
+        "evidence_path": "data\\evidence\\LSTM-20261122-160715.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 5,
+    "filtered": 5,
+    "evidence_chars": 8850,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 0,
+        "total": 5
+      }
+    ],
+    "elapsed_s": 9.56,
+    "evidence_path": "data\\evidence\\LSTM-20261122-160715.md",
+    "retry_query": "对比LSTM、GRU和Transformer的长文本建模能力 GRU lang:zh",
+    "retry_mode": "missing_term:GRU"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "LSTM",
+        "GRU",
+        "Transformer"
+      ],
+      "hit": [
+        "LSTM"
+      ],
+      "missing": [
+        "GRU",
+        "Transformer"
+      ],
+      "ratio": 0.333,
+      "body_chars": 173,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案未覆盖 2/3 个必答对象：GRU、Transformer（证据里已有这些对象，属生成缺口，局部重写即可）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 519,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 519,
+    "len_full": 1024,
+    "cited_loose": [
+      "http://mp.weixin.qq.com/s",
+      "https://cloud.tencent.com.cn/developer/article/2550669"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案未覆盖 2/3 个必答对象：GRU、Transformer（证据里已有这些对象，属生成缺口，局部重写即可）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [
+          "GRU",
+          "Transformer"
+        ],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 173,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 519,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 100.06
+    }
+  },
+  "injected": [
+    "one_side:first_object:LSTM"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "从RNN循环神经网络到Transformer注意力机制：解析神经网络架构的华丽蜕变 - - Transformer测试损失：6.5362 | https://cloud.tencent.com.cn/developer/article/2550669?policyId=1003#2",
+    "从RNN到GRU、LSTM再到Transformer的全面解析 | https://bbs.huaweicloud.com/blogs/453594#1#1",
+    "Transformer 相比于传统的 RNN优势 - Transformer 相比于传统的 RNN优势 | https://blog.csdn.net/Wei_sx/article/details/149354331#1",
+    "LSTM/GRU和TRANSFORMER的长距离依赖处理 | http://mp.weixin.qq.com/s?__biz=Mzk5MDg0MzE3MA==&mid=2247484799&idx=1&sn=b62a10c85b1972ace1b6a5cceb9b4164"
+  ],
+  "result": "LSTM通过遗忘门、输入门和输出门来选择性地保留和传递信息，能在较长序列中记住关键内容并缓解普通RNN的梯度消失/爆炸问题，因此在长文本建模中具有较强长程依赖能力。不过，LSTM需要按时间步顺序处理序列，并行计算困难，且门控结构带来较高计算复杂度，训练速度相对较慢；资料中的实验里，LSTM测试损失为32.2622，训练时间为62.72秒。\n\nGRU是LSTM的简化变体，用重置门和更新门替代复杂门控，参数更少、训练更快，并能在不少任务上取得与LSTM相近的性能，对长距离依赖也有一定建模能力。其代价是表达能力略弱于LSTM；在资料给出的同一实验任务中，GRU测试损失同为32.2622，训练时间为55.43秒，较LSTM略快，但RNN类模型在该实验中整体学习效果不明显。\n\nTransformer依靠自注意力机制直接建模序列中任意两个位置之间的关系，不受距离限制，多头注意力还能同时关注不同语义方面，位置编码补足顺序信息；同时它可完全并行计算，训练效率高、更容易优化。资料实验中Transformer测试损失为6.5362，明显低于LSTM和GRU，训练时间仅22.43秒，说明其长文本全局依赖建模和训练效率优势突出，但缺点是内存消耗较大。\n\n【来源】\n- 【从RNN循环神经网络到Transformer注意力机制：解析神经网络架构的华丽蜕变 - - Transformer测试损失：6.5362】 URL: https://cloud.tencent.com.cn/developer/article/2550669?policyId=1003#2\n- 【从RNN到GRU、LSTM再到Transformer的全面解析】 URL: https://bbs.huaweicloud.com/blogs/453594#1#1\n- 【Transformer 相比于传统的 RNN优势 - Transformer 相比于传统的 RNN优势】 URL: https://blog.csdn.net/Wei_sx/article/details/149354331#1\n- 【LSTM/GRU和TRANSFORMER的长距离依赖处理】 URL: http://mp.weixin.qq.com/s?__biz=Mzk5MDg0MzE3MA==&mid=2247484799&idx=1&sn=b62a10c85b1972ace1b6a5cceb9b4164",
+  "artifacts": {
+    "log": "logs\\对比LSTM_GRU和Transformer的长-20261122-160705.log",
+    "evidence": "data\\evidence\\LSTM-20261122-160715.md"
+  }
+}

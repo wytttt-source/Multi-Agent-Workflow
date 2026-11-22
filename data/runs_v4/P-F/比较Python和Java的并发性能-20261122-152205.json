@@ -1,0 +1,305 @@
+{
+  "topic": "比较Python和Java的并发性能",
+  "group": "P-F",
+  "ts": "2026-11-22T07:22:05.950127+00:00",
+  "elapsed_seconds": 114.94,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Python",
+        "query": "Python",
+        "raw": 6,
+        "gated": 4,
+        "filtered": 4,
+        "evidence_chars": 6859,
+        "sources": 4,
+        "avg_summary": 1885.0,
+        "avg_content": 5406.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 4,
+          "dropped": 0,
+          "total": 4
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 6.69,
+        "evidence_path": "data\\evidence\\Python-20261122-152017.md"
+      },
+      {
+        "topic": "Python和Java的并发性能",
+        "query": "Python和Java的并发性能 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Python和Java的并发性能 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "Python并发性能",
+        "query": "Python并发性能 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 1,
+        "filtered": 1,
+        "evidence_chars": 1738,
+        "sources": 1,
+        "avg_summary": 2214.0,
+        "avg_content": 2658.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 1,
+          "dropped": 0,
+          "total": 1
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 4.21,
+        "evidence_path": "data\\evidence\\Python并发性能-20261122-152124.md",
+        "retry_query": "Python并发性能 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "Java并发性能",
+        "query": "Java并发性能 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 3,
+        "filtered": 1,
+        "evidence_chars": 1735,
+        "sources": 1,
+        "avg_summary": 2079.0,
+        "avg_content": 5159.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 1,
+          "dropped": 2,
+          "total": 3
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 13.46,
+        "evidence_path": "data\\evidence\\Java并发性能-20261122-152137.md",
+        "retry_query": "Java并发性能 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "skipped": false,
+    "raw": 12,
+    "gated": 4,
+    "filtered": 2,
+    "evidence_chars": 3517,
+    "sources": 2,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk",
+      "disk"
+    ],
+    "cache_sources": [
+      "disk",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 1,
+        "dropped": 0,
+        "total": 1
+      },
+      {
+        "applied": true,
+        "kept": 1,
+        "dropped": 2,
+        "total": 3
+      }
+    ],
+    "elapsed_s": 17.67,
+    "evidence_path": "data\\evidence\\Python并发性能-20261122-152124.md; data\\evidence\\Java并发性能-20261122-152137.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Python",
+        "Java"
+      ],
+      "hit": [
+        "Python",
+        "Java"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 435,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "硬性否决条件全部满足：证据2条（≥1），【来源】中的两个URL均在实际检索来源清单中可核验，正文约380字（≥120）。内容实质覆盖两个必答对象：Python侧详述asyncio事件循环、GIL约束与自由线程机制，Java侧详述JDK 21虚拟线程、Project Loom与结构化并发，并给出对比总结，紧扣主题且非上位概念。统计中覆盖率0%仅反映检索标注不均衡，按规则以回答是否讲清每个必答对象为准，两侧均有实质展开，判定合格。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 9,
+    "evidence_count": 2,
+    "result_chars": 616,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 435,
+    "len_full": 616,
+    "cited_loose": [
+      "https://developer.cloud.tencent.cn/article/2680359"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Java（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "Java"
+        ],
+        "evidence_gap": [
+          "Java"
+        ],
+        "evidence_count": 4,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 164,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "证据4条全部只覆盖Python，Java侧证据完全缺失（未覆盖['Java']，balance=0.00<0.5），比较类主题的证据只覆盖单一对象；回答虽诚实声明缺Java证据且未编造，但重写文本补不出不存在的Java资料，需拆解任务、更换检索式补充Java并发文档与基准证据后再重写。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R3_structure",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 4,
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 422,
+        "truncated": false,
+        "llm_calls": 4
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "硬性否决条件全部满足：证据2条（≥1），【来源】中的两个URL均在实际检索来源清单中可核验，正文约380字（≥120）。内容实质覆盖两个必答对象：Python侧详述asyncio事件循环、GIL约束与自由线程机制，Java侧详述JDK 21虚拟线程、Project Loom与结构化并发，并给出对比总结，紧扣主题且非上位",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 2,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 435,
+        "truncated": false,
+        "llm_calls": 9
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 9,
+      "searches": 4,
+      "elapsed_s": 114.94
+    }
+  },
+  "injected": [
+    "one_side:first_object:Python"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "Python并发性能",
+    "Java并发性能"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "asyncio 与自由线程 Python | https://docs.python.org/zh-cn/3.14/library/asyncio-threading.html",
+    "《Java 演进之路》系列 · 第 22 篇 | https://developer.cloud.tencent.cn/article/2680359?policyId=1003"
+  ],
+  "result": "Python的并发性能与其运行时机制密切相关。asyncio通过事件循环调度任务，适合I/O密集型场景：单核事件循环可并发处理大量连接，但每个连接的Python代码仍串行执行；CPU密集型工作需卸载到线程或进程池，传统CPython仍受GIL约束。自由线程Python禁用GIL后，可运行真正的多线程代码；从Python 3.14起，asyncio对自由线程提供一流支持，通过每个线程运行一个事件循环，可让不同请求的处理在多个CPU核心上并行。Java侧，JDK 21虚拟线程正式落地，JDK 26进一步完善Project Loom生态，结构化并发StructuredTaskScope与虚拟线程配合，用于管理海量虚拟线程；资料称其可减少手动线程池管理并提升吞吐量。总体看，Python的asyncio在I/O并发上轻量高效，CPU多核并行依赖自由线程等新机制；Java虚拟线程与结构化并发更强调高吞吐、易管理的并发编程模型。实际性能仍取决于负载、运行时版本与实现方式。\n【来源】《asyncio 与自由线程 Python》 https://docs.python.org/zh-cn/3.14/library/asyncio-threading.html；《Java 演进之路》系列 · 第 22 篇 https://developer.cloud.tencent.cn/article/2680359?policyId=1003",
+  "artifacts": {
+    "log": "logs\\比较Python和Java的并发性能-20261122-152011.log",
+    "evidence": "data\\evidence\\Python并发性能-20261122-152124.md; data\\evidence\\Java并发性能-20261122-152137.md"
+  }
+}

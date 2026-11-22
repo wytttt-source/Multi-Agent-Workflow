@@ -1,0 +1,198 @@
+{
+  "topic": "解释数据库事务的ACID特性",
+  "group": "P-R",
+  "ts": "2026-11-22T09:38:53.386941+00:00",
+  "elapsed_seconds": 160.37,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释数据库事务的ACID特性",
+        "query": "解释数据库事务的ACID特性 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8613,
+        "sources": 5,
+        "avg_summary": 1464.8,
+        "avg_content": 5671.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 16.9,
+        "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261122-173629.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 8639,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 1,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 16.9,
+    "evidence_path": "data\\evidence\\解释数据库事务的ACID特性-20261122-173629.md",
+    "retry_query": "解释数据库事务的ACID特性 补充资料 最新进展 lang:zh",
+    "retry_mode": "missing_term:fallback"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "hit": [
+        "原子性",
+        "一致性",
+        "隔离性",
+        "持久性"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 143,
+      "truncated": true,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答在持久性部分被截断：结尾'永久保存在，以及'句子不完整、'以及'后无后续内容，持久性解释未讲完，正文不完整。主题贴合、来源URL可核验、字数达标，但因内容截断不完整而不合格",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 2,
+    "result_chars": 556,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 2,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 556,
+    "len_full": 752,
+    "cited_loose": [
+      "https://baike.baidu.com/item/acid/10738"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "llm",
+        "reason": "回答在持久性部分被截断：结尾'永久保存在，以及'句子不完整、'以及'后无后续内容，持久性解释未讲完，正文不完整。主题贴合、来源URL可核验、字数达标，但因内容截断不完整而不合格",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 2,
+        "body_chars": 556,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 160.37
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "acid（数据库事务正确执行的四个基本要素的缩写）_百度百科 - 搜词条 | https://wapbaike.baidu.com/item/ACID/10738#1",
+    "acid - acid | https://baike.baidu.com/item/ACID/10738?bst=1794019753.725734b3f738d295#1"
+  ],
+  "result": "ACID是数据库管理系统在写入或更新数据时，为保证事务正确可靠而必须具备的四个基本特性的缩写，即原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）和持久性（Durability）。事务是由一系列数据库操作组成的完整逻辑过程，不能随意拆分；ACID描述的正是这种过程应满足的正确性要求。原子性强调事务中的所有操作要么全部完成、要么全部不完成；一致性关注事务开始之前和事务结束以后，数据库应保持符合约束的正确状态；隔离性指并发执行的事务应在隔离状态下运行，彼此不产生不当干扰；持久性则要求事务一旦成功提交，其结果应可靠保存，不因后续故障而丢失。\n\n通俗地说，ACID是在给数据库事务“上保险”。原子性避免出现“扣了款却没入账”的半截操作；一致性保证事务前后数据仍满足业务规则和完整性约束；隔离性让多个事务并发时像各自独立执行一样，减少互相看到中间状态的风险；持久性保证提交后的结果不会轻易丢失。四者共同服务于“事务正确可靠”这一目标，而不是彼此孤立的术语。\n\n以资料中的银行转账为例，从原账户扣款和向目标账户入账应构成一个不可拆分的原子操作，整体事务要满足ACID特性。这样才能让转账过程在出现异常或并发访问时仍保持正确、可靠。可见，ACID是理解数据库事务正确执行的重要基础。\n\n【来源】\n1. 【acid（数据库事务正确执行的四个基本要素的缩写）_百度百科 - 搜词条】 URL: https://wapbaike.baidu.com/item/ACID/10738#1\n2. 【acid - acid】 URL: https://baike.baidu.com/item/ACID/10738?bst=1794019753.725734b3f738d295#1",
+  "artifacts": {
+    "log": "logs\\解释数据库事务的ACID特性-20261122-173613.log",
+    "evidence": "data\\evidence\\解释数据库事务的ACID特性-20261122-173629.md"
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "topic": "解释Docker镜像的分层存储原理",
+  "group": "P-B0",
+  "ts": "2026-11-22T10:06:55.340444+00:00",
+  "elapsed_seconds": 15.38,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "解释Docker镜像的分层存储原理",
+        "query": "解释Docker镜像的分层存储原理 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10251,
+        "sources": 6,
+        "avg_summary": 1115.3,
+        "avg_content": 2616.7,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 5.25,
+        "evidence_path": "data\\evidence\\解释Docker镜像的分层存储原理-20261122-180645.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10280,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 5.25,
+    "evidence_path": "data\\evidence\\解释Docker镜像的分层存储原理-20261122-180645.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 6,
+    "result_chars": 407,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 15.38
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "(无标题) | https://raw.githubusercontent.com/yeasy/docker_practice/aa589406b90c1bcc7cbccfcf252ac4a690564c60/04_image/4.7_internal.md#1",
+    "理解映象層 | https://docs.docker.com.tw/guides/docker-concepts/building-images/understanding-image-layers/#additional-resources",
+    "(无标题) | https://raw.githubusercontent.com/yeasy/docker_practice/734079661d7d66a2c42226dab7bd5b3262273b55/basic_concept/image.md",
+    "2021-Java后端工程师必会知识点-(Docker)（下） - 2021-Java后端工程师必会知识点-(Docker)（下） | https://developer.aliyun.com/article/947611#1",
+    "(无标题) | https://raw.githubusercontent.com/yeasy/docker_practice/d252fef1fc8954c482f28570613f408e3286218c/basic_concept/image.md",
+    "【Docker】7. 镜像-加载原理、分层原理、commit镜像 - 【Docker】7. 镜像-加载原理、分层原理、commit镜像 | https://developer.aliyun.com/article/1053676#slide-1#1"
+  ],
+  "result": "Docker镜像借助Union FS实现分层存储：镜像不是单一文件，而是由多层只读文件系统叠加构成；每层记录相对下层的文件变更（新增、修改、删除），前一层是后一层的基础，构建时只追加新层。容器启动时在镜像最上层创建可写容器层，所有写操作都在该层进行，底层镜像保持不变。这样可共享和，以及\n\n【来源】理解映象層：https://docs.docker.com.tw/guides/docker-concepts/building-images/understanding-image-layers/#additional-resources；(无标题)（GitHub）：https://raw.githubusercontent.com/yeasy/docker_practice/aa589406b90c1bcc7cbccfcf252ac4a690564c60/04_image/4.7_internal.md#1",
+  "artifacts": {
+    "log": "logs\\解释Docker镜像的分层存储原理-20261122-180639.log",
+    "evidence": "data\\evidence\\解释Docker镜像的分层存储原理-20261122-180645.md"
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "topic": "微服务架构中的服务发现是怎么实现的",
+  "group": "P-R",
+  "ts": "2026-11-22T09:59:21.660753+00:00",
+  "elapsed_seconds": 172.79,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "short",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "微服务架构中的服务发现是怎么实现的",
+        "query": "微服务架构中的服务发现是怎么实现的 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 9107,
+        "sources": 5,
+        "avg_summary": 1687.2,
+        "avg_content": 8180.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 89.65,
+        "evidence_path": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-175758.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 9136,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 1,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 89.65,
+    "evidence_path": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-175758.md",
+    "retry_query": "微服务架构中的服务发现是怎么实现的 补充资料 最新进展 lang:zh",
+    "retry_mode": "missing_term:fallback"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "服务发现"
+      ],
+      "hit": [
+        "服务发现"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 60,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答在'并通过心'处被截断，实现机制未讲完，缺乏注册中心交互、消费者发现流程等细节；正文约60字，低于120字要求；且缺少【来源】标注，来源不可核验。检索证据有5条且主题相关（Dubbo、APISIX、服务发现专利等），资料充足，属内容层面缺陷，可局部重写，非检索失败或分解问题。",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 5,
+    "evidence_count": 3,
+    "result_chars": 803,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 3,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 803,
+    "len_full": 1229,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "short",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "llm",
+        "reason": "回答在'并通过心'处被截断，实现机制未讲完，缺乏注册中心交互、消费者发现流程等细节；正文约60字，低于120字要求；且缺少【来源】标注，来源不可核验。检索证据有5条且主题相关（Dubbo、APISIX、服务发现专利等），资料充足，属内容层面缺陷，可局部重写，非检索失败或分解问题。",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 0,
+        "body_chars": 60,
+        "truncated": false,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 803,
+        "truncated": false,
+        "llm_calls": 5
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 5,
+      "searches": 2,
+      "elapsed_s": 172.79
+    }
+  },
+  "injected": [
+    "short"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Dubbo3 应用级服务发现 | https://github.com/apache/dubbo-website/blob/82129610f9b0ae9360c162cacb829ad770b27883/content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md",
+    "服务发现 | https://github.com/apache/dubbo-website/blob/82129610f9b0ae9360c162cacb829ad770b27883/content/zh-cn/overview/what/core-features/service-discovery.md",
+    "从伦敦地铁到云原生：Spring Cloud 发展史与核心知识点详解 - 从伦敦地铁到云原生：Spring Cloud 发展史与核心知识点详解 | https://blog.csdn.net/King_model/article/details/158177444#1"
+  ],
+  "result": "微服务中的服务发现，核心是解决实例动态扩缩、故障迁移导致 IP/端口变化后，调用方如何及时找到可用后端的问题。典型实现包含三类角色：服务提供者（Provider）启动后把自身地址和元数据注册到注册中心（Registry）；注册中心负责聚合、存储地址列表并感知实例上下线；服务消费者（Consumer）从注册中心读取地址列表并订阅变更，地址变化时由注册中心通知消费者，消费者再结合负载均衡发起调用。不同框架的主要区别，往往体现在注册中心数据如何组织：地址按什么粒度组织、除 IP 和端口外还同步哪些元数据。\n\n以 Dubbo 为例，它提供的是一种 Client-Based 的服务发现机制，依赖 Nacos、Consul、Zookeeper 等第三方注册中心协调发现过程。Dubbo 提供者实例会把 URL 地址注册到注册中心，注册中心对数据聚合，消费者读取地址列表并订阅变更，列表变化时注册中心通知所有订阅消费者。Dubbo3 进一步采用应用粒度聚合实例数据，消费者按消费需求精准订阅，避免全量订阅带来的性能瓶颈；同时 SDK 对消费端地址列表处理做了异步、缓存、bitmap 等优化，并同步 IP、端口以及 RPC/HTTP 服务及其配置元数据，从而支撑大规模集群和更细粒度治理。\n\n以 Spring Cloud 中常用的 Eureka 为例，服务提供者启动时会向 Eureka Server 发送 REST 请求，注册自己的服务名、IP、端口等信息；提供者每隔约 30 秒发送心跳续约，证明自己仍然存活；消费者向 Eureka Server 拉取服务列表并缓存到本地，再通过 Ribbon 等负载均衡组件选择实例发起调用；如果 Eureka Server 在约 90 秒内未收到心跳，就会把该实例从注册表中剔除。由此可见，Eureka 主要通过“注册—心跳续约—拉取缓存—剔除失效实例”的机制实现服务发现。\n\n【来源】\n- Dubbo3 应用级服务发现：https://github.com/apache/dubbo-website/blob/82129610f9b0ae9360c162cacb829ad770b27883/content/zh-cn/blog/java/codeanalysis/v3-service-discovery.md\n- 服务发现：https://github.com/apache/dubbo-website/blob/82129610f9b0ae9360c162cacb829ad770b27883/content/zh-cn/overview/what/core-features/service-discovery.md\n- 从伦敦地铁到云原生：Spring Cloud 发展史与核心知识点详解：https://blog.csdn.net/King_model/article/details/158177444#1",
+  "artifacts": {
+    "log": "logs\\微服务架构中的服务发现是怎么实现的-20261122-175628.log",
+    "evidence": "data\\evidence\\微服务架构中的服务发现是怎么实现的-20261122-175758.md"
+  }
+}

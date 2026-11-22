@@ -1,0 +1,205 @@
+{
+  "topic": "比较MySQL、PostgreSQL和SQLite的索引实现",
+  "group": "P-R",
+  "ts": "2026-11-22T08:00:21.963920+00:00",
+  "elapsed_seconds": 127.92,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "MySQL",
+        "query": "MySQL",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10513,
+        "sources": 6,
+        "avg_summary": 2679.5,
+        "avg_content": 4278.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 5.8,
+        "evidence_path": "data\\evidence\\MySQL-20261122-155819.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10530,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 5.8,
+    "evidence_path": "data\\evidence\\MySQL-20261122-155819.md",
+    "retry_query": "比较MySQL、PostgreSQL和SQLite的索引实现 PostgreSQL lang:zh",
+    "retry_mode": "missing_term:PostgreSQL"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "MySQL",
+        "PostgreSQL",
+        "SQLite"
+      ],
+      "hit": [
+        "MySQL"
+      ],
+      "missing": [
+        "PostgreSQL",
+        "SQLite"
+      ],
+      "ratio": 0.333,
+      "body_chars": 182,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：PostgreSQL、SQLite（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 846,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 846,
+    "len_full": 1343,
+    "cited_loose": [
+      "https://cloud.tencent.cn/developer/ask/sof/116182162"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：PostgreSQL、SQLite（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "PostgreSQL",
+          "SQLite"
+        ],
+        "evidence_gap": [
+          "PostgreSQL",
+          "SQLite"
+        ],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 182,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 846,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 127.92
+    }
+  },
+  "injected": [
+    "one_side:first_object:MySQL"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "问默认情况下，所有关系DBMSes都将表元组存储在基于主键的聚集索引中吗？ - 提问 | https://cloud.tencent.cn/developer/ask/sof/116182162?from=16139#1",
+    "索引扫描在不同数据库中的实现 | https://m.yisu.com/zixun/1052793.html",
+    "5.3 全文与倒排对照 | SQLite内核与优化 - 灏天文库 | https://aiknowledge.cn/article/58476-5-3-%E5%85%A8%E6%96%87%E4%B8%8E%E5%80%92%E6%8E%92%E5%AF%B9%E7%85%A7",
+    "同样是 B+Tree，为什么 SQLite、PostgreSQL 和 InnoDB 的实现不同？ - 同样是 B+Tree，为什么 SQLite、PostgreSQL 和 InnoDB 的实现不同？ | https://www.cnblogs.com/NCMY/articles/22646846#commentform#1"
+  ],
+  "result": "MySQL 的索引实现要结合存储引擎来看。资料指出，以常讨论的 InnoDB 为例，它默认把表数据按主键组织在聚集索引的 B+Tree 上，元组位于叶子节点，找到主键索引中的记录也就能取得整行数据；这与“索引只保存数据在哪里”的设计不同。MySQL 还支持 B-Tree、Hash、R-Tree 等多种索引类型，查询优化器会决定是否使用索引扫描，例如 B-Tree 索引可执行索引范围扫描或索引全扫描。因此，InnoDB 的主索引不只是辅助查找结构，还承担数据组织职责。\n\nPostgreSQL 的实现明显不同。资料明确说明，PostgreSQL 默认不把表数据放进基于主键的聚集索引，所有表数据都存储在堆中；用户可以另外创建 B-Tree、Hash、GiST、SP-GiST、GIN、BRIN 等索引。堆中的行由特殊的 Page/RowID 等引用，其他索引保存这种位置引用，查询时往往先通过索引定位，再回到堆中取行。PostgreSQL 的优化器会评估并选择索引唯一扫描、索引范围扫描或索引扫描等方式。也就是说，PostgreSQL 更接近“堆存数据、索引存位置引用”的组合，而不是 InnoDB 那种主键聚集索引直接承载表数据。\n\nSQLite 则更偏向嵌入式单文件数据库。资料指出，SQLite 通常直接嵌入应用程序，数据库本身就是一个文件，其内部大量数据组织在 B-Tree Page 中，B-Tree 是数据组织的核心。SQLite 主要使用 B-Tree 索引，查询优化器会尝试用索引加速查询；如果查询条件中的列被索引覆盖，可能通过索引扫描直接取得所需数据。全文检索场景下，SQLite 使用 FTS5 虚拟表，并通过 docs_fts_data、docs_fts_idx 等影子表保存“词到行号”的倒排结构，写入时分段并在后台合并。与 MySQL InnoDB 的聚集索引、PostgreSQL 的堆加多类型索引相比，SQLite 更强调单文件内的 B-Tree 组织与轻量嵌入。\n\n【来源】\n- 问默认情况下，所有关系DBMSes都将表元组存储在基于主键的聚集索引中吗？ - 提问\nURL: https://cloud.tencent.cn/developer/ask/sof/116182162?from=16139#1\n- 索引扫描在不同数据库中的实现\nURL: https://m.yisu.com/zixun/1052793.html\n- 5.3 全文与倒排对照 | SQLite内核与优化 - 灏天文库\nURL: https://aiknowledge.cn/article/58476-5-3-%E5%85%A8%E6%96%87%E4%B8%8E%E5%80%92%E6%8E%92%E5%AF%B9%E7%85%A7\n- 同样是 B+Tree，为什么 SQLite、PostgreSQL 和 InnoDB 的实现不同？ - 同样是 B+Tree，为什么 SQLite、PostgreSQL 和 InnoDB 的实现不同？\nURL: https://www.cnblogs.com/NCMY/articles/22646846#commentform#1",
+  "artifacts": {
+    "log": "logs\\比较MySQL_PostgreSQL和SQLit-20261122-155814.log",
+    "evidence": "data\\evidence\\MySQL-20261122-155819.md"
+  }
+}

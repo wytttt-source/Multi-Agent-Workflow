@@ -62,3 +62,13 @@ data/runs_v3_pre_v24/
 data/runs_v3_v24a/
 data/runs_v3_superseded/
 data/runs_v2_superseded/
+# v2.5 口径：data/runs_v4/（17 题 × 4 臂 = 68 份正式批次）随仓库提交，
+#     只忽略运行日志与两个隔离目录——
+#       runs_v4_infra_timeout/   运行中被 LLM 供应商超时打断、终态为「执行暂停」的尝试（重跑前的留档）
+#       runs_v4_rule_fallback/   终轮由确定性规则兜底（反思 LLM 超时）的旧记录（重跑前的留档）
+#     两批重跑记录都不入表，入表的是 runs_v4 里一题一臂一份的正式记录。
+data/runs_v4/*.log
+data/runs_v4/*.err
+data/runs_v4_infra_timeout/
+data/runs_v4_rule_fallback/
+data/runs_v3_pre_v25/

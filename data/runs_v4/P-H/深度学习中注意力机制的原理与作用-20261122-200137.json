@@ -1,0 +1,266 @@
+{
+  "topic": "深度学习中注意力机制的原理与作用",
+  "group": "P-H",
+  "ts": "2026-11-22T12:01:37.041863+00:00",
+  "elapsed_seconds": 533.8,
+  "config": {
+    "group": "P-H",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "truncate",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "深度学习中注意力机制的原理与作用",
+        "query": "深度学习中注意力机制的原理与作用 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10607,
+        "sources": 6,
+        "avg_summary": 1621.7,
+        "avg_content": 5790.7,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 49.39,
+        "evidence_path": "data\\evidence\\深度学习中注意力机制的原理与作用-20261122-195332.md"
+      },
+      {
+        "topic": "深度学习注意力机制原理",
+        "query": "深度学习注意力机制原理 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.01,
+        "evidence_path": "",
+        "retry_query": "深度学习注意力机制原理 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "深度学习注意力机制作用",
+        "query": "深度学习注意力机制作用 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "network",
+        "cache_source": "network",
+        "degraded": false,
+        "elapsed_s": 0.79,
+        "evidence_path": "",
+        "retry_query": "深度学习注意力机制作用 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "skipped": false,
+    "raw": 12,
+    "gated": 0,
+    "filtered": 0,
+    "evidence_chars": 0,
+    "sources": 0,
+    "providers": [],
+    "cache": [
+      "disk",
+      "network"
+    ],
+    "cache_sources": [
+      "disk",
+      "network"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": false,
+        "reason": "disabled"
+      }
+    ],
+    "elapsed_s": 0.8,
+    "evidence_path": ""
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "注意力"
+      ],
+      "hit": [
+        "注意力"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 415,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "回答紧密围绕'注意力机制的原理与作用'展开：原理部分（类人选择性注意、权重Ws与偏置b的加权计算、可学习权重实现动态关注度分配）与作用部分（聚焦关键信息、Transformer中的信息整合与表示学习、支撑大模型）均有实质展开，无偏题。硬性条件全部满足：证据6条（≥1）；【来源】齐备且6个URL均可在实际检索来源中核验；正文字数远超120字。检索统计中覆盖率0%仅反映证据标题层面匹配不均衡，不影响判定，回答本身已覆盖全部必答对象，内容与来源一一对应，无编造迹象。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": false,
+    "llm_calls": 8,
+    "evidence_count": 6,
+    "result_chars": 1185,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 6,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 415,
+    "len_full": 1185,
+    "cited_loose": [
+      "https://cloud.kepuchina.cn/h5/detail",
+      "https://cloud.kepuchina.cn/newsearch/imgtext"
+    ],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "truncate",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "内容不合格",
+        "pass_kind": "rejected",
+        "path": "rewrite",
+        "decision_source": "gate",
+        "reason": "回答疑似截断（结尾停在连接词(以及)），完整性不达标",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R2_answer_gap",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 143,
+        "truncated": true,
+        "llm_calls": 3
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "证据只覆盖单一对象：检索统计显示已覆盖仅['作用']，'深度学习中注意力机制'在证据侧完全未覆盖（覆盖率50%），且偏侧检测balance=0.00<0.5，属严重偏侧；按复合主题证据完整性检查，参考资料未同时覆盖'原理'与'作用'两个对象，即使回答正文已完整展开两者，也需拆解后分别检索补齐'深度学习中注意力机制（原理",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R3_structure",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 6,
+        "body_chars": 1603,
+        "truncated": false,
+        "llm_calls": 5
+      },
+      {
+        "round": 2,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "llm",
+        "reason": "回答紧密围绕'注意力机制的原理与作用'展开：原理部分（类人选择性注意、权重Ws与偏置b的加权计算、可学习权重实现动态关注度分配）与作用部分（聚焦关键信息、Transformer中的信息整合与表示学习、支撑大模型）均有实质展开，无偏题。硬性条件全部满足：证据6条（≥1）；【来源】齐备且6个URL均可在实际检索来源中核验；",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 6,
+        "body_chars": 415,
+        "truncated": false,
+        "llm_calls": 8
+      }
+    ],
+    "first_verdict": "内容不合格",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 8,
+      "searches": 3,
+      "elapsed_s": 533.8
+    }
+  },
+  "injected": [
+    "truncate"
+  ],
+  "replan_count": 2,
+  "subtasks": [
+    "深度学习注意力机制原理",
+    "深度学习注意力机制作用"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "[0013] 深度学习中的注意力机制基本上类似于人类选择性视觉注意机制 | https://patentimages.storage.googleapis.com/ce/e5/cd/f07651e6256062/CN110765841A.pdf#2#2#2",
+    "AI技术原理与大模型：注意力机制-大模型的核心“魔法” | https://cloud.kepuchina.cn/h5/detail?id=7520261333849837568",
+    "一种数据处理方法及相关设备 - 参照图5，图5为一种transformer层的架构示意，如图5所示，神经网络包括嵌入层和至少一个transformer层，至少一个transformer层可以为N个transformer层(N大于0的整数)，其中，每个transformer层包括依次相邻的... | https://patents.google.com/patent/WO2022222854A1#4",
+    "[科普中国]-注意力机制 - 图文 | https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1",
+    "一种数据处理方法及相关设备 - 其中，s＝1、2、……n，n为大于1的自然数，Ws为xs的权重，b为神经单元的偏置 | https://patents.google.com/patent/CN116432019A/zh#3",
+    "基于深度学习的蛋白质建模与设计 - 注意力机制网络[32-33] (Attention neural network) 最早由图像数据建模而引入，随后在自然语言处理中发展壮大 | https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2"
+  ],
+  "result": "深度学习中的注意力机制可理解为让模型像人类选择性视觉注意那样，从大量输入中挑选并强化与当前任务更相关的信息。参考资料指出，其基本思想类似人类选择性视觉注意机制；在具体计算中，可对输入 \\(x_s\\) 按权重 \\(W_s\\) 进行加权，并设置神经单元偏置 \\(b\\)，从而形成对不同特征的差异化关注。以Transformer为例，神经网络可由嵌入层和至少一个Transformer层构成，注意力在其中承担信息整合与表示学习的关键功能。其作用主要体现在：作为大模型的核心“魔法”，注意力机制帮助模型对重要信息赋予更高权重，从而聚焦关键内容并支撑复杂建模；该机制最早在图像数据建模中引入，随后在自然语言处理中发展壮大，并成为深度学习的重要基础。科普资料也强调，注意力机制是理解AI技术原理与大模型的重要切入点。总体看，它通过可学习的权重和偏置实现选择性信息组合，使模型能够动态分配关注度，并为Transformer及大模型提供关键支撑。\n【来源】深度学习中的注意力机制基本上类似于人类选择性视觉注意机制（https://patentimages.storage.googleapis.com/ce/e5/cd/f07651e6256062/CN110765841A.pdf#2#2#2）；AI技术原理与大模型：注意力机制-大模型的核心“魔法”（https://cloud.kepuchina.cn/h5/detail?id=7520261333849837568）；一种数据处理方法及相关设备 - 参照图5，图5为一种transformer层的架构示意，如图5所示，神经网络包括嵌入层和至少一个transformer层，至少一个transformer层可以为N个transformer层(N大于0的整数)，其中，每个transformer层包括依次相邻的...（https://patents.google.com/patent/WO2022222854A1#4）；一种数据处理方法及相关设备 - 其中，s＝1、2、……n，n为大于1的自然数，Ws为xs的权重，b为神经单元的偏置（https://patents.google.com/patent/CN116432019A/zh#3）；[科普中国]-注意力机制 - 图文（https://cloud.kepuchina.cn/newSearch/imgText?id=6969061173747961856#1）；基于深度学习的蛋白质建模与设计 - 注意力机制网络[32-33] (Attention neural network) 最早由图像数据建模而引入，随后在自然语言处理中发展壮大（https://actamicro.ijournals.cn/html/cjbcn/2021/11/gc21113863.htm#2）",
+  "artifacts": {
+    "log": "logs\\深度学习中注意力机制的原理与作用-20261122-195243.log",
+    "evidence": ""
+  }
+}

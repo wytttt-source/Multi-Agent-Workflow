@@ -1,0 +1,199 @@
+{
+  "topic": "对比Kafka与RabbitMQ在吞吐上的表现",
+  "group": "P-R",
+  "ts": "2026-11-22T07:36:50.215144+00:00",
+  "elapsed_seconds": 50.56,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Kafka",
+        "query": "Kafka",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10645,
+        "sources": 6,
+        "avg_summary": 3558.8,
+        "avg_content": 14692.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 10.48,
+        "evidence_path": "data\\evidence\\Kafka-20261122-153610.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10662,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 10.48,
+    "evidence_path": "data\\evidence\\Kafka-20261122-153610.md",
+    "retry_query": "对比Kafka与RabbitMQ在吞吐上的表现 RabbitMQ lang:zh",
+    "retry_mode": "missing_term:RabbitMQ"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Kafka",
+        "RabbitMQ"
+      ],
+      "hit": [
+        "Kafka"
+      ],
+      "missing": [
+        "RabbitMQ"
+      ],
+      "ratio": 0.5,
+      "body_chars": 255,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：RabbitMQ（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 669,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 669,
+    "len_full": 995,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：RabbitMQ（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "RabbitMQ"
+        ],
+        "evidence_gap": [
+          "RabbitMQ"
+        ],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 255,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 669,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 50.56
+    }
+  },
+  "injected": [
+    "one_side:first_object:Kafka"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "产品对比 | https://doc.yun.unionpay.com/tcloud/MiddlewareService/UPRocketMQ/introduction/comparison",
+    "Linux Kafka与其他消息队列系统的比较分析 - Linux Kafka与其他消息队列系统的比较分析 | https://m.yisu.com/ask/53152423.html#1",
+    "消息队列 MQ 性能大揭秘 | https://developer.aliyun.com/article/1646155#1",
+    "Linux Kafka与RabbitMQ如何比较 | https://www.yisu.com/ask/23124167.html#1"
+  ],
+  "result": "Kafka与RabbitMQ在吞吐上的对比，核心要看它们的定位和典型量级。Kafka是面向大规模日志与事件流的分布式流平台，采用Topic/Partition和Pull消费模型，擅长通过分区扩展、顺序写和批量处理承接高吞吐场景。资料显示，Kafka常规性能可达百万级QPS，2C 4GB小规格压测下读写约20万QPS；另有测试总结认为Kafka单机可达百万级TPS，在同类高负载测试中吞吐通常比RabbitMQ高1～2个数量级，高吞吐下仍可保持毫秒级延迟。\n\nRabbitMQ则是以AMQP为核心的消息代理，强调可靠投递、复杂路由和企业应用集成，消费模型以Broker推送为主。吞吐方面，资料口径略有差异：银联产品对比给出RabbitMQ常规十万级QPS、2C 4GB压测读写约10万QPS；而多篇测试总结认为RabbitMQ单机通常在万级QPS量级。它在低吞吐时延迟表现很好，p99可到毫秒级甚至更低，但超过约30K消息/秒后容易遇到CPU瓶颈，高吞吐下延迟上升更明显。\n\n总体看，若以“持续高吞吐”为主要目标，Kafka通常明显优于RabbitMQ；若业务是低到中等吞吐、复杂路由、可靠投递和任务队列，RabbitMQ更有优势。需要注意的是，两者差距并非固定倍数，硬件、消息大小、持久化、确认机制、批处理、分区/队列数量和集群调优都会影响结果；例如小规格压测中Kafka约20万、RabbitMQ约10万读写QPS，而常规量级资料中Kafka可达百万级、RabbitMQ为十万级或万级。因此选型应结合吞吐目标、延迟要求和业务模型综合判断。\n\n【来源】\n1. 产品对比 URL: https://doc.yun.unionpay.com/tcloud/MiddlewareService/UPRocketMQ/introduction/comparison\n2. Linux Kafka与其他消息队列系统的比较分析 URL: https://m.yisu.com/ask/53152423.html#1\n3. 消息队列 MQ 性能大揭秘 URL: https://developer.aliyun.com/article/1646155#1\n4. Linux Kafka与RabbitMQ如何比较 URL: https://www.yisu.com/ask/23124167.html#1",
+  "artifacts": {
+    "log": "logs\\对比Kafka与RabbitMQ在吞吐上的表现-20261122-153559.log",
+    "evidence": "data\\evidence\\Kafka-20261122-153610.md"
+  }
+}

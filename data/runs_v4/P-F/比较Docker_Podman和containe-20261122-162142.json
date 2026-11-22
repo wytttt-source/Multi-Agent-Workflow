@@ -1,0 +1,300 @@
+{
+  "topic": "比较Docker、Podman和containerd的镜像管理",
+  "group": "P-F",
+  "ts": "2026-11-22T08:21:42.091993+00:00",
+  "elapsed_seconds": 404.52,
+  "config": {
+    "group": "P-F",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "fixed",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Docker",
+        "query": "Docker",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10329,
+        "sources": 6,
+        "avg_summary": 2212.2,
+        "avg_content": 7571.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 5.38,
+        "evidence_path": "data\\evidence\\Docker-20261122-161502.md"
+      },
+      {
+        "topic": "Docker、Podman和containerd的镜像管理",
+        "query": "Docker、Podman和containerd的镜像管理 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Docker、Podman和containerd的镜像管理 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 1
+      },
+      {
+        "topic": "Docker和Podman镜像管理",
+        "query": "Docker和Podman镜像管理 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 0,
+        "filtered": 0,
+        "evidence_chars": 0,
+        "sources": 0,
+        "avg_summary": 0.0,
+        "avg_content": 0.0,
+        "providers": [],
+        "llm_filter": {
+          "applied": false,
+          "reason": "disabled"
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 0.0,
+        "evidence_path": "",
+        "retry_query": "Docker和Podman镜像管理 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      },
+      {
+        "topic": "containerd镜像管理",
+        "query": "containerd镜像管理 最新进展 官方文档 lang:zh",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 1,
+        "evidence_chars": 1711,
+        "sources": 1,
+        "avg_summary": 1556.0,
+        "avg_content": 1675.0,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 1,
+          "dropped": 5,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 24.48,
+        "evidence_path": "data\\evidence\\containerd镜像管理-20261122-161740.md",
+        "retry_query": "containerd镜像管理 最新进展 官方文档 lang:zh",
+        "retry_mode": "extra_terms",
+        "retry_round": 2
+      }
+    ],
+    "skipped": false,
+    "raw": 12,
+    "gated": 6,
+    "filtered": 1,
+    "evidence_chars": 1737,
+    "sources": 1,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk",
+      "disk"
+    ],
+    "cache_sources": [
+      "disk",
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": false,
+        "reason": "disabled"
+      },
+      {
+        "applied": true,
+        "kept": 1,
+        "dropped": 5,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 24.48,
+    "evidence_path": "data\\evidence\\containerd镜像管理-20261122-161740.md"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "Docker",
+        "Podman",
+        "containerd"
+      ],
+      "hit": [
+        "Docker",
+        "Podman",
+        "containerd"
+      ],
+      "missing": [],
+      "ratio": 1.0,
+      "body_chars": 514,
+      "truncated": false,
+      "substantive": false,
+      "complete": true,
+      "scope": "answer"
+    },
+    "verdict": "分解不合理",
+    "reason": "主题要求比较Docker、Podman、containerd三者的镜像管理，但检索证据仅1条（containerd镜像存储文档），Podman镜像管理在证据侧完全缺失（覆盖率0%），回答中Podman也无实质内容，仅声明'证据链不足以支撑三者逐项比较、应另行核验'。证据只覆盖部分对象，Docker/containerd部分虽有实质展开但Podman部分补写不出无证据的内容，需重新拆解任务并针对Podman镜像管理补检索后再判定。",
+    "gated_by": "llm",
+    "decision_source": "llm",
+    "repeat_hit": true,
+    "llm_calls": 8,
+    "evidence_count": 1,
+    "result_chars": 594,
+    "pass_kind": "rejected",
+    "has_source_line": true,
+    "cited_count": 1,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 514,
+    "len_full": 594,
+    "cited_loose": [],
+    "truncated": false,
+    "truncation_hits": []
+  },
+  "repair": {
+    "policy": "fixed",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Podman、containerd（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "Podman",
+          "containerd"
+        ],
+        "evidence_gap": [
+          "Podman",
+          "containerd"
+        ],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 190,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "global",
+        "decision_source": "llm",
+        "reason": "主题为Docker、Podman、containerd三者镜像管理比较，但6条证据全部只覆盖Docker单一对象，Podman与containerd的镜像管理在证据侧零覆盖（balance=0.00，覆盖率33%），且回答中也未展开这两个对象。回答虽如实声明证据不足以支撑比较，但按复合主题规则，证据只覆盖单一对象时应拆",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R3_structure",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 6,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 508,
+        "truncated": false,
+        "llm_calls": 4
+      },
+      {
+        "round": 2,
+        "verdict": "分解不合理",
+        "pass_kind": "rejected",
+        "path": "local",
+        "decision_source": "llm",
+        "reason": "主题要求比较Docker、Podman、containerd三者的镜像管理，但检索证据仅1条（containerd镜像存储文档），Podman镜像管理在证据侧完全缺失（覆盖率0%），回答中Podman也无实质内容，仅声明'证据链不足以支撑三者逐项比较、应另行核验'。证据只覆盖部分对象，Docker/containerd",
+        "repeat_hit": true,
+        "rescued_from": "",
+        "rule": "R4_repeat",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": 1,
+        "gate_measured": true,
+        "cited_count": 1,
+        "body_chars": 514,
+        "truncated": false,
+        "llm_calls": 8
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "分解不合理",
+    "outcome": "failed",
+    "cost": {
+      "llm_calls": 8,
+      "searches": 4,
+      "elapsed_s": 404.52
+    }
+  },
+  "injected": [
+    "one_side:first_object:Docker"
+  ],
+  "replan_count": 3,
+  "subtasks": [
+    "Docker和Podman镜像管理",
+    "containerd镜像管理"
+  ],
+  "used_fallback": false,
+  "sources": [
+    "containerd 镜像存储 | https://docs.dockerd.com.cn/desktop/features/containerd/"
+  ],
+  "result": "围绕“Docker、Podman和containerd的镜像管理”这一比较主题，现有可核验资料支持的结论主要集中在Docker与containerd的关系：containerd是容器运行时，为容器生命周期管理提供轻量级、一致的接口；Docker Engine已在底层使用containerd创建、启动和停止容器。Docker Desktop正把containerd的使用从运行时扩展到镜像存储。经典Docker镜像存储支持的镜像类型有限，例如不支持包含清单列表的镜像索引；containerd镜像存储则扩展了Docker Engine可原生交互的镜像类型，为多平台镜像、带有证明的镜像、stargz延迟拉取、nydus/dragonfly点对点分发以及Wasm容器等场景提供基础。资料还指出，containerd镜像存储在Docker Desktop 4.34版及更高版本中默认启用（至少覆盖全新安装场景），且经典存储与containerd存储相互独立，切换时非活动存储中的镜像和容器会保留但隐藏。Podman的镜像管理应另行以其官方镜像管理文档核验其镜像拉取、推送、存储后端和多平台支持；当前证据链不足以支撑三者逐项优劣比较。\n\n【来源】《containerd 镜像存储》，https://docs.dockerd.com.cn/desktop/features/containerd/",
+  "artifacts": {
+    "log": "logs\\比较Docker_Podman和containe-20261122-161457.log",
+    "evidence": "data\\evidence\\containerd镜像管理-20261122-161740.md"
+  }
+}

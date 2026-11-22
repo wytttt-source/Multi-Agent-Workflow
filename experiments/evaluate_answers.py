@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-"""v2.4 修复路径四臂汇总：把 data/runs_v3/P-*/ 的 JSON 变成 docs/修复路径对照.md。
+"""v2.5 修复路径四臂汇总：把 data/runs_v4/P-*/ 的 JSON 变成 docs/修复路径对照_v2.5.md。
 
 用法：
-    python experiments/evaluate_answers.py                      # 读 data/runs_v3，写 docs/修复路径对照.md
+    python experiments/evaluate_answers.py                      # 读 data/runs_v4，写 docs/修复路径对照_v2.5.md
     python experiments/evaluate_answers.py --stdout              # 只打印不落盘
+    python experiments/evaluate_answers.py --dir data/runs_v3 --out docs/修复路径对照.md
+                                                                 # 复算 v2.4 的 48 份表（口径相同，可直接对照）
     python experiments/evaluate_answers.py --dir data/runs_v2 --stdout
                                                                  # 用旧记录验证判卷口径（应零翻转）
     python experiments/evaluate_answers.py --dir data/runs_v3_pre_v24 --out tmp.md
-                                                                 # 与 v2.4 数据对照（口径不同，只看趋势）
+                                                                 # 与更早批次对照（口径不同，只看趋势）
 
 判卷与系统判定**相互独立**：判卷只用「任务给定的必答对象 + 可核验引用 + 字数/截断」，
 不看反思节点的 verdict。两者不一致即记一次误判，这是"判得对不对"的唯一共同标准。
@@ -28,6 +30,11 @@ v2.4 修正（都只改"怎么读"，不改判卷标准）：
     - 判卷的「必答对象」改用**实质覆盖**（`answer_completeness(..., substantive=True)`）：
       先剔掉「资料未提供 X / 仅覆盖 X」这类可得性声明句再数字面覆盖。只改判卷、不改系统，
       否则"答案自己声明没查到 Kafka"也会算讲清了 Kafka（假 `误否决`）。
+
+v2.5 变更（只改默认值，不改判卷标准）：
+    - 默认记录目录 `data/runs_v4`（17 题 × 4 臂 = 68 份），默认输出 `docs/修复路径对照_v2.5.md`；
+    - 修复路径多一条 `rewrite`（复用已有证据、不再检索），表 2/表 4 的「主要路径」会直接显示它；
+      判卷不看路径，仍按「必答对象 / 字数 / 截断 / 可核验引用」四项。
 """
 import argparse
 import glob
@@ -42,9 +49,10 @@ if ROOT not in sys.path:
 
 from utils import content_gate, answer_completeness, _body_chars   # noqa: E402
 
-RUN_DIR = os.path.join(ROOT, "data", "runs_v3")
+DOC_VERSION = "v2.5"   # 只决定报告标题与默认文件名，判卷口径不随版本变
+RUN_DIR = os.path.join(ROOT, "data", "runs_v4")
 TASKS_PATH = os.path.join(ROOT, "experiments", "tasks_repair.json")
-OUT_PATH = os.path.join(ROOT, "docs", "修复路径对照.md")
+OUT_PATH = os.path.join(ROOT, "docs", "修复路径对照_{0}.md".format(DOC_VERSION))
 
 ARMS = ["B0", "F", "R", "H"]
 ARM_LABEL = {"B0": "B0 无反思", "F": "F 固定类型", "R": "R 自由反思", "H": "H 混合（本文）"}
@@ -392,7 +400,7 @@ def render(rows: list, run_dir: str) -> str:
     arms = _arm_order(rows)
     unmatched = sum(1 for r in rows if r["task_id"] == "-")
     lines = [
-        "# 修复路径对照（v2.4 自动生成）",
+        "# 修复路径对照（{0} 自动生成）".format(DOC_VERSION),
         "",
         f"> **生成时间**：{datetime.now():%Y-%m-%d %H:%M}　"
         f"**数据源**：`{os.path.relpath(run_dir, ROOT)}`，共 **{len(rows)}** 份记录。",
@@ -520,8 +528,8 @@ def render(rows: list, run_dir: str) -> str:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description="v2.4 修复路径四臂汇总 → docs/修复路径对照.md")
-    parser.add_argument("--dir", default=RUN_DIR, help="记录目录（默认 data/runs_v3）")
+    parser = argparse.ArgumentParser(description="v2.5 修复路径四臂汇总 → docs/修复路径对照_v2.5.md")
+    parser.add_argument("--dir", default=RUN_DIR, help="记录目录（默认 data/runs_v4；v2.4 表用 --dir data/runs_v3）")
     parser.add_argument("--tasks", default=TASKS_PATH, help="任务集 JSON")
     parser.add_argument("--out", default=OUT_PATH, help="输出 Markdown")
     parser.add_argument("--stdout", action="store_true", help="只打印，不写文件")

@@ -1,0 +1,205 @@
+{
+  "topic": "对比React、Vue和Angular的组件通信方式",
+  "group": "P-R",
+  "ts": "2026-11-22T07:49:51.999472+00:00",
+  "elapsed_seconds": 45.25,
+  "config": {
+    "group": "P-R",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": true,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "free",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "React",
+        "query": "React",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 5,
+        "evidence_chars": 8303,
+        "sources": 5,
+        "avg_summary": 2204.4,
+        "avg_content": 2316.6,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 5,
+          "dropped": 1,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 8.24,
+        "evidence_path": "data\\evidence\\React-20261122-154915.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 5,
+    "evidence_chars": 8320,
+    "sources": 5,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 5,
+        "dropped": 1,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 8.24,
+    "evidence_path": "data\\evidence\\React-20261122-154915.md",
+    "retry_query": "对比React、Vue和Angular的组件通信方式 Vue lang:zh",
+    "retry_mode": "missing_term:Vue"
+  },
+  "reflection": {
+    "coverage": {
+      "terms": [
+        "React",
+        "Vue",
+        "Angular"
+      ],
+      "hit": [
+        "React"
+      ],
+      "missing": [
+        "Vue",
+        "Angular"
+      ],
+      "ratio": 0.333,
+      "body_chars": 171,
+      "truncated": false,
+      "substantive": false,
+      "complete": false,
+      "scope": "answer"
+    },
+    "verdict": "通过",
+    "reason": "答案与证据均缺必答对象：Vue、Angular（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+    "gated_by": "free_reflection",
+    "decision_source": "free_reflection",
+    "repeat_hit": false,
+    "llm_calls": 4,
+    "evidence_count": 4,
+    "result_chars": 587,
+    "pass_kind": "strict",
+    "has_source_line": true,
+    "cited_count": 4,
+    "citation_ratio": 1.0,
+    "citation_ratio_ok": true,
+    "len_ok": true,
+    "body_chars": 587,
+    "len_full": 983,
+    "cited_loose": [
+      "https://coding.m.imooc.com/questiondetail"
+    ],
+    "truncated": false,
+    "truncation_hits": [],
+    "final_reason": "补检索成功，基于新证据重写"
+  },
+  "repair": {
+    "policy": "free",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "证据不足",
+        "pass_kind": "rejected",
+        "path": "free",
+        "decision_source": "coverage_rule",
+        "reason": "答案与证据均缺必答对象：Vue、Angular（属检索缺口，重写文本补不出内容，需换检索式补证据）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "R1_evidence_gap",
+        "answer_missing": [
+          "Vue",
+          "Angular"
+        ],
+        "evidence_gap": [
+          "Vue",
+          "Angular"
+        ],
+        "evidence_count": 5,
+        "gate_measured": true,
+        "cited_count": 3,
+        "body_chars": 171,
+        "truncated": false,
+        "llm_calls": 2
+      },
+      {
+        "round": 1,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "free",
+        "decision_source": "free_reflection",
+        "reason": "补检索成功，基于新证据重写",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [],
+        "evidence_gap": [],
+        "evidence_count": null,
+        "gate_measured": true,
+        "cited_count": 4,
+        "body_chars": 587,
+        "truncated": false,
+        "llm_calls": 4
+      }
+    ],
+    "first_verdict": "证据不足",
+    "final_verdict": "通过",
+    "outcome": "fixed",
+    "cost": {
+      "llm_calls": 4,
+      "searches": 2,
+      "elapsed_s": 45.25
+    }
+  },
+  "injected": [
+    "one_side:first_object:React"
+  ],
+  "replan_count": 1,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "React、Vue、Angular组件通信方式有何差异？ - 周行文 2025-11-25 06:00 采纳率: 98.7% | https://ask.csdn.net/questions/9009576#1",
+    "在angular中官方给出的组件通信的方式是通过事件传播，而在react中是回调函数 | https://coding.m.imooc.com/questiondetail?cid=203&qid=53012",
+    "三大前端框架，哪个框架组件间交互像js方法传值一样简单 | https://blog.csdn.net/weixin_34399060/article/details/92257176",
+    "好程序员web前端教程分享三大前端框架相关问题 | https://blog.csdn.net/cique2620/article/details/100246896"
+  ],
+  "result": "三大框架的组件通信都服务于父子、兄弟、跨层级和全局共享，但设计理念不同。React 强调单向数据流：父组件通过 props 向子组件传值，子组件要影响父级时通常调用父级传入的回调函数，也就是“数据向下、事件向上”；跨层级可用状态提升或 Context API，复杂全局状态可借助 Redux 等状态管理方案。资料中“React用函数”的说法，正对应其以回调函数处理子传父的常见模式。\n\nVue 在父子通信上同时提供 props 和自定义事件：父传子用 props，子传父用 $emit，必要时还可用 $refs、$parent/$children 直接访问组件实例；兄弟或跨层级场景可借助事件总线，项目规模变大后常用 Vuex/Pinia 做全局状态管理。相比 React，Vue 的通信手段更灵活，资料称“Vue用事件”，也强调其开发体验便捷、可选方式多。\n\nAngular 更强调依赖注入和结构化解耦：父子组件通过 @Input/@Output 装饰器配合 EventEmitter 完成输入输出，跨组件或兄弟组件常把共享逻辑放入 Service，再通过依赖注入在组件间通信。资料中“Angular用服务”的概括正体现这一特点；也有资料提到 Angular 可通过事件传播和回调进行控制。总体看，React 重明确数据流，Vue 重灵活便捷，Angular 重服务化与解耦。\n\n【来源】\n- React、Vue、Angular组件通信方式有何差异？ - 周行文 2025-11-25 06:00 采纳率: 98.7%：https://ask.csdn.net/questions/9009576#1\n- 在angular中官方给出的组件通信的方式是通过事件传播，而在react中是回调函数：https://coding.m.imooc.com/questiondetail?cid=203&qid=53012\n- 三大前端框架，哪个框架组件间交互像js方法传值一样简单：https://blog.csdn.net/weixin_34399060/article/details/92257176\n- 好程序员web前端教程分享三大前端框架相关问题：https://blog.csdn.net/cique2620/article/details/100246896",
+  "artifacts": {
+    "log": "logs\\对比React_Vue和Angular的组件通信-20261122-154906.log",
+    "evidence": "data\\evidence\\React-20261122-154915.md"
+  }
+}

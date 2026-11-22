@@ -1,0 +1,154 @@
+{
+  "topic": "比较Docker、Podman和containerd的镜像管理",
+  "group": "P-B0",
+  "ts": "2026-11-22T08:14:53.280009+00:00",
+  "elapsed_seconds": 23.07,
+  "config": {
+    "group": "P-B0",
+    "search_provider": "deepseek",
+    "search_count": 6,
+    "generator_model": "deepseek-flash",
+    "critic_model": "glm-5.3-flash",
+    "enable_reflection": false,
+    "enable_coverage_rule": true,
+    "enable_repeat_rule": true,
+    "disable_content_gate": false,
+    "inject_llm_fail": 0,
+    "pass_min_cited": 1,
+    "pass_min_chars": 120,
+    "evidence_top_k": 3,
+    "retry_query_mode": "missing_term",
+    "enable_truncation_rule": true,
+    "enable_degrade_rescue": true,
+    "pass_min_citation_ratio": 0.0,
+    "repair_policy": "hybrid",
+    "inject_fault": "one_side",
+    "repair_max_rounds": 3,
+    "llm_temperature": 0.0
+  },
+  "search": {
+    "per_query": [
+      {
+        "topic": "Docker",
+        "query": "Docker",
+        "raw": 6,
+        "gated": 6,
+        "filtered": 6,
+        "evidence_chars": 10329,
+        "sources": 6,
+        "avg_summary": 2212.2,
+        "avg_content": 7571.2,
+        "providers": [
+          "deepseek"
+        ],
+        "llm_filter": {
+          "applied": true,
+          "kept": 6,
+          "dropped": 0,
+          "total": 6
+        },
+        "cache": "disk",
+        "cache_source": "disk",
+        "degraded": false,
+        "elapsed_s": 11.39,
+        "evidence_path": "data\\evidence\\Docker-20261122-161441.md"
+      }
+    ],
+    "skipped": false,
+    "raw": 6,
+    "gated": 6,
+    "filtered": 6,
+    "evidence_chars": 10347,
+    "sources": 6,
+    "providers": [
+      "deepseek"
+    ],
+    "cache": [
+      "disk"
+    ],
+    "cache_sources": [
+      "disk"
+    ],
+    "degraded": false,
+    "llm_filter": [
+      {
+        "applied": true,
+        "kept": 6,
+        "dropped": 0,
+        "total": 6
+      }
+    ],
+    "elapsed_s": 11.39,
+    "evidence_path": "data\\evidence\\Docker-20261122-161441.md"
+  },
+  "reflection": {
+    "coverage": null,
+    "verdict": "通过",
+    "reason": "基线：关闭反思（E1）",
+    "gated_by": "baseline",
+    "decision_source": "baseline",
+    "repeat_hit": false,
+    "llm_calls": 2,
+    "evidence_count": 6,
+    "result_chars": 425,
+    "pass_kind": "strict"
+  },
+  "repair": {
+    "policy": "hybrid",
+    "inject_fault": "one_side",
+    "rounds": [
+      {
+        "round": 0,
+        "verdict": "通过",
+        "pass_kind": "strict",
+        "path": "",
+        "decision_source": "baseline",
+        "reason": "基线：关闭反思（E1）",
+        "repeat_hit": false,
+        "rescued_from": "",
+        "rule": "",
+        "answer_missing": [
+          "Podman",
+          "containerd"
+        ],
+        "evidence_gap": [
+          "Podman",
+          "containerd"
+        ],
+        "evidence_count": 6,
+        "gate_measured": false,
+        "cited_count": null,
+        "body_chars": null,
+        "truncated": null,
+        "llm_calls": 2
+      }
+    ],
+    "first_verdict": "通过",
+    "final_verdict": "通过",
+    "outcome": "pass_first_try",
+    "cost": {
+      "llm_calls": 2,
+      "searches": 1,
+      "elapsed_s": 23.07
+    }
+  },
+  "injected": [
+    "one_side:first_object:Docker"
+  ],
+  "replan_count": 0,
+  "subtasks": [],
+  "used_fallback": false,
+  "sources": [
+    "Docker技术解析 | https://developer.aliyun.com/article/1720267#1",
+    "软件包：docker.io（28.5.2+dfsg4-5） | https://packages.debian.org/zh-cn/sid/docker.io?pow_referer=",
+    "Docker — Community Edition (CE) | https://web-docs.gsi.de/~vpenso/notes/posts/linux/container/docker.html#1",
+    "Package: docker.io (28.5.2+dfsg4-5) | https://packages.debian.org/en/forky/docker.io?pow_referer=",
+    "2. Docker | https://zn.igadc.cn/catalog/kd02/",
+    "Linux 云服务器部署 Docker | https://docs.yuxingcloud.com/user_guide/compute/vm/best_practices/linux/docker_deployment/"
+  ],
+  "result": "Docker的镜像管理以不可变镜像为核心：镜像是一种特殊文件系统，除程序、库、资源和配置外，还含匿名卷、环境变量、用户等运行时配置，构建后不再改变；容器是镜像运行时的实体，类似类与实例。镜像按层构建，层为一次文件系统变更且不可变，可缓存复用，但前层失效会触发后续层重建。镜像经Registry集中存储分发，一个Registry含多个仓库，仓库以多个标签对应不同镜像；默认DockerHub还可能有速率限制。\n\n【来源】Linux 云服务器部署 Docker，https://docs.yuxingcloud.com/user_guide/compute/vm/best_practices/linux/docker_deployment/；Docker — Community Edition (CE)，https://web-docs.gsi.de/~vpenso/notes/posts/linux/container/docker.html#1",
+  "artifacts": {
+    "log": "logs\\比较Docker_Podman和containe-20261122-161430.log",
+    "evidence": "data\\evidence\\Docker-20261122-161441.md"
+  }
+}

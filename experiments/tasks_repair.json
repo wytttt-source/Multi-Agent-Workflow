@@ -1,6 +1,6 @@
 {
-  "version": "v2.3",
-  "note": "修复路径三臂对照的任务集：每道题都在首轮注入一种“真实世界里会出现的坏形态”，用于机制归因。required_objects 是判卷时的必答对象（answer_completeness 用），requires_citation=false 表示该题允许“可读但未引用”的降级答案。",
+  "version": "v2.5",
+  "note": "修复路径四臂对照的任务集（A/B/C 12 条 + v2.5 新增 D 组 5 条 = 17 条）：每道题都在首轮注入一种“真实世界里会出现的坏形态”，用于机制归因。D 组专测 R2→rewrite（证据已在手、只缺写作），验收口径是 repair.rounds[].rule 出现 R2_answer_gap 且同一轮 search.skipped=true。required_objects 是判卷时的必答对象（answer_completeness 用），requires_citation=false 表示该题允许“可读但未引用”的降级答案。",
   "tasks": [
     {
       "id": "A1", "group": "A", "fault": "检索缺口",
@@ -97,6 +97,46 @@
       "required_objects": ["原子性", "一致性", "隔离性", "持久性"],
       "requires_citation": true,
       "rationale": "四项缺一不可：截断后不仅不完整，必答对象也会缺项。"
+    },
+    {
+      "id": "D1", "group": "D", "fault": "重写轮专项（截断）",
+      "topic": "解释HTTP/2的多路复用机制",
+      "inject": "truncate",
+      "required_objects": ["多路复用"],
+      "requires_citation": true,
+      "rationale": "截断是纯写作缺陷：证据已在手，rewrite 只需把话写完、把引用补上，不该再检索一次（v2.5 第二步的对照样本）。"
+    },
+    {
+      "id": "D2", "group": "D", "fault": "重写轮专项（过短）",
+      "topic": "微服务架构中的服务发现是怎么实现的",
+      "inject": "short",
+      "required_objects": ["服务发现"],
+      "requires_citation": true,
+      "rationale": "过短同样不缺资料：rewrite 在**同一份证据**上重写就应过门，检索次数不该增加（检验 search.skipped=true）。"
+    },
+    {
+      "id": "D3", "group": "D", "fault": "重写轮专项（截断）",
+      "topic": "解释Docker镜像的分层存储原理",
+      "inject": "truncate",
+      "required_objects": ["分层"],
+      "requires_citation": true,
+      "rationale": "对象与证据强相关（镜像分层是文章主题），缺对象时大概率 evidence_gap 为空 → 应判 R2 而不是 R1。"
+    },
+    {
+      "id": "D4", "group": "D", "fault": "重写轮专项（过短）",
+      "topic": "CDN的工作原理是什么",
+      "inject": "short",
+      "required_objects": ["CDN"],
+      "requires_citation": true,
+      "rationale": "短答案 + 必答对象在证据里：用来确认 rewrite 不会把\"答案没写\"误当\"证据没有\"。"
+    },
+    {
+      "id": "D5", "group": "D", "fault": "重写轮专项（截断）",
+      "topic": "解释TCP三次握手的过程",
+      "inject": "truncate",
+      "required_objects": ["三次握手"],
+      "requires_citation": true,
+      "rationale": "流程类主题的截断：重写要按步骤讲完，正好检验\"重写幅度\"是否够（配 chars 列一起看）。"
     }
   ]
 }

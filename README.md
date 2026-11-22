@@ -13,7 +13,7 @@
 | 层 | 由谁负责 | 判断什么 | 不可用 / 冲突时退到哪 |
 | --- | --- | --- | --- |
 | 语义层 | GLM-5.3-Flash 异构裁判 | 裁判只报 4 类标签（通过 / 内容不合格 / 检索失败 / 分解不合理）+ 理由；落盘再补 降级通过（可读但无支撑）与执行侧 系统繁忙，并把 检索失败 归一为 证据不足 → 共 6 个终态 | 规则兜底（关键词 + 正文字数 + 引用可核验） |
-| 结构层 | 两个可观测规则信号 | 错误分类是否命中硬编码路由、同类型错误是否已重复出现 → 决定走**局部**还是**全局**重规划 | 回退**自由反思**（不强制分支） |
+| 结构层 | 两个可观测规则信号 | 错误分类是否命中硬编码路由、同类型错误是否已重复出现 → 决定走**局部 / 全局**重规划；v2.5 起「有证据的内容缺陷」走**重写**（rewrite：同一批证据改答案、本轮 0 检索） | 回退**自由反思**（不强制分支） |
 | 确定层 | _apply_pass_gate + 覆盖率前置否决 | 只判可枚举的事实：有无【来源】、字数、引用是否可核验、比较对象是否双边覆盖 | 不依赖 LLM（纯规则，可复算） |
 
 生成器 DeepSeek-Flash 与裁判 GLM-5.3-Flash 是**两个异构模型**，避免「自己判自己」的宽容偏差；检索走 DeepSeek 官方 Search API + 三层过滤（结构化信号门 → GLM 语义裁判 → 证据装配）。
@@ -36,9 +36,17 @@ replan_count ≤ 3 与独立的 llm_fail_count ≤ 3（执行侧不重复计数�
 
 18 条由真实输出改造成的受控损坏样本 × 三列判决器（R 规则单独 / L 纯 LLM / C 组合，配对设计，每条样本只花 1 次 critic 调用）：规则单独 **94%**（误判 8%）、纯 LLM **89%**（误判 15%）、组合 **100%**（误判 0%）。规则唯一的缺口是 S14（偏题，字面信号全合格），纯 LLM 漏 S09、S15，**两者的失败集合不重合**，所以组合仍是最优。
 
-> **基础设施（不占突破位，也不承担主线结论）**：检索层从必应 HTML 抓取换成 DeepSeek 官方 Search API + 三层过滤（结构化信号门 → GLM 语义裁判 → 证据装配），单条结果变成「标题 / URL / 长摘要 / 正文 / rerank_score」，噪声在装配前被剔除、失败显式可见。它只保证反思层看到的是干净证据，**实验口径与对照见 §3.4（v1 归档）**。
+**5. 把「换检索式」与「改答案」拆成两个变量：R2 从局部重查改走 rewrite（v2.5）**
+
+v2.4 里「答案缺对象、但证据里都有」一律走 `local`（换检索式再搜一遍）—— 拿回来的是同一批资料，缺的其实是「写」。v2.5 把这处改成 `rewrite`：本轮 0 检索、直接拿已有证据重写，判定标准一字未动，关掉 `ENABLE_REWRITE_PATH` 即回到 v2.4 行为。17 题 × 4 臂的 68 份记录里 rewrite 轮为 **F 9 / H 10 / R 0**（`search.skipped=True` 可逐份核对）；H 由此 **17/17** 全修好，平均检索 **1.6 次**为四臂最低（R 2.0、F 2.4）。
+
+> **必须一起写**：省检索来自 rewrite 路径本身 —— F 的平均检索也从 v2.4 的 3.4 次降到 2.4 次；H 比 F 再省 0.8 靠的是 A/B 组的 `free` 路径（原主题 + 缺失对象一次补检索），**这条收益不是 hybrid 独有**。详见 §3.4 与 [docs/v2.5-step2-结论.md](docs/v2.5-step2-结论.md) 第五节第 4 条。
+
+> **基础设施（不占突破位，也不承担主线结论）**：检索层从必应 HTML 抓取换成 DeepSeek 官方 Search API + 三层过滤（结构化信号门 → GLM 语义裁判 → 证据装配），单条结果变成「标题 / URL / 长摘要 / 正文 / rerank_score」，噪声在装配前被剔除、失败显式可见。它只保证反思层看到的是干净证据，**实验口径与对照见 §3.5（v1 归档）**。
 
 ## 三、实验数据高光
+
+> 实验分四批：§3.1 E1-E6（v2.0，24 份）→ §3.2 判决器对照（v2.1，18 条）→ §3.3 四臂对照（v2.4，48 份归档）→ **§3.4 四臂对照（v2.5，68 份，主结果）**。前三批的数字未随新口径重算，已在各自小节注明。
 
 ### 3.1 消融实验 E1-E6（24 次运行，data/runs_v2/）
 
@@ -75,7 +83,7 @@ replan_count ≤ 3 与独立的 llm_fail_count ≤ 3（执行侧不重复计数�
 3. **门控是双向的（v2.2）**：`_apply_pass_gate` 只做「否决/降级」，`_apply_degrade_rescue` 再把「可读但缺资料」的否决改判 降级通过（声明式兜底 / 无资料兜底 / 未引用来源）；C 列的 4 条真值 降级通过已全部救回（原为 0/5）。救援**永不**把否决改成通过，所以二分类指标与 v2.1 完全一致，只是三态粒度被修正 —— 见 [docs/反思归因表.md](docs/反思归因表.md) 第 5 节。
    > 仍存的粒度缺口只有 1 条：S09「只写域名根」被记为**内容不合格**而非降级通过（编造 URL 与「无效引用」共用同一个否决档），按「降级率」统计时需说明。
 
-### 3.3 修复路径对照（v2.4：4 臂 × 12 题，48 次正式运行）
+### 3.3 修复路径对照（v2.4：4 臂 × 12 题，48 次正式运行；主结果见 §3.4）
 
 > 目的：证明「定向修复（局部/全局）」「自由反思」「两者混合」**各自不可替代**，并量化"白跑率"。
 > 设计与口径见 [docs/修复路径对比实验-设计.md](docs/修复路径对比实验-设计.md)；
@@ -133,7 +141,40 @@ python experiments/repair_matrix.py --arms F --tasks A1,C1   # 切片重跑（v2
 python experiments/evaluate_answers.py          # → docs/修复路径对照.md
 ```
 
-### 3.4 附录：检索层基础设施改造（v1 口径，不作为主线结论）
+### 3.4 修复路径对照（v2.5：新增 rewrite 路径，17 题 × 4 臂 = 68 次正式运行）
+
+> 目的：v2.5 把「内容缺陷、且证据都在手」的修复从 `local`（换检索式再搜一遍）改成 `rewrite`（复用同一批证据重写），
+> 用 17 题（A 检索缺口 4 / B 三对象结构缺陷 4 / C 内容缺陷 4 / D 内容缺陷 5）× 4 臂，把「换检索式」与「改答案」拆成两个可分离变量。
+> 开关 `ENABLE_REWRITE_PATH=1`（关掉即回到 v2.4 的 `local`）；四张表与逐份明细由 `experiments/evaluate_answers.py` 从
+> `data/runs_v4/P-*/` 自动生成（[docs/修复路径对照_v2.5.md](docs/修复路径对照_v2.5.md)）；逐案复盘见
+> [docs/重规划案例集.md](docs/重规划案例集.md)，决策轮口径与重跑台账见 [docs/v2.5-规则表.md](docs/v2.5-规则表.md)。
+
+**主表（17 题 × 4 臂 = 68 份，判卷与系统判定完全独立）**：
+
+| 臂 | 修复率 | 无效重试率 | 平均调用 | 平均检索 | 平均正文(字) | 判卷 通过/降级/否决 | 误判率 |
+| --- | --: | --: | --: | --: | --: | --: | --: |
+| B0 无反思 | — | 0% | 2.0 | 1.0 | 149 | 0 / 1 / 16 | 100%（定义性） |
+| F 固定类型 | 82%（14/17） | 18% | 6.5 | 2.4 | 607 | 16 / 0 / 1 | **12%** |
+| R 自由反思 | 94%（16/17） | 0% | 4.5 | 2.0 | 630 | 16 / 1 / 0 | **0%** |
+| H 混合（本文） | **100%（17/17）** | 0% | 5.1 | **1.6** | 690 | 17 / 0 / 0 | **0%** |
+
+1. **H 是唯一 17/17，但"独占合格题数"四臂全为 0**：优势不在"多修一道题"，而在失败数（0）、检索成本（1.6 次最少）、误判率（0）三列。
+2. **C/D 两组 10 道题里，F 与 H 的主要路径都已是 `rewrite`**（同一组里 R 臂走 `free`，D5 落成 `partial` → 判卷降级）：内容缺陷类错误靠"改答案"，不再"再查一遍"。
+3. **F 的 3 个失败全部在 B 组**：B1 / B2 / B4 三道三对象题第 3 轮撞 `R4_repeat`（同类错误重复）到上限；其中 B1、B4 终稿判卷其实合格（**误否决**），F 的 12% 误判率由此而来 —— 固定策略不能转自由反思，"证据不足"只能退回局部重试。
+4. **B0 依旧最省也最不可信**：2.0 次调用、34 s，但 17 题里 16 题被独立判卷否决、1 题降级（它压根不判）。
+
+> 三条诚实说明：① 68 份里终轮由**规则兜底**（反思裁判 LLM 超时，按确定性规则给结论）的只剩 **1 份：A2·F**，该题的系统"通过"不算语义裁判判的；② 期间 **13 次尝试**因生成端点超时触发双熔断，已整批隔离到 `data/runs_v4_infra_timeout/` 并在同日、同配置下重跑，最终 68 份全部正常终止；③ `C（short）`、`C（no_cite）` 各只有 1 题，其 100% 只作方向参考。
+
+**第三步评估（终检收严 + 终态救援，只读回放）**：把终检收严到「先剔掉'资料未提供 X'这类声明句、再数对象覆盖」（`substantive=True`），68 + 48 份回放的结果是 **收严↓ = 0** —— 一格都没翻转，H 的 17/17 由此是稳的，故**不改终检逻辑**；终态救援命中 **2 格（B1·F、B4·F）**，能把 F 的修复率抬到 94%、误判 2 → 0，但救援与判卷同源，会把 F 的 12% 误判率构造性地抹成 0、"误判率"这个指标随之失效，因此**不启用**，只作诊断口径（说明这两格的 `failed` 是过程失败、结果合格）。详见 [docs/v2.5-step2-结论.md](docs/v2.5-step2-结论.md) 第六节。
+
+```powershell
+python experiments/repair_matrix.py --arms B0,F,R,H   # 17 题 × 4 臂 → data/runs_v4/P-*/
+python experiments/evaluate_answers.py                # → docs/修复路径对照_v2.5.md
+python experiments/replay_rules.py --dir data/runs_v3 --expect-flips 10   # 规则漂移复核
+python experiments/replay_final_check.py              # 第三步评估：收严↓0 / 救援↑2（不启用）
+```
+
+### 3.5 附录：检索层基础设施改造（v1 口径，不作为主线结论）
 
 > 本节只交代「怎么保证反思层看到的是干净证据」，不参与反思-重规划的实验结论；数据取自 v1 归档（`data/runs/`，不入库）。
 
@@ -151,8 +192,8 @@ python experiments/evaluate_answers.py          # → docs/修复路径对照.md
 ```text
 zhinengti/
  ├── main.py                  # 入口：组装 LangGraph 状态图 + 运行归档
- ├── config.py                # 全局配置、检索参数、State 定义、双模型实例化（36 个模块级常量，其中 22 项可用环境变量覆盖，见手册 §2）
- ├── agents/nodes.py          # planner / executor / reflection / free_reflection 四节点
+ ├── config.py                # 全局配置、检索参数、State 定义、双模型实例化（37 个开关常量，其中 23 项可用环境变量覆盖，见手册 §2）
+ ├── agents/nodes.py          # planner / executor / reflection / free_reflection 四节点（executor 内含 v2.5 的 rewrite 重写分支）
  ├── tools.py                 # 检索层：Search API + 必应降级 + 三层过滤
  ├── prompts.py               # 集中管理的提示词（生成 / 语义过滤 / 质量判定）
  ├── utils.py                 # 正文口径（_body_chars / _looks_truncated）+ 确定性门控 + LLM 容错
@@ -160,8 +201,8 @@ zhinengti/
  ├── run_store.py             # 控制台日志双写 + 结构化运行记录
  ├── check_search.py          # Search/Fetch API 契约探针（改代码前先验字段）
  ├── docs/                    # 设计与实验文档（见下表）
- ├── tests/                   # 离线回归：75 条用例，不联网、不写 data/
- ├── experiments/             # run_matrix.py / repair_matrix.py / build_v2_table.py / evaluate_answers.py / gate_vs_llm.py / reflection_attribution.py
+ ├── tests/                   # 离线回归：79 条用例，不联网、不写 data/
+ ├── experiments/             # run_matrix.py / repair_matrix.py / build_v2_table.py / evaluate_answers.py / gate_vs_llm.py / reflection_attribution.py / replay_rules.py / replay_final_check.py
  ├── data/                    # 运行产物（首次运行自动创建，已 gitignore）
  └── logs/                    # 全链路控制台日志（已 gitignore）
 ```
@@ -174,19 +215,24 @@ zhinengti/
 | [docs/实验记录-v2.md](docs/实验记录-v2.md) | 想逐条核对 E1-E6 的终态、引用数、耗时（自动生成，可复算） |
 | [docs/规则vsLLM-混淆矩阵.md](docs/规则vsLLM-混淆矩阵.md) | 想看 18 条样本的构造、混淆矩阵与逐条判定明细 |
 | [docs/反思归因表.md](docs/反思归因表.md) | 想看判定来源分布、重规划空转率、降级救援台账与零翻转核对（自动生成，可复算） |
-| [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md) | 想查反思判定主线、36 个模块级常量、运行记录字段字典、复现注意事项 |
-| [docs/修复路径对比实验-设计.md](docs/修复路径对比实验-设计.md) | 想查四臂（B0/F/R/H）定义、12 题注入、判卷口径、效度威胁 |
-| [docs/修复路径对照.md](docs/修复路径对照.md) | 想看四臂汇总表（自动生成，数据源 `data/runs_v3/P-*/`） |
-| [docs/重规划案例集.md](docs/重规划案例集.md) | 想逐案看"错在哪 → 走了哪条路 → 另外几臂怎么走"（v2.4 已按 48 份记录重写） |
+| [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md) | 想查反思判定主线、37 个开关常量、运行记录字段字典、复现注意事项 |
+| [docs/修复路径对比实验-设计.md](docs/修复路径对比实验-设计.md) | 想查四臂（B0/F/R/H）定义、题集注入、判卷口径、效度威胁 |
+| [docs/修复路径对照.md](docs/修复路径对照.md) | 想看 v2.4 的四臂汇总表（归档，数据源 `data/runs_v3/P-*/`） |
+| [docs/修复路径对照_v2.5.md](docs/修复路径对照_v2.5.md) | 想看**当前主结果**：17 题 × 4 臂的四张表 + 68 份逐份明细（自动生成，数据源 `data/runs_v4/P-*/`） |
+| [docs/v2.5-step2-结论.md](docs/v2.5-step2-结论.md) | 想看 v2.5 能写进论文的三条、必须自我设限的五条，以及第三步评估（收严↓0 / 救援↑2 但**不启用**） |
+| [docs/v2.5-规则表.md](docs/v2.5-规则表.md) | 想核对决策轮口径（46 → 68 份的规则分布）、`rule_fallback` 台账与 13 次超时的重跑说明 |
+| [docs/重规划案例集.md](docs/重规划案例集.md) | 想逐案看"错在哪 → 走了哪条路 → 另外几臂怎么走"（v2.4 复盘 + v2.5 新增三个案例） |
 | [docs/检索层-附录.md](docs/检索层-附录.md) | 想查检索层改造对照、三层过滤链路、exp1-exp7 完整日志与 v1 量化对照 |
 | experiments/run_matrix.py | 复现 E1-E6（环境变量切组，零改代码） |
-| experiments/repair_matrix.py | 复现四臂对照（--dry-run 先看 48 条命令，--arms/--tasks 可切片） |
-| experiments/evaluate_answers.py | 独立判卷 + 四张表 → docs/修复路径对照.md（`--dir data/runs_v2 --stdout` 可复核旧记录） |
-| experiments/prune_runs.py | 收敛 `data/runs_v3/`：每个 (臂, 题) 只留最新一份（--dry-run 先列，--apply 移到 data/runs_v3_superseded/，剪枝前后汇总表逐字节相同） |
+| experiments/repair_matrix.py | 复现四臂对照（v2.5 默认 17 题 × 4 臂 = 68 条；`--dry-run` 先看命令，`--arms`/`--tasks` 可切片） |
+| experiments/evaluate_answers.py | 独立判卷 + 四张表 → `docs/修复路径对照_v2.5.md`（`--dir data/runs_v3` 复核 v2.4 归档，`--stdout` 只打印） |
+| experiments/replay_rules.py | 规则漂移复核：v2.4 记录按 v2.5 规则重放（`--dir data/runs_v3 --expect-flips 10`） |
+| experiments/replay_final_check.py | 第三步评估：终检收严 + 终态救援的只读回放（输出 收严↓0 / 救援↑2，不写 `data/`） |
+| experiments/prune_runs.py | 收敛记录目录：每个 (臂, 题) 只留最新一份（`--dry-run` 先列，`--apply` 移入 `*_superseded/`） |
 | experiments/build_v2_table.py | 由 data/runs_v2/ 重新生成上文的汇总表 |
 | experiments/gate_vs_llm.py | 复现判决器对照（--build 重建样本、--mock 离线复算） |
 | experiments/reflection_attribution.py | 由 data/runs_v2/ 生成判定归因表（不调 LLM） |
-| tests/test_reflection_gate.py、tests/test_gate_corpus.py、tests/test_repair_policy.py | 改门控 / 改样本 / 改修复策略后，先跑这 75 条离线用例 |
+| tests/test_reflection_gate.py、tests/test_gate_corpus.py、tests/test_repair_policy.py | 改门控 / 改样本 / 改修复策略后，先跑这 79 条离线用例 |
 
 ## 五、快速运行
 
@@ -203,7 +249,7 @@ python check_search.py "量子计算和经典计算的区别" --count 6 --save
 # 2. 跑一个主题（留空则交互输入）
 python main.py "量子计算和经典计算的区别"
 
-# 3. 离线回归（75 条，不联网、不写 data/）
+# 3. 离线回归（79 条，不联网、不写 data/）
 python -m unittest discover -s tests
 
 # 4. 复现实验
@@ -212,10 +258,11 @@ python experiments/build_v2_table.py         # → docs/实验记录-v2.md
 python experiments/gate_vs_llm.py            # 判决器对照 → docs/规则vsLLM-混淆矩阵.md
 python experiments/reflection_attribution.py # 判定归因表 → docs/反思归因表.md
 
-# 5. 修复路径四臂对照（v2.4）
-python experiments/repair_matrix.py --dry-run  # 先看 48 条命令与 env
-python experiments/repair_matrix.py            # 12 题 × 4 臂 → data/runs_v3/P-*/
-python experiments/evaluate_answers.py         # → docs/修复路径对照.md
+# 5. 修复路径四臂对照（v2.5：17 题 × 4 臂 = 68 次）
+python experiments/repair_matrix.py --arms B0,F,R,H # --dry-run 先看 68 条命令与 env
+python experiments/evaluate_answers.py              # → docs/修复路径对照_v2.5.md（读 data/runs_v4/）
+python experiments/replay_final_check.py            # 第三步评估：收严↓0 / 救援↑2（不启用）
+# 复核 v2.4 归档：evaluate_answers.py --dir data/runs_v3 --out docs/修复路径对照.md
 ```
 
 | 产物 | 位置 | 说明 |
@@ -229,4 +276,4 @@ python experiments/evaluate_answers.py         # → docs/修复路径对照.md
 
 ---
 
-> 全部数字都能在 experiments/DeepSeek检索-检索层改造成功验证/*.log、data/runs_v2/<组>/*.json 与 data/gate_vs_llm/*.json 里逐行核对；口径细节、36 个模块级常量（22 项环境变量）与反思判定主线见 [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md)，检索层改造与 exp1-exp7 原始日志见 [docs/检索层-附录.md](docs/检索层-附录.md)。
+> 全部数字都能在 experiments/DeepSeek检索-检索层改造成功验证/*.log、data/runs_v2/<组>/*.json、data/runs_v4/P-*/*.json 与 data/gate_vs_llm/*.json 里逐行核对；口径细节、37 个开关常量（23 项环境变量）与反思判定主线见 [docs/运行日志与开关手册.md](docs/运行日志与开关手册.md)，检索层改造与 exp1-exp7 原始日志见 [docs/检索层-附录.md](docs/检索层-附录.md)。
